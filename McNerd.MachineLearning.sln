@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "McNerd.MachineLearning.LinearAlgebra", "McNerd.MachineLearning.LinearAlgebra\McNerd.MachineLearning.LinearAlgebra.csproj", "{7A453D02-BB64-4ED4-AE99-144B7F7C5FD7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLTests", "MLTests\MLTests.csproj", "{73B05E4F-0060-4EDC-9575-6497C81E9340}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "McNerd.MachineLearning.ConsoleTester", "ConsoleTester\McNerd.MachineLearning.ConsoleTester.csproj", "{006A6F2A-D728-45C9-B4E0-10616D199C72}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{7A453D02-BB64-4ED4-AE99-144B7F7C5FD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A453D02-BB64-4ED4-AE99-144B7F7C5FD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A453D02-BB64-4ED4-AE99-144B7F7C5FD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73B05E4F-0060-4EDC-9575-6497C81E9340}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73B05E4F-0060-4EDC-9575-6497C81E9340}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73B05E4F-0060-4EDC-9575-6497C81E9340}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73B05E4F-0060-4EDC-9575-6497C81E9340}.Release|Any CPU.Build.0 = Release|Any CPU
+		{006A6F2A-D728-45C9-B4E0-10616D199C72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{006A6F2A-D728-45C9-B4E0-10616D199C72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{006A6F2A-D728-45C9-B4E0-10616D199C72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{006A6F2A-D728-45C9-B4E0-10616D199C72}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
