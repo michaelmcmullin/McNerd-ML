@@ -7,10 +7,6 @@ namespace MLTests.LinearAlgebra
     [TestClass]
     public class MatrixTests
     {
-        // Tests TODO:
-        // Addition works as expected on valid matrices. That exception is thrown for uneven matrices.
-        // What happens if a matrix is null? How are all the above tests effected?
-
         #region Constructor Tests
         /// <summary>
         /// Test the Matrix constructor using two ints to define dimensions.
@@ -59,6 +55,7 @@ namespace MLTests.LinearAlgebra
         #endregion
 
         #region Operator Tests
+        #region Addition
         [TestMethod]
         public void AddingTwoDefinedMatricesTogether()
         {
@@ -79,6 +76,36 @@ namespace MLTests.LinearAlgebra
             Assert.AreEqual(expectedResult, m3);
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(NullReferenceException), "Cannot add a null Matrix.")]
+        public void AddingDefinedMatrixToNullMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix m2 = null;
+
+            Matrix m3 = m1 + m2;
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidMatrixDimensionsException), "Matrix dimensions must match.")]
+        public void AddingTwoUnevenDefinedMatricesTogether()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix m2 = new Matrix(new double[,] {
+                { 7.0, 8.0 },
+                { 10.0, 11.0 }
+            });
+            Matrix m3 = m1 + m2;
+        }
+        #endregion
+
+        #region Multiplication
         [TestMethod]
         public void MultiplyingTwoDefinedMatricesTogether()
         {
@@ -103,6 +130,37 @@ namespace MLTests.LinearAlgebra
         }
 
         [TestMethod]
+        [ExpectedException(typeof(NullReferenceException), "Cannot multiply a null Matrix.")]
+        public void MultiplyingDefinedMatrixWithNull()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 6.0, 3.0, 0.0 },
+                { 2.0, 5.0, 1.0 },
+                { 9.0, 8.0, 6.0 }
+            });
+            Matrix m2 = null;
+
+            Matrix m3 = m1 * m2;
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidMatrixDimensionsException), "Matrix 1 column count must match matrix 2 row count.")]
+        public void MultiplyingTwoIncorrectDimensionMatricesTogether()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 6.0, 3.0, 0.0 },
+                { 2.0, 5.0, 1.0 },
+                { 9.0, 8.0, 6.0 }
+            });
+            Matrix m2 = new Matrix(new double[,] {
+                { 7.0, 4.0 },
+                { 5.0, 0.0 }
+            });
+
+            Matrix m3 = m1 * m2;
+        }
+
+        [TestMethod]
         public void ScalarMultiplicationOfDefinedMatrix()
         {
             Matrix m1 = new Matrix(new double[,] {
@@ -123,6 +181,16 @@ namespace MLTests.LinearAlgebra
             Assert.AreEqual(expectedResult, m3);
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(NullReferenceException), "Cannot multiply a null Matrix.")]
+        public void ScalarMultiplicationOfNullMatrix()
+        {
+            Matrix m1 = null;
+            double scalar = 2;
+            Matrix m2 = scalar * m1;
+        }
+
+        #endregion
         #endregion
     }
 }

@@ -118,7 +118,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
             }
             else
             {
-                throw new System.ArgumentException("Cannot add two Matrix objects whose dimensions do not match.");
+                throw new InvalidMatrixDimensionsException("Cannot add two Matrix objects whose dimensions do not match.");
             }
         }
 
@@ -149,7 +149,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
             }
             else
             {
-                throw new System.ArgumentException("Multiplication cannot be performed on matrices with these dimensions.");
+                throw new InvalidMatrixDimensionsException("Multiplication cannot be performed on matrices with these dimensions.");
             }
         }
 
@@ -277,5 +277,25 @@ namespace McNerd.MachineLearning.LinearAlgebra
             return rows ^ columns;
         }
         #endregion
+    }
+
+    /// <summary>
+    /// Custom exception for matrix operations using incorrect dimensions.
+    /// </summary>
+    public class InvalidMatrixDimensionsException : InvalidOperationException
+    {
+        public InvalidMatrixDimensionsException()
+        {
+        }
+
+        public InvalidMatrixDimensionsException(string message)
+            : base(message)
+        {
+        }
+
+        public InvalidMatrixDimensionsException(string message, Exception inner)
+            : base(message, inner)
+        {
+        }
     }
 }
