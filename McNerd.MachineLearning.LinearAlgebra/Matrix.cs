@@ -172,6 +172,18 @@ namespace McNerd.MachineLearning.LinearAlgebra
             return output;
         }
 
+        /// <summary>
+        /// Scalar multiplication of a matrix.
+        /// </summary>
+        /// <param name="m">The matrix to apply multiplication to.</param>
+        /// <param name="scalar">The scalar value to multiply each element of the matrix by.</param>
+        /// <returns>A matrix representing the scalar multiplication of scalar * m.</returns>
+        public static Matrix operator *(Matrix m, double scalar)
+        {
+            // Same as above, but ensuring commutativity - i.e. (s * m) == (m * s).
+            return scalar * m;
+        }
+
 
 
         /// <summary>

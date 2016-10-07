@@ -118,7 +118,9 @@ namespace MLTests.LinearAlgebra
             });
 
             Matrix m2 = scalar * m1;
+            Matrix m3 = m1 * scalar;
             Assert.AreEqual(expectedResult, m2);
+            Assert.AreEqual(expectedResult, m3);
         }
 
         #endregion
