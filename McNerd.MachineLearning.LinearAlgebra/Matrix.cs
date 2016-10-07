@@ -100,7 +100,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <param name="m1">The first matrix to add.</param>
         /// <param name="m2">The second matrix to add.</param>
         /// <returns>The result of adding the two matrices together.</returns>
-        /// <exception cref="System.ArgumentException">Thrown when both matrices have
+        /// <exception cref="InvalidMatrixDimensionsException">Thrown when both matrices have
         /// different dimensions.</exception>
         public static Matrix operator +(Matrix m1, Matrix m2)
         {
@@ -123,11 +123,43 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
 
         /// <summary>
+        /// Subtract one matrix from another.
+        /// </summary>
+        /// <param name="m1">The first matrix to subtract from.</param>
+        /// <param name="m2">The second matrix to subtract from the first.</param>
+        /// <returns>The result of subtracting the second matrix from the first.</returns>
+        /// <exception cref="InvalidMatrixDimensionsException">Thrown when both matrices have
+        /// different dimensions.</exception>
+        public static Matrix operator -(Matrix m1, Matrix m2)
+        {
+            if (m1.HasSameDimensions(m2))
+            {
+                Matrix output = m1;
+                for (int rows = 0; rows < m1.rows; rows++)
+                {
+                    for (int columns = 0; columns < m1.columns; columns++)
+                    {
+                        output[rows, columns] = m1[rows, columns] - m2[rows, columns];
+                    }
+                }
+                return output;
+            }
+            else
+            {
+                throw new InvalidMatrixDimensionsException("Cannot subtract two Matrix objects whose dimensions do not match.");
+            }
+        }
+
+
+
+        /// <summary>
         /// Multiply two matrices together.
         /// </summary>
         /// <param name="m1">An nxm dimension matrix.</param>
         /// <param name="m2">An mxp dimension matrix.</param>
         /// <returns>An nxp Matrix that is the product of m1 and m2.</returns>
+        /// <exception cref="InvalidMatrixDimensionsException">Thrown when the number of columns in the
+        /// first matrix don't match the number of rows in the second matrix.</exception>
         public static Matrix operator *(Matrix m1, Matrix m2)
         {
             if (m1.columns == m2.rows)

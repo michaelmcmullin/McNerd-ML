@@ -105,6 +105,57 @@ namespace MLTests.LinearAlgebra
         }
         #endregion
 
+        #region Subtraction
+        [TestMethod]
+        public void SubractingOneDefinedMatrixFromAnother()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix m2 = new Matrix(new double[,] {
+                { 7.0, 8.0, 9.0 },
+                { 10.0, 11.0, 12.0 }
+            });
+            Matrix expectedResult = new Matrix(new double[,] {
+                { -6.0, -6.0, -6.0 },
+                { -6.0, -6.0, -6.0 }
+            });
+
+            Matrix m3 = m1 - m2;
+            Assert.AreEqual(expectedResult, m3);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NullReferenceException), "Cannot subtract a null Matrix.")]
+        public void SubtractingNullMatrixFromDefinedMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix m2 = null;
+
+            Matrix m3 = m1 - m2;
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidMatrixDimensionsException), "Matrix dimensions must match.")]
+        public void SubractingTwoUnevenDefinedMatrices()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix m2 = new Matrix(new double[,] {
+                { 7.0, 8.0 },
+                { 10.0, 11.0 }
+            });
+            Matrix m3 = m1 - m2;
+        }
+        #endregion
+
+
         #region Multiplication
         [TestMethod]
         public void MultiplyingTwoDefinedMatricesTogether()
