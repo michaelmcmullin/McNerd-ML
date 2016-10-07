@@ -102,6 +102,25 @@ namespace MLTests.LinearAlgebra
             Assert.AreEqual(expectedResult, m3);
         }
 
+        [TestMethod]
+        public void ScalarMultiplicationOfDefinedMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 6.0, 3.0, 0.0 },
+                { 2.0, 5.0, 1.0 },
+                { 9.0, 8.0, 6.0 }
+            });
+            double scalar = 2;
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 12.0, 6.0, 0.0 },
+                { 4.0, 10.0, 2.0 },
+                { 18.0, 16.0, 12.0 }
+            });
+
+            Matrix m2 = scalar * m1;
+            Assert.AreEqual(expectedResult, m2);
+        }
+
         #endregion
     }
 }

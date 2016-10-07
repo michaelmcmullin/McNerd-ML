@@ -153,6 +153,26 @@ namespace McNerd.MachineLearning.LinearAlgebra
             }
         }
 
+        /// <summary>
+        /// Scalar multiplication of a matrix.
+        /// </summary>
+        /// <param name="scalar">The scalar value to multiply each element of the matrix by.</param>
+        /// <param name="m">The matrix to apply multiplication to.</param>
+        /// <returns>A matrix representing the scalar multiplication of scalar * m.</returns>
+        public static Matrix operator *(double scalar, Matrix m)
+        {
+            Matrix output = new Matrix(m.rows, m.columns);
+            for (int row = 0; row < output.Rows; row++)
+            {
+                for (int column = 0; column < output.Columns; column++)
+                {
+                    output[row, column] = scalar * m[row, column];
+                }
+            }
+            return output;
+        }
+
+
 
         /// <summary>
         /// Override the == operator to compare matrix values.
