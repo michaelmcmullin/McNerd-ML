@@ -184,8 +184,6 @@ namespace McNerd.MachineLearning.LinearAlgebra
             return scalar * m;
         }
 
-
-
         /// <summary>
         /// Override the == operator to compare matrix values.
         /// </summary>
@@ -194,7 +192,6 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <returns>True if the values of both matrices match.</returns>
         public static bool operator ==(Matrix m1, Matrix m2)
         {
-            if (null == m1 || null == m2) return false;
             return m1.Equals(m2);
         }
 

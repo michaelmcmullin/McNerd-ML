@@ -191,6 +191,23 @@ namespace MLTests.LinearAlgebra
         }
 
         #endregion
+
+        #region Equality
+        [TestMethod]
+        public void EqualityOperatorOnTwoMatrices()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix m2 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+
+            Assert.IsTrue(m1 == m2);
+        }
+        #endregion
         #endregion
     }
 }
