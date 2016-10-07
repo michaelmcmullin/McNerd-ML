@@ -123,6 +123,70 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
 
         /// <summary>
+        /// Multiply two matrices together.
+        /// </summary>
+        /// <param name="m1">An nxm dimension matrix.</param>
+        /// <param name="m2">An mxp dimension matrix.</param>
+        /// <returns>An nxp Matrix that is the product of m1 and m2.</returns>
+        public static Matrix operator *(Matrix m1, Matrix m2)
+        {
+            if (m1.columns == m2.rows)
+            {
+                Matrix output = new Matrix(m1.rows, m2.columns);
+                for (int row = 0; row < output.Rows; row++)
+                {
+                    for (int column = 0; column < output.Columns; column++)
+                    {
+                        double result = 0;
+                        for (int i = 0; i < m1.Columns; i++)
+                        {
+                            result += m1[row, i] * m2[i, column];
+                        }
+                        output[row, column] = result;
+                    }
+                }
+                return output;
+            }
+            else
+            {
+                throw new System.ArgumentException("Multiplication cannot be performed on matrices with these dimensions.");
+            }
+        }
+
+        /// <summary>
+        /// Scalar multiplication of a matrix.
+        /// </summary>
+        /// <param name="scalar">The scalar value to multiply each element of the matrix by.</param>
+        /// <param name="m">The matrix to apply multiplication to.</param>
+        /// <returns>A matrix representing the scalar multiplication of scalar * m.</returns>
+        public static Matrix operator *(double scalar, Matrix m)
+        {
+            Matrix output = new Matrix(m.rows, m.columns);
+            for (int row = 0; row < output.Rows; row++)
+            {
+                for (int column = 0; column < output.Columns; column++)
+                {
+                    output[row, column] = scalar * m[row, column];
+                }
+            }
+            return output;
+        }
+
+        /// <summary>
+        /// Scalar multiplication of a matrix.
+        /// </summary>
+        /// <param name="m">The matrix to apply multiplication to.</param>
+        /// <param name="scalar">The scalar value to multiply each element of the matrix by.</param>
+        /// <returns>A matrix representing the scalar multiplication of scalar * m.</returns>
+        public static Matrix operator *(Matrix m, double scalar)
+        {
+            // Same as above, but ensuring commutativity - i.e. (s * m) == (m * s).
+            return scalar * m;
+        }
+
+
+
+        /// <summary>
         /// Override the == operator to compare matrix values.
         /// </summary>
         /// <param name="m1">The first matrix to compare.</param>
