@@ -78,6 +78,30 @@ namespace MLTests.LinearAlgebra
             Matrix m3 = m1 + m2;
             Assert.AreEqual(expectedResult, m3);
         }
+
+        [TestMethod]
+        public void MultiplyingTwoDefinedMatricesTogether()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 6.0, 3.0, 0.0 },
+                { 2.0, 5.0, 1.0 },
+                { 9.0, 8.0, 6.0 }
+            });
+            Matrix m2 = new Matrix(new double[,] {
+                { 7.0, 4.0 },
+                { 6.0, 7.0 },
+                { 5.0, 0.0 }
+            });
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 60.0, 45.0 },
+                { 49.0, 43.0 },
+                { 141.0, 92.0 }
+            });
+
+            Matrix m3 = m1 * m2;
+            Assert.AreEqual(expectedResult, m3);
+        }
+
         #endregion
     }
 }

@@ -123,6 +123,38 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
 
         /// <summary>
+        /// Multiply two matrices together.
+        /// </summary>
+        /// <param name="m1">An nxm dimension matrix.</param>
+        /// <param name="m2">An mxp dimension matrix.</param>
+        /// <returns>An nxp Matrix that is the product of m1 and m2.</returns>
+        public static Matrix operator *(Matrix m1, Matrix m2)
+        {
+            if (m1.columns == m2.rows)
+            {
+                Matrix output = new Matrix(m1.rows, m2.columns);
+                for (int row = 0; row < output.Rows; row++)
+                {
+                    for (int column = 0; column < output.Columns; column++)
+                    {
+                        double result = 0;
+                        for (int i = 0; i < m1.Columns; i++)
+                        {
+                            result += m1[row, i] * m2[i, column];
+                        }
+                        output[row, column] = result;
+                    }
+                }
+                return output;
+            }
+            else
+            {
+                throw new System.ArgumentException("Multiplication cannot be performed on matrices with these dimensions.");
+            }
+        }
+
+
+        /// <summary>
         /// Override the == operator to compare matrix values.
         /// </summary>
         /// <param name="m1">The first matrix to compare.</param>
