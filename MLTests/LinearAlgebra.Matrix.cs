@@ -72,7 +72,7 @@ namespace MLTests.LinearAlgebra
                 { 14.0, 16.0, 18.0 }
             });
 
-            Matrix m3 = m1 + m2;
+            Matrix m3 = m1 + m2; // 15,10,21 // 4,16,6
             Assert.AreEqual(expectedResult, m3);
         }
 

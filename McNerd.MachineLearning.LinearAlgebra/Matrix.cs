@@ -16,7 +16,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <summary>
         /// Storage array for the matrix data.
         /// </summary>
-        double[,] data;
+        double[] data;
 
         /// <summary>
         /// Dimensions of the matrix
@@ -35,7 +35,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         {
             this.rows = rows;
             this.columns = columns;
-            data = new double[rows, columns];
+            data = new double[rows * columns];
         }
 
         /// <summary>
@@ -47,11 +47,16 @@ namespace McNerd.MachineLearning.LinearAlgebra
         {
         }
 
-        public Matrix(double[,] array)
+        public Matrix(double[,] array) : this(array.GetLength(0), array.GetLength(1))
         {
-            data = array;
-            this.rows = array.GetLength(0);
-            this.columns = array.GetLength(1);
+            int index = 0;
+            for (int row=0; row<rows; row++)
+            {
+                for (int column=0; column<columns; column++)
+                {
+                    data[index++] = array[row, column];
+                }
+            }
         }
         #endregion
 
@@ -65,8 +70,8 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <remarks>Matrices are zero-indexed.</remarks>
         public double this[int row, int column]
         {
-            get { return data[row, column]; }
-            set { data[row, column] = value; }
+            get { return data[(row * Columns) + column]; }
+            set { data[(row * Columns) + column] = value; }
         }
         #endregion
 
@@ -106,11 +111,13 @@ namespace McNerd.MachineLearning.LinearAlgebra
         {
             if (m1.HasSameDimensions(m2))
             {
-                Matrix output = m1;
+                Matrix output = new Matrix(m1.rows, m1.columns);
                 for (int rows = 0; rows < m1.rows; rows++)
                 {
                     for (int columns = 0; columns < m1.columns; columns++)
                     {
+                        double a = m1[rows, columns];
+                        double b = m2[rows, columns];
                         output[rows, columns] = m1[rows, columns] + m2[rows, columns];
                     }
                 }
@@ -134,7 +141,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         {
             if (m1.HasSameDimensions(m2))
             {
-                Matrix output = m1;
+                Matrix output = new Matrix(m1.rows, m1.columns);
                 for (int rows = 0; rows < m1.rows; rows++)
                 {
                     for (int columns = 0; columns < m1.columns; columns++)
@@ -150,8 +157,6 @@ namespace McNerd.MachineLearning.LinearAlgebra
             }
         }
 
-
-
         /// <summary>
         /// Multiply two matrices together.
         /// </summary>
@@ -165,15 +170,22 @@ namespace McNerd.MachineLearning.LinearAlgebra
             if (m1.columns == m2.rows)
             {
                 Matrix output = new Matrix(m1.rows, m2.columns);
+                int m1_index, m2_index;
                 for (int row = 0; row < output.Rows; row++)
                 {
+                    m1_index = row * m1.columns;
+
                     for (int column = 0; column < output.Columns; column++)
                     {
                         double result = 0;
+                        m2_index = column;
+
                         for (int i = 0; i < m1.Columns; i++)
                         {
-                            result += m1[row, i] * m2[i, column];
+                            result += m1.data[m1_index + i] * m2.data[m2_index];
+                            m2_index += m2.columns;
                         }
+
                         output[row, column] = result;
                     }
                 }
