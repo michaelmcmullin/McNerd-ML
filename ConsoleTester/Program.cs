@@ -31,23 +31,13 @@ namespace ConsoleTester
             Matrix m5 = new Matrix(400);
 
             // A quick and dirty test to try out timing.
-            for (int i=0; i< 1000; i++)
+            for (int i=0; i< 10; i++)
             {
-                Matrix mtest = m4 - m5;
+                Matrix mtest = m4 * m5;
                 double x = mtest[1, 1];
             }
 
             Console.ReadLine();
-
-            // Test 1: approx 500ms (addition - 1000000 iterations, 2x3 + 2x3)
-            //         approx 19,701 (addition - 1000 iterations 400x400 + 400x400)
-            //         approx 3,558  (addition - 1000 iterations 400x400 + 400x400, accessing data[] directly)
-            // Test 2: approx 1,150ms (multiplication - 1000000 iterations, 2x3 * 3x2)
-            // Test 3: approx 45,880ms (multiplication - 10 iterations, 400x400 * 400x400)
-            //         approx 33,374ms (changing multidimensional array to jagged array)
-            //         approx 32,471ms (changing to single-dimensional array)
-            //         approx 22,000ms (changed multiplication indexing method for Matrix 1)
-            //         approx 7,881ms (changed multiplication indexing method for Matrix 2)
         }
     }
 }

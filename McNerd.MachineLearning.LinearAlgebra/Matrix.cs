@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace McNerd.MachineLearning.LinearAlgebra
 {
@@ -50,9 +51,9 @@ namespace McNerd.MachineLearning.LinearAlgebra
         public Matrix(double[,] array) : this(array.GetLength(0), array.GetLength(1))
         {
             int index = 0;
-            for (int row=0; row<rows; row++)
+            for (int row = 0; row < rows; row++)
             {
-                for (int column=0; column<columns; column++)
+                for (int column = 0; column < columns; column++)
                 {
                     data[index++] = array[row, column];
                 }
@@ -112,7 +113,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
             if (m1.HasSameDimensions(m2))
             {
                 Matrix output = new Matrix(m1.rows, m1.columns);
-                for (int i = 0; i<(m1.Rows*m1.Columns); i++)
+                for (int i = 0; i < (m1.Rows * m1.Columns); i++)
                 {
                     output.data[i] = m1.data[i] + m2.data[i];
                 }
@@ -162,25 +163,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
             if (m1.columns == m2.rows)
             {
                 Matrix output = new Matrix(m1.rows, m2.columns);
-                int m1_index, m2_index;
-                for (int row = 0; row < output.Rows; row++)
-                {
-                    m1_index = row * m1.columns;
-
-                    for (int column = 0; column < output.Columns; column++)
-                    {
-                        double result = 0;
-                        m2_index = column;
-
-                        for (int i = 0; i < m1.Columns; i++)
-                        {
-                            result += m1.data[m1_index + i] * m2.data[m2_index];
-                            m2_index += m2.columns;
-                        }
-
-                        output[row, column] = result;
-                    }
-                }
+                Parallel.For(0, m1.rows, i => MultiplyRow(i, m1, m2, output));
                 return output;
             }
             else
@@ -308,6 +291,34 @@ namespace McNerd.MachineLearning.LinearAlgebra
         public override int GetHashCode()
         {
             return rows ^ columns;
+        }
+
+        /// <summary>
+        /// Calculate a single row result of multiplying two matrices.
+        /// </summary>
+        /// <param name="row">The zero-indexed row to calculate.</param>
+        /// <param name="m1">The first matrix to multiply.</param>
+        /// <param name="m2">The second matrix to multiply.</param>
+        /// <param name="output">The matrix to store the results in.</param>
+        private static void MultiplyRow(int row, Matrix m1, Matrix m2, Matrix output)
+        {
+            int m1_index = row * m1.columns;
+            int m2_index;
+
+            for (int column = 0; column < output.Columns; column++)
+            {
+                double result = 0;
+                m2_index = column;
+
+                for (int i = 0; i < m1.Columns; i++)
+                {
+                    result += m1.data[m1_index + i] * m2.data[m2_index];
+                    m2_index += m2.columns;
+                }
+
+                output[row, column] = result;
+
+            }
         }
         #endregion
     }
