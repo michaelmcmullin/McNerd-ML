@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace McNerd.MachineLearning.LinearAlgebra
 {
@@ -16,7 +17,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <summary>
         /// Storage array for the matrix data.
         /// </summary>
-        double[,] data;
+        double[] data;
 
         /// <summary>
         /// Dimensions of the matrix
@@ -35,7 +36,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         {
             this.rows = rows;
             this.columns = columns;
-            data = new double[rows, columns];
+            data = new double[rows * columns];
         }
 
         /// <summary>
@@ -47,11 +48,16 @@ namespace McNerd.MachineLearning.LinearAlgebra
         {
         }
 
-        public Matrix(double[,] array)
+        public Matrix(double[,] array) : this(array.GetLength(0), array.GetLength(1))
         {
-            data = array;
-            this.rows = array.GetLength(0);
-            this.columns = array.GetLength(1);
+            int index = 0;
+            for (int row = 0; row < rows; row++)
+            {
+                for (int column = 0; column < columns; column++)
+                {
+                    data[index++] = array[row, column];
+                }
+            }
         }
         #endregion
 
@@ -65,8 +71,8 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <remarks>Matrices are zero-indexed.</remarks>
         public double this[int row, int column]
         {
-            get { return data[row, column]; }
-            set { data[row, column] = value; }
+            get { return data[(row * Columns) + column]; }
+            set { data[(row * Columns) + column] = value; }
         }
         #endregion
 
@@ -106,13 +112,10 @@ namespace McNerd.MachineLearning.LinearAlgebra
         {
             if (m1.HasSameDimensions(m2))
             {
-                Matrix output = m1;
-                for (int rows = 0; rows < m1.rows; rows++)
+                Matrix output = new Matrix(m1.rows, m1.columns);
+                for (int i = 0; i < m1.data.Length; i++)
                 {
-                    for (int columns = 0; columns < m1.columns; columns++)
-                    {
-                        output[rows, columns] = m1[rows, columns] + m2[rows, columns];
-                    }
+                    output.data[i] = m1.data[i] + m2.data[i];
                 }
                 return output;
             }
@@ -134,13 +137,10 @@ namespace McNerd.MachineLearning.LinearAlgebra
         {
             if (m1.HasSameDimensions(m2))
             {
-                Matrix output = m1;
-                for (int rows = 0; rows < m1.rows; rows++)
+                Matrix output = new Matrix(m1.rows, m1.columns);
+                for (int i = 0; i < m1.data.Length; i++)
                 {
-                    for (int columns = 0; columns < m1.columns; columns++)
-                    {
-                        output[rows, columns] = m1[rows, columns] - m2[rows, columns];
-                    }
+                    output.data[i] = m1.data[i] - m2.data[i];
                 }
                 return output;
             }
@@ -149,8 +149,6 @@ namespace McNerd.MachineLearning.LinearAlgebra
                 throw new InvalidMatrixDimensionsException("Cannot subtract two Matrix objects whose dimensions do not match.");
             }
         }
-
-
 
         /// <summary>
         /// Multiply two matrices together.
@@ -165,18 +163,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
             if (m1.columns == m2.rows)
             {
                 Matrix output = new Matrix(m1.rows, m2.columns);
-                for (int row = 0; row < output.Rows; row++)
-                {
-                    for (int column = 0; column < output.Columns; column++)
-                    {
-                        double result = 0;
-                        for (int i = 0; i < m1.Columns; i++)
-                        {
-                            result += m1[row, i] * m2[i, column];
-                        }
-                        output[row, column] = result;
-                    }
-                }
+                Parallel.For(0, m1.rows, i => MultiplyRow(i, m1, m2, output));
                 return output;
             }
             else
@@ -194,13 +181,10 @@ namespace McNerd.MachineLearning.LinearAlgebra
         public static Matrix operator *(double scalar, Matrix m)
         {
             Matrix output = new Matrix(m.rows, m.columns);
-            for (int row = 0; row < output.Rows; row++)
-            {
-                for (int column = 0; column < output.Columns; column++)
-                {
-                    output[row, column] = scalar * m[row, column];
-                }
-            }
+            //for (int i = 0; i < m.data.Length; i++)
+            //    output.data[i] = m.data[i] * scalar;
+            //Parallel.For(0, m.data.Length, i => { output.data[i] = scalar * m.data[i]; });
+            Parallel.For(0, m.rows, i => MultiplyRow(i, m, scalar, output));
             return output;
         }
 
@@ -305,6 +289,56 @@ namespace McNerd.MachineLearning.LinearAlgebra
         {
             return rows ^ columns;
         }
+
+        /// <summary>
+        /// Calculate a single row result of multiplying two matrices.
+        /// </summary>
+        /// <param name="row">The zero-indexed row to calculate.</param>
+        /// <param name="m1">The first matrix to multiply.</param>
+        /// <param name="m2">The second matrix to multiply.</param>
+        /// <param name="output">The matrix to store the results in.</param>
+        private static void MultiplyRow(int row, Matrix m1, Matrix m2, Matrix output)
+        {
+            int m1_index = row * m1.columns;
+            int m2_index;
+
+            for (int column = 0; column < output.Columns; column++)
+            {
+                double result = 0;
+                m2_index = column;
+
+                for (int i = 0; i < m1.Columns; i++)
+                {
+                    result += m1.data[m1_index + i] * m2.data[m2_index];
+                    m2_index += m2.columns;
+                }
+
+                output[row, column] = result;
+
+            }
+        }
+
+        /// <summary>
+        /// Calculate the results of multiplying each element in a matrix
+        /// row by a scalar value.
+        /// </summary>
+        /// <param name="row">The zero-indexed row to calculate.</param>
+        /// <param name="m">The matrix to multiply by a scalar value.</param>
+        /// <param name="scalar">The scalar value to multiply the matrix by.</param>
+        /// <param name="output">The matrix that contains the results of multiplying the input
+        /// matrix by a scalar value.</param>
+        private static void MultiplyRow(int row, Matrix m, double scalar, Matrix output)
+        {
+            int m_index = row * m.columns;
+
+            for (int i = m_index; i < m_index + output.Columns; i++)
+            {
+                output.data[i] = scalar * m.data[i];
+            }
+        }
+
+
+
         #endregion
     }
 

@@ -22,15 +22,22 @@ namespace ConsoleTester
                 { 7.0, 8.0, 9.0 },
                 { 10.0, 11.0, 12.0 }
             });
+            Matrix m3 = new Matrix(new double[,] {
+                { 7.0, 8.0 },
+                { 9.0, 10.0 },
+                { 11.0, 12.0 }
+            });
+            Matrix m4 = new Matrix(400);
+            Matrix m5 = new Matrix(400);
 
             // A quick and dirty test to try out timing.
-            for (int i=0; i<1000000; i++)
+            for (int i=0; i< 10000000; i++)
             {
-                Matrix m3 = m1 + m2;
-                double x = m3[1, 1];
+                Matrix mtest = m1 + m2;
+                double x = mtest[1, 1];
             }
 
-            Console.ReadLine(); // Test 1: approx 500ms
+            Console.ReadLine();
         }
     }
 }
