@@ -113,7 +113,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
             if (m1.HasSameDimensions(m2))
             {
                 Matrix output = new Matrix(m1.rows, m1.columns);
-                for (int i = 0; i < (m1.Rows * m1.Columns); i++)
+                for (int i = 0; i < m1.data.Length; i++)
                 {
                     output.data[i] = m1.data[i] + m2.data[i];
                 }
@@ -138,7 +138,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
             if (m1.HasSameDimensions(m2))
             {
                 Matrix output = new Matrix(m1.rows, m1.columns);
-                for (int i = 0; i < (m1.Rows * m1.Columns); i++)
+                for (int i = 0; i < m1.data.Length; i++)
                 {
                     output.data[i] = m1.data[i] - m2.data[i];
                 }

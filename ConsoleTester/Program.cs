@@ -31,10 +31,9 @@ namespace ConsoleTester
             Matrix m5 = new Matrix(400);
 
             // A quick and dirty test to try out timing.
-            for (int i=0; i< 1000; i++)
+            for (int i=0; i< 10000000; i++)
             {
-                //Matrix mtest = m4 * m5;
-                Matrix mtest = m4 * 17;
+                Matrix mtest = m1 + m2;
                 double x = mtest[1, 1];
             }
 
