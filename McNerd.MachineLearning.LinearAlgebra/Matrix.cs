@@ -11,6 +11,11 @@ namespace McNerd.MachineLearning.LinearAlgebra
     /// </summary>
     public enum MatrixTypes { Zeros, Ones, Identity, Magic, Random }
 
+    /// <summary>
+    /// Describe which dimension of a matrix to work with.
+    /// </summary>
+    public enum MatrixDimensions { Auto, Rows, Columns }
+
     public class Matrix
     {
         #region Private Fields
