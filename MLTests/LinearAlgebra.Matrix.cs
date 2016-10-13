@@ -259,6 +259,40 @@ namespace MLTests.LinearAlgebra
             Assert.IsTrue(m1 == m2);
         }
         #endregion
+
+        #region Dimension Operations
+        [TestMethod]
+        public void SumOfMatrixColumns()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 5.0, 7.0, 9.0 }
+            });
+
+            Matrix m2 = Matrix.Sum(m1);
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestMethod]
+        public void SumOfMatrixRows()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 6.0 },
+                { 15.0 }
+            });
+
+            Matrix m2 = Matrix.Sum(m1, MatrixDimensions.Rows);
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        #endregion
         #endregion
     }
 }

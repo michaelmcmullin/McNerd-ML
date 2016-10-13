@@ -18,6 +18,17 @@ namespace McNerd.MachineLearning.LinearAlgebra
 
     public class Matrix
     {
+        #region Delegates
+        /// <summary>
+        /// General purpose delegate for processing two numbers and giving
+        /// a result.
+        /// </summary>
+        /// <param name="a">The first number to process.</param>
+        /// <param name="b">The second number to process.</param>
+        /// <returns>The result of performing an operation on both inputs.</returns>
+        public delegate double ProcessNumbers(double a, double b);
+        #endregion
+
         #region Private Fields
         /// <summary>
         /// Storage array for the matrix data.
@@ -342,7 +353,73 @@ namespace McNerd.MachineLearning.LinearAlgebra
             }
         }
 
+        #region Dimension Operations
+        /// <summary>
+        /// Run a given operation on all elements in a particular dimension to reduce that dimension
+        /// to a single row or column.
+        /// </summary>
+        /// <param name="dimension">Indicate whether to operate on rows or columns.</param>
+        /// <param name="operation">The delegate method to operate with.</param>
+        /// <returns>A matrix populated with the results of performing the given operation.</returns>
+        /// <remarks>If the current matrix is a row or column vector, then a 1*1 matrix
+        /// will be returned, regardless of which dimension is chosen. If the dimension is
+        /// set to 'Auto', then the first non-singleton dimension is chosen. If no singleton
+        /// dimension exists, then columns are used as the default.</remarks>
+        public static Matrix ReduceDimension(Matrix m, MatrixDimensions dimension, ProcessNumbers operation)
+        {
+            Matrix result = null;
 
+            // Process calculations
+            switch(dimension)
+            {
+                case MatrixDimensions.Auto:
+                    // Inspired by Octave, 'Auto' will process the first non-singleton dimension.
+                    if (m.Rows == 1 || m.Columns == 1)
+                    {
+                        result = new Matrix(1, 1);
+                        for (int i = 0; i < m.data.Length; i++)
+                            result.data[0] = operation(result.data[0], m.data[i]);
+                        return result;
+                    }
+                    else
+                    {
+                        // No singleton case? Let's go with columns.
+                        goto case MatrixDimensions.Columns; // goto?? Haven't used one in years, and it feels good!!!!
+                    }
+                case MatrixDimensions.Columns:
+                    result = new Matrix(1, m.Columns);
+                    for (int i = 0; i < m.data.Length; i += m.Columns)
+                        for (int j = 0; j < m.Columns; j++)
+                            result.data[j] = operation(result.data[j], m.data[i + j]);
+                    break;
+                case MatrixDimensions.Rows:
+                    result = new Matrix(m.Rows, 1);
+                    int index = 0;
+                    for (int i = 0; i < m.Rows; i++)
+                        for (int j = 0; j < m.Columns; j++)
+                            result.data[i] = operation(result.data[i], m.data[index++]);
+                    break;
+                default:
+                    break;
+            }
+
+            return result;
+        }
+
+        #region Specific implementations of ReduceDimension
+        /// <summary>
+        /// Sum all elements along a specified dimension.
+        /// </summary>
+        /// <param name="m">The Matrix whose elements need to be added together.</param>
+        /// <param name="dimension">The dimension (row or column) to process.</param>
+        /// <returns>A 1*n or n*1 Matrix containing the sum of each element along the
+        /// processed dimension.</returns>
+        public static Matrix Sum(Matrix m, MatrixDimensions dimension = MatrixDimensions.Auto)
+        {
+            return ReduceDimension(m, dimension, (x, y) => x + y);
+        }
+        #endregion
+        #endregion
 
         #endregion
     }
