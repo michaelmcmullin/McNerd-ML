@@ -260,6 +260,141 @@ namespace MLTests.LinearAlgebra
         }
         #endregion
 
+        #region Element Operations
+        /// <summary>
+        /// Test adding 5 to each matrix element
+        /// </summary>
+        [TestMethod]
+        public void ElementAddFiveToMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 6.0, 7.0, 8.0 },
+                { 9.0, 10.0, 11.0 }
+            });
+
+            Matrix m2 = Matrix.ElementAdd(m1, 5);
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        /// <summary>
+        /// Test subtracting five from each matrix element
+        /// </summary>
+        [TestMethod]
+        public void ElementSubtractFiveFromMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 6.0, 7.0, 8.0 },
+                { 9.0, 10.0, 11.0 }
+            });
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+
+            Matrix m2 = Matrix.ElementSubtract(m1, 5);
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        /// <summary>
+        /// Test multiplying each matrix element by 3
+        /// </summary>
+        [TestMethod]
+        public void ElementMultiplyMatrixByThree()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 3.0, 6.0, 9.0 },
+                { 12.0, 15.0, 18.0 }
+            });
+
+            Matrix m2 = Matrix.ElementMultiply(m1, 3);
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        /// <summary>
+        /// Test dividing each matrix element by 10
+        /// </summary>
+        [TestMethod]
+        public void ElementDivideMatrixByTen()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 0.1, 0.2, 0.3 },
+                { 0.4, 0.5, 0.6 }
+            });
+
+            Matrix m2 = Matrix.ElementDivide(m1, 10);
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        /// <summary>
+        /// Test raising the power of each element by 2
+        /// </summary>
+        [TestMethod]
+        public void ElementSquareMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.0, 4.0, 9.0 },
+                { 16.0, 25.0, 36.0 }
+            });
+
+            Matrix m2 = Matrix.ElementPower(m1, 2);
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        /// <summary>
+        /// Test getting the square root of each matrix element.
+        /// </summary>
+        [TestMethod]
+        public void ElementSqrtMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 4.0, 9.0, 16.0 },
+                { 25.0, 36.0, 49.0 }
+            });
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 2.0, 3.0, 4.0 },
+                { 5.0, 6.0, 7.0 }
+            });
+
+            Matrix m2 = Matrix.ElementSqrt(m1);
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        /// <summary>
+        /// Test getting the absolute value of each matrix element.
+        /// </summary>
+        [TestMethod]
+        public void ElementAbsMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, -2.0, 3.0 },
+                { -4.0, 5.0, -6.0 }
+            });
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+
+            Matrix m2 = Matrix.ElementAbs(m1);
+            Assert.AreEqual(expectedResult, m2);
+        }
+        #endregion
+
         #region Dimension Operations
         [TestMethod]
         public void SumOfMatrixColumns()

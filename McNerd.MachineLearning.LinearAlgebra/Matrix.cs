@@ -20,6 +20,14 @@ namespace McNerd.MachineLearning.LinearAlgebra
     {
         #region Delegates
         /// <summary>
+        /// General purpose delegate for processing a number and giving
+        /// a result.
+        /// </summary>
+        /// <param name="a">The number to process.</param>
+        /// <returns>The result of performing an operation on the number.</returns>
+        public delegate double ProcessNumber(double a);
+
+        /// <summary>
         /// General purpose delegate for processing two numbers and giving
         /// a result.
         /// </summary>
@@ -353,11 +361,125 @@ namespace McNerd.MachineLearning.LinearAlgebra
             }
         }
 
+        #region Element Operations
+        /// <summary>
+        /// Run a given operation on every element of a matrix.
+        /// </summary>
+        /// <param name="m">The Matrix to operate on.</param>
+        /// <param name="number">The value to use in each operation.</param>
+        /// <param name="operation">The delegate method to operate with.</param>
+        /// <returns>A new Matrix with the original elements operated on appropriately.</returns>
+        public static Matrix ElementOperation(Matrix m, double number, ProcessNumbers operation)
+        {
+            Matrix result = new Matrix(m.Rows, m.Columns);
+            for (int i = 0; i < result.data.Length; i++)
+                result.data[i] = operation(m.data[i], number);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Run a given operation on every element of a matrix.
+        /// </summary>
+        /// <param name="m">The Matrix to operate on.</param>
+        /// <param name="operation">The delegate method to operate with.</param>
+        /// <returns>A new Matrix with the original elements operated on appropriately.</returns>
+        public static Matrix ElementOperation(Matrix m, ProcessNumber operation)
+        {
+            Matrix result = new Matrix(m.Rows, m.Columns);
+            for (int i = 0; i < result.data.Length; i++)
+                result.data[i] = operation(m.data[i]);
+
+            return result;
+        }
+
+        #region Specific implementations of ElementOperation
+        /// <summary>
+        /// Add a fixed number to each element in a given Matrix.
+        /// </summary>
+        /// <param name="m">The Matrix to process.</param>
+        /// <param name="number">The number to add to each Matrix element.</param>
+        /// <returns>A new Matrix containing elements added to the given number.</returns>
+        public static Matrix ElementAdd(Matrix m, double number)
+        {
+            return ElementOperation(m, number, (x, y) => x + y);
+        }
+
+        /// <summary>
+        /// Subtract a fixed number from each element in a given Matrix.
+        /// </summary>
+        /// <param name="m">The Matrix to process.</param>
+        /// <param name="number">The number to subract from each Matrix element.</param>
+        /// <returns>A new Matrix containing elements subtracted by the given number.</returns>
+        public static Matrix ElementSubtract(Matrix m, double number)
+        {
+            return ElementOperation(m, number, (x, y) => x - y);
+        }
+
+        /// <summary>
+        /// Multiply each element in a given Matrix by a fixed number.
+        /// </summary>
+        /// <param name="m">The Matrix to process.</param>
+        /// <param name="number">The number to multiply each Matrix element by.</param>
+        /// <returns>A new Matrix containing elements multiplied by the given number.</returns>
+        public static Matrix ElementMultiply(Matrix m, double number)
+        {
+            return ElementOperation(m, number, (x, y) => x * y);
+        }
+
+        /// <summary>
+        /// Divide each element in a given Matrix by a fixed number.
+        /// </summary>
+        /// <param name="m">The Matrix to process.</param>
+        /// <param name="number">The number to divide each Matrix element by.</param>
+        /// <returns>A new Matrix containing elements divided by the given number.</returns>
+        public static Matrix ElementDivide(Matrix m, double number)
+        {
+            return ElementOperation(m, number, (x, y) => x / y);
+        }
+
+        /// <summary>
+        /// Raise each element in a given Matrix by an exponent.
+        /// </summary>
+        /// <param name="m">The Matrix to process.</param>
+        /// <param name="exponent">The exponent to raise each Matrix element by.</param>
+        /// <returns>A new Matrix containing elements raised to the power of the given exponent.</returns>
+        public static Matrix ElementPower(Matrix m, double exponent)
+        {
+            return ElementOperation(m, exponent, (x, y) => Math.Pow(x, y));
+        }
+
+        /// <summary>
+        /// Multiply each element in a given Matrix by a fixed number.
+        /// </summary>
+        /// <param name="m">The Matrix to process.</param>
+        /// <param name="number">The number to multiply each Matrix element by.</param>
+        /// <returns>A new Matrix containing elements multiplied by the given number.</returns>
+        public static Matrix ElementSqrt(Matrix m)
+        {
+            return ElementOperation(m, (x) => Math.Sqrt(x));
+        }
+
+        /// <summary>
+        /// Multiply each element in a given Matrix by a fixed number.
+        /// </summary>
+        /// <param name="m">The Matrix to process.</param>
+        /// <param name="number">The number to multiply each Matrix element by.</param>
+        /// <returns>A new Matrix containing elements multiplied by the given number.</returns>
+        public static Matrix ElementAbs(Matrix m)
+        {
+            return ElementOperation(m, (x) => Math.Abs(x));
+        }
+
+        #endregion
+        #endregion
+
         #region Dimension Operations
         /// <summary>
         /// Run a given operation on all elements in a particular dimension to reduce that dimension
         /// to a single row or column.
         /// </summary>
+        /// <param name="m">The matrix to operate on.</param>
         /// <param name="dimension">Indicate whether to operate on rows or columns.</param>
         /// <param name="operation">The delegate method to operate with.</param>
         /// <returns>A matrix populated with the results of performing the given operation.</returns>

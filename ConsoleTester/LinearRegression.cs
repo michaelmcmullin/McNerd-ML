@@ -22,7 +22,8 @@ namespace ConsoleTester
         /// The lower the result, the better the fit.</returns>
         public static double ComputeCost(Matrix X, Matrix y, Matrix theta)
         {
-            int m = y.Rows;
+            double result = 0;
+            double m = y.Rows;
 
             // Check inputs
             if (X == null || y == null || theta == null)
@@ -32,9 +33,12 @@ namespace ConsoleTester
 
             Matrix m1 = X * theta;
             Matrix m2 = m1 - y;
-            Matrix sumValues = Matrix.Sum(m2); // TODO: element-wise square
+            Matrix m3 = Matrix.ElementPower(m2, 2);
+            Matrix sumValues = Matrix.Sum(m3);
 
-            return sumValues[0,0];
+            result = (1.0 / (2.0 * m)) * sumValues[0, 0];
+
+            return result;
         }
     }
 }
