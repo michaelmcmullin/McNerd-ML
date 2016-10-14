@@ -14,28 +14,28 @@ namespace ConsoleTester
     {
         static void Main(string[] args)
         {
-            Matrix m1 = new Matrix(new double[,] {
-                { 1.0, 2.0, 3.0 },
-                { 4.0, 5.0, 6.0 }
+            Matrix X = new Matrix(new double[,] {
+                { 2.0, 1.0, 3.0 },
+                { 7.0, 1.0, 9.0 },
+                { 1.0, 8.0, 1.0 },
+                { 3.0, 7.0, 4.0 }
             });
-            Matrix m2 = new Matrix(new double[,] {
-                { 7.0, 8.0, 9.0 },
-                { 10.0, 11.0, 12.0 }
+            Matrix y = new Matrix(new double[,] {
+                { 2.0 },
+                { 5.0 },
+                { 5.0 },
+                { 6.0 }
             });
-            Matrix m3 = new Matrix(new double[,] {
-                { 7.0, 8.0 },
-                { 9.0, 10.0 },
-                { 11.0, 12.0 }
+            Matrix theta = new Matrix(new double[,] {
+                { 0.4 },
+                { 0.6 },
+                { 0.8 }
             });
-            Matrix m4 = new Matrix(400);
-            Matrix m5 = new Matrix(400);
 
-            // A quick and dirty test to try out timing.
-            for (int i=0; i< 10000000; i++)
-            {
-                Matrix mtest = m1 + m2;
-                double x = mtest[1, 1];
-            }
+            double cost = LinearRegression.ComputeCost(X, y, theta);
+
+            // Aiming for a result around 5.295
+            Console.WriteLine(cost);
 
             Console.ReadLine();
         }
