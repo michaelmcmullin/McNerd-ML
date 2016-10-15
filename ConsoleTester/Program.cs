@@ -14,6 +14,10 @@ namespace ConsoleTester
     {
         static void Main(string[] args)
         {
+            #region Linear Regression
+            Console.WriteLine("LINEAR REGRESSION");
+            Console.WriteLine(new String('=', 75));
+            Console.WriteLine("Calculating Cost Functions");
             #region Test Cost Function A
             Matrix X = new Matrix(new double[,] {
                 { 2.0, 1.0, 3.0 },
@@ -87,7 +91,36 @@ namespace ConsoleTester
             // Aiming for a result around 7.0175
             Console.WriteLine("Target: 7.0175   Actual: {0}", cost);
             #endregion
+            #endregion
 
+            #region Gradient Descent
+            Console.WriteLine(new String('-', 75));
+            Console.WriteLine("\n");
+            Console.WriteLine("GRADIENT DESCENT");
+            Console.WriteLine(new String('=', 75));
+
+            #region Gradient Descent A
+            X = new Matrix(new double[,] {
+                { 2.0, 1.0, 3.0 },
+                { 7.0, 1.0, 9.0 },
+                { 1.0, 8.0, 1.0 },
+                { 3.0, 7.0, 4.0 }
+            });
+
+            y = new Matrix(new double[,] {
+                { 2.0 },
+                { 5.0 },
+                { 5.0 },
+                { 6.0 }
+            });
+
+            theta = new Matrix(3, 1);
+            Matrix result = LinearRegression.GradientDescent(X, y, theta, 0.01, 100);
+
+            Console.WriteLine(result);
+            #endregion
+
+            #endregion
 
             Console.ReadLine();
         }

@@ -41,6 +41,16 @@ namespace ConsoleTester
             return result;
         }
 
+        /// <summary>
+        /// Iteratively improve the value of theta (co-efficients in the hypothesis) through gradient descent.
+        /// </summary>
+        /// <param name="X">Input data, size m*n</param>
+        /// <param name="y">Output results, size m*1</param>
+        /// <param name="theta">Initial coefficients of X to improve on</param>
+        /// <param name="alpha">The learning rate: too low, and it could take a long time; too high
+        /// and it may never converge.</param>
+        /// <param name="iterations">The number of iterations to try.</param>
+        /// <returns>An n*1 Matrix of optimal co-efficients to use for our hypothesis function.</returns>
         public static Matrix GradientDescent(Matrix X, Matrix y, Matrix theta, double alpha, double iterations)
         {
             double m = y.Rows;
@@ -56,7 +66,8 @@ namespace ConsoleTester
                 Matrix hypothesis = X * theta;
                 Matrix errorVector = hypothesis - y;
 
-                //theta_change = (1 / m) * (alpha * (X'*errorVector));
+                Matrix theta_change = (1 / m) * (alpha * (X.Transpose * errorVector));
+                theta = theta - theta_change;
             }
 
             return theta;

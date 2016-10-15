@@ -333,6 +333,26 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
 
         /// <summary>
+        /// Convert this Matrix to a string.
+        /// </summary>
+        /// <returns>A string representation of this Matrix.</returns>
+        /// <remarks>All elements are rounded to two decimal places.</remarks>
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            int index = 0;
+            for (int i = 0; i < Rows; i++)
+            {
+                for (int j = 0; j < Columns; j++)
+                {
+                    sb.AppendFormat("{0:0.00}", data[index++]);
+                }
+                sb.Append("\n");
+            }
+            return sb.ToString();
+        }
+
+        /// <summary>
         /// Calculate a single row result of multiplying two matrices.
         /// </summary>
         /// <param name="row">The zero-indexed row to calculate.</param>
