@@ -10,6 +10,10 @@ namespace ConsoleTester
     /// <summary>
     /// Testing out linear regression techniques
     /// </summary>
+    /// <remarks>Eventually, these techniques will be incorporated into the main McNerd.MachineLearning
+    /// namespace. They are being tested here to ensure they're working. As the number of methods increases,
+    /// some sort of logical structure and reuse possibilities will hopefully present itself. That should
+    /// lead to a more robust class library.</remarks>
     class LinearRegression
     {
         /// <summary>

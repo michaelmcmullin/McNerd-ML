@@ -120,6 +120,27 @@ namespace ConsoleTester
             Console.WriteLine(result);
             #endregion
 
+            #region Gradient Descent B
+            X = new Matrix(new double[,] {
+                { 1.0, 5.0 },
+                { 1.0, 2.0 },
+                { 1.0, 4.0 },
+                { 1.0, 5.0 }
+            });
+
+            y = new Matrix(new double[,] {
+                { 1.0 },
+                { 6.0 },
+                { 4.0 },
+                { 2.0 }
+            });
+
+            theta = new Matrix(2, 1);
+            result = LinearRegression.GradientDescent(X, y, theta, 0.01, 1000);
+
+            Console.WriteLine(result);
+            #endregion
+
             #endregion
 
             Console.ReadLine();
