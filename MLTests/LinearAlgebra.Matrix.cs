@@ -180,7 +180,6 @@ namespace MLTests.LinearAlgebra
         }
         #endregion
 
-
         #region Multiplication
         [TestMethod]
         public void MultiplyingTwoDefinedMatricesTogether()
@@ -264,6 +263,27 @@ namespace MLTests.LinearAlgebra
             Matrix m1 = null;
             double scalar = 2;
             Matrix m2 = scalar * m1;
+        }
+
+        [TestMethod]
+        public void MultiplyingMatrixAndVectorTogether()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 6.0, 3.0, 0.0 },
+                { 2.0, 5.0, 1.0 }
+            });
+            Matrix v1 = new Matrix(new double[,] {
+                { 7.0 },
+                { 6.0 },
+                { 5.0 }
+            });
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 60.0 },
+                { 49.0 }
+            });
+
+            Matrix m2 = m1 * v1;
+            Assert.AreEqual(expectedResult, m2);
         }
 
         #endregion
