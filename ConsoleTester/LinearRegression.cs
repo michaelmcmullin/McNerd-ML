@@ -40,5 +40,26 @@ namespace ConsoleTester
 
             return result;
         }
+
+        public static Matrix GradientDescent(Matrix X, Matrix y, Matrix theta, double alpha, double iterations)
+        {
+            double m = y.Rows;
+
+            // Check inputs
+            if (X == null || y == null || theta == null)
+                throw new ArgumentNullException("GradientDescent requires that matrices are not null.");
+            if ((X.Rows != y.Rows) || (X.Columns != theta.Rows))
+                throw new InvalidMatrixDimensionsException("GradientDescent cannot work with matrices of these dimensions.");
+
+            for (int i=0; i<iterations; i++)
+            {
+                Matrix hypothesis = X * theta;
+                Matrix errorVector = hypothesis - y;
+
+                //theta_change = (1 / m) * (alpha * (X'*errorVector));
+            }
+
+            return theta;
+        }
     }
 }

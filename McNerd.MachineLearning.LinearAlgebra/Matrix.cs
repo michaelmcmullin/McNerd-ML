@@ -121,6 +121,24 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// Get the number of columns in this matrix.
         /// </summary>
         public int Columns => columns;
+
+        /// <summary>
+        /// Get the transposed version of this Matrix (swap rows and columns)
+        /// </summary>
+        public Matrix Transpose
+        {
+            get
+            {
+                Matrix t = new Matrix(Columns, Rows);
+                for (int index = 0; index < data.Length; index++)
+                {
+                    int i = index / Rows;
+                    int j = index % Rows;
+                    t.data[index] = data[(Columns * j) + i];
+                }
+                return t;
+            }
+        }
         #endregion
 
         #region Operations

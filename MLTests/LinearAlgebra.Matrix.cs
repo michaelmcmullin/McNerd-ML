@@ -54,6 +54,31 @@ namespace MLTests.LinearAlgebra
         }
         #endregion
 
+        #region Property Tests
+        /// <summary>
+        /// Test transposing a Matrix (i.e. columns become rows)
+        /// </summary>
+        [TestMethod]
+        public void TransposeMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+
+            Matrix m2 = m1.Transpose;
+
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.0, 4.0 },
+                { 2.0, 5.0 },
+                { 3.0, 6.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m2);
+
+        }
+        #endregion
+
         #region Operator Tests
         #region Addition
         [TestMethod]
