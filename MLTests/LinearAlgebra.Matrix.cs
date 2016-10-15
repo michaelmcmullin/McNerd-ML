@@ -305,7 +305,7 @@ namespace MLTests.LinearAlgebra
         }
         #endregion
 
-        #region Element Operations
+        #region Element Operations (scalar)
         /// <summary>
         /// Test adding 5 to each matrix element
         /// </summary>
@@ -437,6 +437,134 @@ namespace MLTests.LinearAlgebra
 
             Matrix m2 = Matrix.ElementAbs(m1);
             Assert.AreEqual(expectedResult, m2);
+        }
+        #endregion
+
+        #region Element Operations (matrix)
+        /// <summary>
+        /// Test adding two Matrix objects together
+        /// </summary>
+        [TestMethod]
+        public void ElementAddMatrixToMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix m2 = new Matrix(new double[,] {
+                { 7.0, 8.0, 9.0 },
+                { 10.0, 11.0, 12.0 }
+            });
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 8.0, 10.0, 12.0 },
+                { 14.0, 16.0, 18.0 }
+            });
+
+            Matrix m3 = Matrix.ElementAdd(m1, m2);
+            Assert.AreEqual(expectedResult, m3);
+        }
+
+        /// <summary>
+        /// Test subtracting one Matrix from another
+        /// </summary>
+        [TestMethod]
+        public void ElementSubtractMatrixFromMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 7.0, 8.0, 9.0 },
+                { 10.0, 11.0, 12.0 }
+            });
+            Matrix m2 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 6.0, 6.0, 6.0 },
+                { 6.0, 6.0, 6.0 }
+            });
+
+            Matrix m3 = Matrix.ElementSubtract(m1, m2);
+            Assert.AreEqual(expectedResult, m3);
+        }
+
+        /// <summary>
+        /// Test multiplying each matrix element together
+        /// </summary>
+        [TestMethod]
+        public void ElementMultiplyMatrixByMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix m2 = new Matrix(new double[,] {
+                { 1.0, 2.0, 1.0 },
+                { 2.0, 1.0, 2.0 }
+            });
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.0, 4.0, 3.0 },
+                { 8.0, 5.0, 12.0 }
+            });
+
+            Matrix m3 = Matrix.ElementMultiply(m1, m2);
+            Assert.AreEqual(expectedResult, m3);
+        }
+
+        /// <summary>
+        /// Test dividing one Matrix by another
+        /// </summary>
+        [TestMethod]
+        public void ElementDivideMatrixByMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 10.0, 2.0, 4.0 },
+                { 6.0, 8.0, 2.0 }
+            });
+            Matrix m2 = new Matrix(new double[,] {
+                { 1.0, 2.0, 1.0 },
+                { 2.0, 1.0, 2.0 }
+            });
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 10.0, 1.0, 4.0 },
+                { 3.0, 8.0, 1.0 }
+            });
+
+            Matrix m3 = Matrix.ElementDivide(m1, m2);
+            Assert.AreEqual(expectedResult, m3);
+        }
+
+        /// <summary>
+        /// Test that a null Matrix will throw a NullReferenceException exception.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(NullReferenceException), "Cannot add a null Matrix.")]
+        public void ElementMultiplyMatrixByNullMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 7.0, 8.0, 9.0 },
+                { 10.0, 11.0, 12.0 }
+            });
+            Matrix m2 = null;
+            Matrix m3 = m1 * m2;
+        }
+
+        /// <summary>
+        /// Test that two different sized Matrix objects will throw an
+        /// InvalidMatrixDimensionsException exception.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(InvalidMatrixDimensionsException), "Matrix dimensions must match.")]
+        public void ElementMultiplyMatrixByNonMatchingMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 7.0, 8.0, 9.0 },
+                { 10.0, 11.0, 12.0 }
+            });
+            Matrix m2 = new Matrix(new double[,] {
+                { 7.0, 8.0 },
+                { 10.0, 11.0 }
+            });
+            Matrix m3 = m1 * m2;
         }
         #endregion
 

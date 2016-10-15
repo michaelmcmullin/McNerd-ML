@@ -397,6 +397,30 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
 
         /// <summary>
+        /// Run a given operation on every corresponding element in two Matrix
+        /// objects with the same dimensions.
+        /// </summary>
+        /// <param name="m1">The first Matrix to operate on.</param>
+        /// <param name="m2">The second Matrix to operate on.</param>
+        /// <param name="operation">The delegate method to operate with.</param>
+        /// <returns>A new Matrix with each element from both input Matrix objects
+        /// operated on appropriately.</returns>
+        public static Matrix ElementOperation(Matrix m1, Matrix m2, ProcessNumbers operation)
+        {
+            if (m1 == null || m2 == null)
+                throw new ArgumentNullException("ElementOperation cannot accept null Matrix objects");
+            if (!m1.HasSameDimensions(m2))
+                throw new InvalidMatrixDimensionsException("ElementOperation requires both Matrix objects to have the same dimensions");
+
+            Matrix result = new LinearAlgebra.Matrix(m1.Rows, m1.Columns);
+
+            for (int i = 0; i < result.data.Length; i++)
+                result.data[i] = operation(m1.data[i], m2.data[i]);
+
+            return result;
+        }
+
+        /// <summary>
         /// Run a given operation on every element of a matrix.
         /// </summary>
         /// <param name="m">The Matrix to operate on.</param>
@@ -411,7 +435,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
             return result;
         }
 
-        #region Specific implementations of ElementOperation
+        #region Specific implementations of ElementOperation (scalars)
         /// <summary>
         /// Add a fixed number to each element in a given Matrix.
         /// </summary>
@@ -489,6 +513,52 @@ namespace McNerd.MachineLearning.LinearAlgebra
             return ElementOperation(m, (x) => Math.Abs(x));
         }
 
+        #endregion
+
+        #region Specific implementations of ElementOperation (matrices)
+        /// <summary>
+        /// Add the corresponding elements in two Matrix objects with the same dimensions.
+        /// </summary>
+        /// <param name="m1">The first Matrix to process.</param>
+        /// <param name="m2">The second Matrix to add values to the first.</param>
+        /// <returns>A new Matrix containing elements added from both input Matrix objects.</returns>
+        public static Matrix ElementAdd(Matrix m1, Matrix m2)
+        {
+            return ElementOperation(m1, m2, (x, y) => x + y);
+        }
+
+        /// <summary>
+        /// Subtract the corresponding elements in two Matrix objects with the same dimensions.
+        /// </summary>
+        /// <param name="m1">The first Matrix to process.</param>
+        /// <param name="m2">The second Matrix to subtract values from the first.</param>
+        /// <returns>A new Matrix containing elements subtracted from both input Matrix objects.</returns>
+        public static Matrix ElementSubtract(Matrix m1, Matrix m2)
+        {
+            return ElementOperation(m1, m2, (x, y) => x - y);
+        }
+
+        /// <summary>
+        /// Multiply the corresponding elements in two Matrix objects with the same dimensions.
+        /// </summary>
+        /// <param name="m1">The first Matrix to process.</param>
+        /// <param name="m2">The second Matrix to multiply values from the first.</param>
+        /// <returns>A new Matrix containing elements multiplied from both input Matrix objects.</returns>
+        public static Matrix ElementMultiply(Matrix m1, Matrix m2)
+        {
+            return ElementOperation(m1, m2, (x, y) => x * y);
+        }
+
+        /// <summary>
+        /// Divide the corresponding elements in two Matrix objects with the same dimensions.
+        /// </summary>
+        /// <param name="m1">The first Matrix to process.</param>
+        /// <param name="m2">The second Matrix to divide values from the first.</param>
+        /// <returns>A new Matrix containing elements divided from both input Matrix objects.</returns>
+        public static Matrix ElementDivide(Matrix m1, Matrix m2)
+        {
+            return ElementOperation(m1, m2, (x, y) => x / y);
+        }
         #endregion
         #endregion
 
