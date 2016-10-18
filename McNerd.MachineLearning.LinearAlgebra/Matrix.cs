@@ -139,6 +139,24 @@ namespace McNerd.MachineLearning.LinearAlgebra
                 return t;
             }
         }
+
+        /// <summary>
+        /// Calculate the inverse of this Matrix.
+        /// </summary>
+        public Matrix Inverse
+        {
+            get
+            {
+                if (!IsSquare)
+                    throw new InvalidMatrixDimensionsException("Inverse requires a Matrix to be square.");
+                Matrix inv = new Matrix(Rows, Columns);
+
+                // TODO: Implement one of the many algorithms for this. Maybe start with a relatively simple one
+                // like Gaussian Elimination? Improve on it later.
+
+                return inv;
+            }
+        }
         #endregion
 
         #region Operations

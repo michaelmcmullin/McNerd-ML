@@ -77,6 +77,25 @@ namespace MLTests.LinearAlgebra
             Assert.AreEqual(expectedResult, m2);
 
         }
+
+        [TestMethod]
+        public void Inverse2x2Matrix()
+        {
+            Matrix m1 = new Matrix(new double[,]
+            {
+                { 1.0, 2.0 },
+                { 3.0, 4.0 }
+            });
+
+            Matrix m2 = m1.Inverse;
+
+            Matrix expectedResult = new Matrix(new double[,] {
+                { -2.0, 1.0 },
+                { 1.5, -0.5 }
+            });
+
+            Assert.AreEqual(expectedResult, m2);
+        }
         #endregion
 
         #region Operator Tests
@@ -601,6 +620,8 @@ namespace MLTests.LinearAlgebra
         }
 
         #endregion
+
+
         #endregion
     }
 }
