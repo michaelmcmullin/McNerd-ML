@@ -417,6 +417,26 @@ namespace McNerd.MachineLearning.LinearAlgebra
             }
         }
 
+        #region Matrix creation methods
+        /// <summary>
+        /// Create an identity matrix
+        /// </summary>
+        /// <param name="dimensions">The number of rows and columns for this matrix.</param>
+        /// <returns>A square matrix with zeros everywhere, except for the main diagonal which is filled with ones.</returns>
+        public static Matrix Identity(int dimensions)
+        {
+            Matrix Midentity = new Matrix(dimensions, dimensions);
+            int index = 0;
+            while (index < Midentity.data.Length)
+            {
+                Midentity.data[index] = 1;
+                index += dimensions + 1;
+            }
+
+            return Midentity;
+        }
+        #endregion
+
         #region Element Operations
         /// <summary>
         /// Run a given operation on every element of a matrix.
@@ -691,25 +711,24 @@ namespace McNerd.MachineLearning.LinearAlgebra
         {
         }
     }
-}
 
-/// <summary>
-/// Custom excepction for matrix operations that require invertible matrices. 
-/// </summary>
-public class NonInvertibleMatrixException : InvalidOperationException
-{
-    public NonInvertibleMatrixException()
+    /// <summary>
+    /// Custom excepction for matrix operations that require invertible matrices. 
+    /// </summary>
+    public class NonInvertibleMatrixException : InvalidOperationException
     {
-    }
+        public NonInvertibleMatrixException()
+        {
+        }
 
-    public NonInvertibleMatrixException(string message)
-        : base(message)
-    {
-    }
+        public NonInvertibleMatrixException(string message)
+            : base(message)
+        {
+        }
 
-    public NonInvertibleMatrixException(string message, Exception inner)
-        : base(message, inner)
-    {
+        public NonInvertibleMatrixException(string message, Exception inner)
+            : base(message, inner)
+        {
+        }
     }
-}
 }

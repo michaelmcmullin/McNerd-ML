@@ -98,6 +98,57 @@ namespace MLTests.LinearAlgebra
         }
         #endregion
 
+        #region Creation methods
+        /// <summary>
+        /// Test creating a 1x1 identity Matrix
+        /// </summary>
+        [TestMethod]
+        public void Create1x1IdentityMatrix()
+        {
+            Matrix m1 = Matrix.Identity(1);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m1);
+
+        }
+
+        /// <summary>
+        /// Test creating a 2x2 identity Matrix (i.e. diagonal values are 1, rest is zero)
+        /// </summary>
+        [TestMethod]
+        public void Create2x2IdentityMatrix()
+        {
+            Matrix m1 = Matrix.Identity(2);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.0, 0.0 },
+                { 0.0, 1.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m1);
+
+        }
+
+        /// <summary>
+        /// Test creating a 4x4 identity Matrix (i.e. diagonal values are 1, rest is zero)
+        /// </summary>
+        [TestMethod]
+        public void Create4x4IdentityMatrix()
+        {
+            Matrix m1 = Matrix.Identity(4);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.0, 0.0, 0.0, 0.0 },
+                { 0.0, 1.0, 0.0, 0.0 },
+                { 0.0, 0.0, 1.0, 0.0 },
+                { 0.0, 0.0, 0.0, 1.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m1);
+
+        }
+        #endregion
+
         #region Operator Tests
         #region Addition
         [TestMethod]
