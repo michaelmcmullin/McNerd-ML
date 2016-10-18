@@ -692,3 +692,24 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
     }
 }
+
+/// <summary>
+/// Custom excepction for matrix operations that require invertible matrices. 
+/// </summary>
+public class NonInvertibleMatrixException : InvalidOperationException
+{
+    public NonInvertibleMatrixException()
+    {
+    }
+
+    public NonInvertibleMatrixException(string message)
+        : base(message)
+    {
+    }
+
+    public NonInvertibleMatrixException(string message, Exception inner)
+        : base(message, inner)
+    {
+    }
+}
+}
