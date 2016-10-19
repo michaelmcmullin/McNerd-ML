@@ -149,12 +149,45 @@ namespace McNerd.MachineLearning.LinearAlgebra
             {
                 if (!IsSquare)
                     throw new InvalidMatrixDimensionsException("Inverse requires a Matrix to be square.");
-                Matrix inv = new Matrix(Rows, Columns);
+                Matrix MResult = Matrix.Identity(Rows);
 
-                // TODO: Implement one of the many algorithms for this. Maybe start with a relatively simple one
-                // like Gaussian Elimination? Improve on it later.
+                for (int col=0; col < Rows; col++)
+                {
+                    double currentValue = this[col, col];
 
-                return inv;
+                    // TODO: if currentValue is zero, swap with another row, preferably later
+
+                    for (int i=0; i< Rows; i++)
+                    {
+                        if (i != col)
+                        {
+                            double lineValue = this[i, col];
+                            for (int j = 0; j < Columns; j++)
+                            {
+                                this[i, j] *= currentValue;
+                                MResult[i, j] *= currentValue;
+                            }
+                            // Yes, I know I'm adding unneccessary loops here, I'll tidy it up later, just getting it working for now...
+                            for (int j = 0; j< Columns; j++)
+                            {
+                                double subValue = this[col, j] * lineValue;
+                                this[i, j] -= subValue; // this[col, j] * lineValue;
+                                MResult[i, j] -= subValue; // this[col, j] * lineValue;
+                            }
+                        }
+                    }
+                }
+
+                // By now all the rows should be filled in...
+                for (int i=0; i<Rows; i++)
+                {
+                    for (int j=0; j<Columns; j++)
+                    {
+                        MResult[i, j] /= this[i, i];
+                    }
+                }
+
+                return MResult;
             }
         }
         #endregion
@@ -363,7 +396,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
             {
                 for (int j = 0; j < Columns; j++)
                 {
-                    sb.AppendFormat("{0:0.00}", data[index++]);
+                    sb.AppendFormat("{0:0.00} ", data[index++]);
                 }
                 sb.Append("\n");
             }
@@ -414,6 +447,28 @@ namespace McNerd.MachineLearning.LinearAlgebra
             for (int i = m_index; i < m_index + output.Columns; i++)
             {
                 output.data[i] = scalar * m.data[i];
+            }
+        }
+
+        /// <summary>
+        /// Swap two rows in this Matrix.
+        /// </summary>
+        /// <param name="row1">The first row to swap.</param>
+        /// <param name="row2">The second row to swap.</param>
+        public void SwapRows(int row1, int row2)
+        {
+            double[] tmp = new double[Columns];
+            int indexRow1 = row1 * Columns;
+            int indexRow2 = row2 * Columns;
+
+            if (indexRow1 > data.Length || indexRow2 > data.Length)
+                throw new IndexOutOfRangeException("SwapRow method called with non-existent rows.");
+
+            for (int i=0; i<Columns; i++)
+            {
+                tmp[i] = data[indexRow1 + i];
+                data[indexRow1 + i] = data[indexRow2 + i];
+                data[indexRow2 + i] = tmp[i];
             }
         }
 

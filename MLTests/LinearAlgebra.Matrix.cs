@@ -96,6 +96,54 @@ namespace MLTests.LinearAlgebra
 
             Assert.AreEqual(expectedResult, m2);
         }
+
+        [TestMethod]
+        public void Inverse3x3Matrix()
+        {
+            Matrix m1 = new Matrix(new double[,]
+            {
+                { 1.0, 0.0, 1.0 },
+                { 2.0, 0.0, 4.0 },
+                { 0.0, 1.0, 1.0 }
+            });
+
+            Matrix m2 = m1.Inverse;
+
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 2.0,-0.5, 0.0 },
+                { 1.0,-0.5, 1.0 },
+                {-1.0, 0.5, 0.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NonInvertibleMatrixException), "Matrix is not invertible.")]
+        public void NonInvertibleMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,]
+            {
+                { 1.0, 0.0, 1.0 },
+                { 2.0, 0.0, 4.0 },
+                { 5.0, 0.0, 6.0 }
+            });
+
+            Matrix m2 = m1.Inverse;
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidMatrixDimensionsException), "Non-square Matrix is not invertible.")]
+        public void InvertingNonSquareMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,]
+            {
+                { 2.0, 0.0, 4.0 },
+                { 5.0, 0.0, 6.0 }
+            });
+
+            Matrix m2 = m1.Inverse;
+        }
         #endregion
 
         #region Creation methods
@@ -672,6 +720,45 @@ namespace MLTests.LinearAlgebra
 
         #endregion
 
+
+        #endregion
+
+        #region Other Methods
+        [TestMethod]
+        public void SwapTwoExistingRows()
+        {
+            Matrix m1 = new Matrix(new double[,]
+            {
+                { 1.0, 2.0 },
+                { 3.0, 4.0 },
+                { 5.0, 6.0 }
+            });
+
+            m1.SwapRows(0, 1);
+
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 3.0, 4.0 },
+                { 1.0, 2.0 },
+                { 5.0, 6.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m1);
+        }
+
+
+        [TestMethod]
+        [ExpectedException(typeof(IndexOutOfRangeException), "Rows do not exist.")]
+        public void SwapTwoNonExistentRows()
+        {
+            Matrix m1 = new Matrix(new double[,]
+            {
+                { 1.0, 2.0 },
+                { 3.0, 4.0 },
+                { 5.0, 6.0 }
+            });
+
+            m1.SwapRows(9, 10);
+        }
 
         #endregion
     }
