@@ -745,6 +745,7 @@ namespace MLTests.LinearAlgebra
         #endregion
 
         #region Other Methods
+        #region Swap Rows
         [TestMethod]
         public void SwapTwoExistingRows()
         {
@@ -780,7 +781,38 @@ namespace MLTests.LinearAlgebra
 
             m1.SwapRows(9, 10);
         }
+        #endregion
 
+        #region Join
+        [TestMethod]
+        public void JoinTwoColumnMatrices()
+        {
+            Matrix m1 = new Matrix(new double[,]
+            {
+                { 1.0, 2.0 },
+                { 4.0, 5.0 },
+                { 7.0, 8.0 }
+            });
+
+            Matrix m2 = new Matrix(new double[,]
+            {
+                { 3.0 },
+                { 6.0 },
+                { 9.0 }
+            });
+
+            Matrix m3 = Matrix.Join(m1, m2);
+
+            Matrix expectedResult = new Matrix(new double[,]
+            {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 },
+                { 7.0, 8.0, 9.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m3);
+        }
+        #endregion
         #endregion
     }
 }

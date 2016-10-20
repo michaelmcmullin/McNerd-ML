@@ -480,6 +480,59 @@ namespace McNerd.MachineLearning.LinearAlgebra
             }
         }
 
+        /// <summary>
+        /// Join two Matrix objects together, side by side, or one above another.
+        /// </summary>
+        /// <param name="m1">The first Matrix to join.</param>
+        /// <param name="m2">The second Matrix to join.</param>
+        /// <param name="dimension">The dimensions to join them on.</param>
+        /// <returns>A new Matrix containing both the original Matrices joined together.</returns>
+        public static Matrix Join(Matrix m1, Matrix m2, MatrixDimensions dimension = MatrixDimensions.Auto)
+        {
+            Matrix result = null;
+            switch(dimension)
+            {
+                case MatrixDimensions.Columns:
+                    if (m1.Rows != m2.Rows)
+                        throw new InvalidMatrixDimensionsException("Matrices cannot be joined as they don't have the same number of rows.");
+                    result = new Matrix(m1.Rows, m1.Columns + m2.Columns);
+                    int index = 0, indexM1 = 0, indexM2 = 0;
+                    for (int row = 0; row < m1.Rows; row++)
+                    {
+                        for (int column = 0; column < m1.Columns; column++)
+                        {
+                            result.data[index++] = m1.data[indexM1++];
+                        }
+                        for (int column = 0; column < m2.Columns; column++)
+                        {
+                            result.data[index++] = m2.data[indexM2++];
+                        }
+                    }
+                    break;
+                case MatrixDimensions.Rows:
+                    if (m1.Columns != m2.Columns)
+                        throw new InvalidMatrixDimensionsException("Matrices cannot be joined as they don't have the same number of columns.");
+                    result = new Matrix(m1.Rows + m2.Rows, m1.Columns);
+                    for (int i = 0; i < m1.data.Length; i++)
+                    {
+                        result.data[i] = m1.data[i];
+                    }
+                    for (int i = 0; i < m2.data.Length; i++)
+                    {
+                        result.data[i + m1.data.Length] = m2.data[i];
+                    }
+                    break;
+                case MatrixDimensions.Auto:
+                    if (m1.Rows == m2.Rows)
+                        goto case MatrixDimensions.Columns;
+                    else
+                        goto case MatrixDimensions.Rows;
+                default:
+                    break;
+            }
+            return result;
+        }
+
         #region Matrix creation methods
         /// <summary>
         /// Create an identity matrix
