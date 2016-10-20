@@ -102,6 +102,27 @@ namespace MLTests.LinearAlgebra
         {
             Matrix m1 = new Matrix(new double[,]
             {
+                { 1.0, 2.0, 3.0 },
+                { 0.0, 1.0, 4.0 },
+                { 5.0, 6.0, 0.0 }
+            });
+
+            Matrix m2 = m1.Inverse;
+
+            Matrix expectedResult = new Matrix(new double[,] {
+                {-24.0, 18.0, 5.0 },
+                { 20.0,-15.0,-4.0 },
+                { -5.0,  4.0, 1.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestMethod]
+        public void InverseTricky3x3Matrix()
+        {
+            Matrix m1 = new Matrix(new double[,]
+            {
                 { 1.0, 0.0, 1.0 },
                 { 2.0, 0.0, 4.0 },
                 { 0.0, 1.0, 1.0 }

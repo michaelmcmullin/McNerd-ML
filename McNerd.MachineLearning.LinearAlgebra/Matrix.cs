@@ -155,9 +155,24 @@ namespace McNerd.MachineLearning.LinearAlgebra
                 {
                     double diagonalValue = this[diagonal, diagonal];
 
-                    // TODO: if currentValue is zero, swap with another row, preferably later
+                    // Ensure the diagonal value is not zero by swapping another row if necessary.
+                    if (diagonalValue == 0)
+                    {
+                        for (int i=0; i<Rows; i++)
+                        {
+                            if (i != diagonal && this[i,diagonal] != 0 && this[diagonal,i] != 0)
+                            {
+                                this.SwapRows(diagonal, i);
+                                MResult.SwapRows(diagonal, i);
+                                diagonalValue = this[diagonal, diagonal];
+                                break;
+                            }
+                        }
+                        if (diagonalValue == 0)
+                            throw new NonInvertibleMatrixException("This Matrix is not invertible");
+                    }
 
-                    for (int row=0; row< Rows; row++)
+                    for (int row=0; row < Rows; row++)
                     {
                         if (row != diagonal)
                         {
@@ -170,9 +185,8 @@ namespace McNerd.MachineLearning.LinearAlgebra
                             // Yes, I know I'm adding unneccessary loops here, I'll tidy it up later, just getting it working for now...
                             for (int column = 0; column < Columns; column++)
                             {
-                                double subValue = this[diagonal, column] * lineValue;
-                                this[row, column] -= this[diagonal, column] * lineValue;
-                                MResult[row, column] -= this[diagonal, column] * lineValue;
+                                this[row, column] -= (this[diagonal, column] * lineValue);
+                                MResult[row, column] -= (MResult[diagonal, column] * lineValue);
                             }
                         }
                     }
