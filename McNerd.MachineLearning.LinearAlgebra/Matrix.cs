@@ -151,28 +151,28 @@ namespace McNerd.MachineLearning.LinearAlgebra
                     throw new InvalidMatrixDimensionsException("Inverse requires a Matrix to be square.");
                 Matrix MResult = Matrix.Identity(Rows);
 
-                for (int col=0; col < Rows; col++)
+                for (int diagonal=0; diagonal < Rows; diagonal++)
                 {
-                    double currentValue = this[col, col];
+                    double diagonalValue = this[diagonal, diagonal];
 
                     // TODO: if currentValue is zero, swap with another row, preferably later
 
-                    for (int i=0; i< Rows; i++)
+                    for (int row=0; row< Rows; row++)
                     {
-                        if (i != col)
+                        if (row != diagonal)
                         {
-                            double lineValue = this[i, col];
-                            for (int j = 0; j < Columns; j++)
+                            double lineValue = this[row, diagonal];
+                            for (int column = 0; column < Columns; column++)
                             {
-                                this[i, j] *= currentValue;
-                                MResult[i, j] *= currentValue;
+                                this[row, column] *= diagonalValue;
+                                MResult[row, column] *= diagonalValue;
                             }
                             // Yes, I know I'm adding unneccessary loops here, I'll tidy it up later, just getting it working for now...
-                            for (int j = 0; j< Columns; j++)
+                            for (int column = 0; column < Columns; column++)
                             {
-                                double subValue = this[col, j] * lineValue;
-                                this[i, j] -= subValue; // this[col, j] * lineValue;
-                                MResult[i, j] -= subValue; // this[col, j] * lineValue;
+                                double subValue = this[diagonal, column] * lineValue;
+                                this[row, column] -= this[diagonal, column] * lineValue;
+                                MResult[row, column] -= this[diagonal, column] * lineValue;
                             }
                         }
                     }
