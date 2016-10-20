@@ -179,14 +179,8 @@ namespace McNerd.MachineLearning.LinearAlgebra
                             double lineValue = this[row, diagonal];
                             for (int column = 0; column < Columns; column++)
                             {
-                                this[row, column] *= diagonalValue;
-                                MResult[row, column] *= diagonalValue;
-                            }
-                            // Yes, I know I'm adding unneccessary loops here, I'll tidy it up later, just getting it working for now...
-                            for (int column = 0; column < Columns; column++)
-                            {
-                                this[row, column] -= (this[diagonal, column] * lineValue);
-                                MResult[row, column] -= (MResult[diagonal, column] * lineValue);
+                                this[row, column] = (this[row, column] * diagonalValue) - (this[diagonal, column] * lineValue);
+                                MResult[row, column] = (MResult[row, column] * diagonalValue) - (MResult[diagonal, column] * lineValue);
                             }
                         }
                     }
