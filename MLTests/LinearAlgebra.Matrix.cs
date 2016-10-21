@@ -785,7 +785,7 @@ namespace MLTests.LinearAlgebra
 
         #region Join
         [TestMethod]
-        public void JoinTwoColumnMatrices()
+        public void JoinTwoValidColumnMatrices()
         {
             Matrix m1 = new Matrix(new double[,]
             {
@@ -801,7 +801,7 @@ namespace MLTests.LinearAlgebra
                 { 9.0 }
             });
 
-            Matrix m3 = Matrix.Join(m1, m2);
+            Matrix m3 = Matrix.Join(m1, m2, MatrixDimensions.Columns);
 
             Matrix expectedResult = new Matrix(new double[,]
             {
@@ -812,6 +812,156 @@ namespace MLTests.LinearAlgebra
 
             Assert.AreEqual(expectedResult, m3);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidMatrixDimensionsException), "Cannot join two columns with differing row counts.")]
+        public void JoinTwoInvalidColumnMatrices()
+        {
+            Matrix m1 = new Matrix(new double[,]
+            {
+                { 1.0, 2.0 },
+                { 7.0, 8.0 }
+            });
+
+            Matrix m2 = new Matrix(new double[,]
+            {
+                { 3.0 },
+                { 6.0 },
+                { 9.0 }
+            });
+
+            Matrix m3 = Matrix.Join(m1, m2, MatrixDimensions.Columns);
+        }
+
+        [TestMethod]
+        public void JoinTwoValidRowMatrices()
+        {
+            Matrix m1 = new Matrix(new double[,]
+            {
+                { 1.0, 2.0 },
+                { 3.0, 4.0 }
+            });
+
+            Matrix m2 = new Matrix(new double[,]
+            {
+                { 5.0, 6.0 },
+                { 7.0, 8.0 },
+                { 9.0, 10.0 }
+            });
+
+            Matrix m3 = Matrix.Join(m1, m2, MatrixDimensions.Rows);
+
+            Matrix expectedResult = new Matrix(new double[,]
+            {
+                { 1.0, 2.0 },
+                { 3.0, 4.0 },
+                { 5.0, 6.0 },
+                { 7.0, 8.0 },
+                { 9.0, 10.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m3);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidMatrixDimensionsException), "Cannot join two rows with differing column counts.")]
+        public void JoinTwoInvalidRowMatrices()
+        {
+            Matrix m1 = new Matrix(new double[,]
+            {
+                { 1.0, 2.0 },
+                { 7.0, 8.0 }
+            });
+
+            Matrix m2 = new Matrix(new double[,]
+            {
+                { 3.0 },
+                { 6.0 },
+                { 9.0 }
+            });
+
+            Matrix m3 = Matrix.Join(m1, m2, MatrixDimensions.Rows);
+        }
+
+        [TestMethod]
+        public void JoinTwoValidAutoColumnMatrices()
+        {
+            Matrix m1 = new Matrix(new double[,]
+            {
+                { 1.0, 2.0 },
+                { 4.0, 5.0 },
+                { 7.0, 8.0 }
+            });
+
+            Matrix m2 = new Matrix(new double[,]
+            {
+                { 3.0 },
+                { 6.0 },
+                { 9.0 }
+            });
+
+            Matrix m3 = Matrix.Join(m1, m2, MatrixDimensions.Auto);
+
+            Matrix expectedResult = new Matrix(new double[,]
+            {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 },
+                { 7.0, 8.0, 9.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m3);
+        }
+
+        [TestMethod]
+        public void JoinTwoValidAutoRowMatrices()
+        {
+            Matrix m1 = new Matrix(new double[,]
+            {
+                { 1.0, 2.0 },
+                { 3.0, 4.0 }
+            });
+
+            Matrix m2 = new Matrix(new double[,]
+            {
+                { 5.0, 6.0 },
+                { 7.0, 8.0 },
+                { 9.0, 10.0 }
+            });
+
+            Matrix m3 = Matrix.Join(m1, m2, MatrixDimensions.Auto);
+
+            Matrix expectedResult = new Matrix(new double[,]
+            {
+                { 1.0, 2.0 },
+                { 3.0, 4.0 },
+                { 5.0, 6.0 },
+                { 7.0, 8.0 },
+                { 9.0, 10.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m3);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidMatrixDimensionsException), "Cannot join two matrices with differing rows and columns.")]
+        public void JoinTwoInvalidAutoMatrices()
+        {
+            Matrix m1 = new Matrix(new double[,]
+            {
+                { 1.0, 2.0 },
+                { 7.0, 8.0 }
+            });
+
+            Matrix m2 = new Matrix(new double[,]
+            {
+                { 3.0 },
+                { 6.0 },
+                { 9.0 }
+            });
+
+            Matrix m3 = Matrix.Join(m1, m2, MatrixDimensions.Auto);
+        }
+
         #endregion
         #endregion
     }
