@@ -216,6 +216,39 @@ namespace MLTests.LinearAlgebra
             Assert.AreEqual(expectedResult, m1);
 
         }
+
+        /// <summary>
+        /// Test creating a 4x4 Matrix filled with ones
+        /// </summary>
+        [TestMethod]
+        public void Create3x4MatrixFilledWithOnes()
+        {
+            Matrix m1 = Matrix.Ones(3, 4);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.0, 1.0, 1.0, 1.0 },
+                { 1.0, 1.0, 1.0, 1.0 },
+                { 1.0, 1.0, 1.0, 1.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m1);
+        }
+
+        /// <summary>
+        /// Test creating a 4x4 Matrix filled with ones
+        /// </summary>
+        [TestMethod]
+        public void Create4x4MatrixFilledWithOnes()
+        {
+            Matrix m1 = Matrix.Ones(4);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.0, 1.0, 1.0, 1.0 },
+                { 1.0, 1.0, 1.0, 1.0 },
+                { 1.0, 1.0, 1.0, 1.0 },
+                { 1.0, 1.0, 1.0, 1.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m1);
+        }
         #endregion
 
         #region Operator Tests
@@ -425,6 +458,28 @@ namespace MLTests.LinearAlgebra
             Assert.AreEqual(expectedResult, m2);
         }
 
+        [TestMethod]
+        public void MultiplyTransposeValidMatrices()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 6.0, 3.0, 0.0 },
+                { 2.0, 5.0, 1.0 },
+                { 9.0, 8.0, 6.0 }
+            });
+            Matrix m2 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix m3 = Matrix.MultiplyTranspose(m1, m2);
+
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 12.0, 39.0 },
+                { 15.0, 39.0 },
+                { 43.0, 112.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m3);
+        }
         #endregion
 
         #region Equality

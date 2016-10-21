@@ -7,11 +7,6 @@ using System.Threading.Tasks;
 namespace McNerd.MachineLearning.LinearAlgebra
 {
     /// <summary>
-    /// Various special cases of matrix.
-    /// </summary>
-    public enum MatrixTypes { Zeros, Ones, Identity, Magic, Random }
-
-    /// <summary>
     /// Describe which dimension of a matrix to work with.
     /// </summary>
     public enum MatrixDimensions { Auto, Rows, Columns }
@@ -459,6 +454,53 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
 
         /// <summary>
+        /// Calculate a single row result of multiplying two matrices.
+        /// </summary>
+        /// <param name="row">The zero-indexed row from m1 to calculate.</param>
+        /// <param name="column">The zero-indexed column from m2 to calculate.</param>
+        /// <param name="m1">The first matrix to multiply.</param>
+        /// <param name="m2">The second matrix to multiply.</param>
+        /// <param name="output">The matrix to store the results in.</param>
+        private static void MultiplyTransposedRow(int row, Matrix m1, Matrix m2, Matrix output)
+        {
+            int m1_index = row * m1.columns;
+            int output_index = row * output.Columns;
+            int m2_index = 0;
+
+            for (int column = 0; column < output.Columns; column++)
+            {
+                double result = 0;
+
+                for (int i = 0; i < m1.Columns; i++)
+                {
+                    result += m1.data[m1_index + i] * m2.data[m2_index++];
+                }
+
+                output.data[output_index++] = result;
+            }
+        }
+
+        /// <summary>
+        /// Multiply one Matrix by the transpose of the other.
+        /// </summary>
+        /// <param name="m1">The first Matrix to multiply.</param>
+        /// <param name="m2">The Matrix to transpose and multiply.</param>
+        /// <returns>The result of multiplying m1 with m2.Transpose.</returns>
+        public static Matrix MultiplyTranspose(Matrix m1, Matrix m2)
+        {
+            if (m1.Columns == m2.Columns)
+            {
+                Matrix output = new Matrix(m1.Rows, m2.Rows);
+                Parallel.For(0, m1.Rows, i => MultiplyTransposedRow(i, m1, m2, output));
+                return output;
+            }
+            else
+            {
+                throw new InvalidMatrixDimensionsException("Multiplication cannot be performed on matrices with these dimensions.");
+            }
+        }
+
+        /// <summary>
         /// Swap two rows in this Matrix.
         /// </summary>
         /// <param name="row1">The first row to swap.</param>
@@ -533,6 +575,16 @@ namespace McNerd.MachineLearning.LinearAlgebra
             return result;
         }
 
+        /// <summary>
+        /// Fills the Matrix with a given number.
+        /// </summary>
+        /// <param name="number">The number to assign to every element in the Matrix.</param>
+        public void Fill(double number)
+        {
+            for (int i = 0; i < data.Length; i++)
+                data[i] = number;
+        }
+
         #region Matrix creation methods
         /// <summary>
         /// Create an identity matrix
@@ -550,6 +602,32 @@ namespace McNerd.MachineLearning.LinearAlgebra
             }
 
             return Midentity;
+        }
+
+        /// <summary>
+        /// Create a rows*columns size Matrix filled with 1's.
+        /// </summary>
+        /// <param name="rows">The number of rows to initialise the matrix with.</param>
+        /// <param name="cols">The number of columns to initialise the matrix with.</param>
+        /// <returns>A Matrix object filled with 1's.</returns>
+        public static Matrix Ones(int rows, int columns)
+        {
+            Matrix result = new Matrix(rows, columns);
+            result.Fill(1.0);
+            return result;
+        }
+
+        /// <summary>
+        /// Create a square Matrix filled with 1's.
+        /// </summary>
+        /// <param name="dimensions">The number of rows and columns to initialise the
+        /// matrix with. There will be an equal number of rows and columns.</param>
+        /// <returns>A square Matrix object filled with 1's.</returns>
+        public static Matrix Ones(int dimension)
+        {
+            Matrix result = new Matrix(dimension);
+            result.Fill(1.0);
+            return result;
         }
         #endregion
 
