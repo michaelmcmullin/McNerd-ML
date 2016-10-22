@@ -481,6 +481,32 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
 
         /// <summary>
+        /// Calculate a single row result of multiplying one matrix with its transpose.
+        /// </summary>
+        /// <param name="row">The zero-indexed row from m1 to calculate.</param>
+        /// <param name="column">The zero-indexed column from m2 to calculate.</param>
+        /// <param name="m1">The matrix to multiply with its transpose.</param>
+        /// <param name="output">The matrix to store the results in.</param>
+        private static void MultiplyTransposedRow(int row, Matrix m1, Matrix output)
+        {
+            int m1_index = row * m1.columns;
+            int output_index = row * output.Columns;
+            int m2_index = 0;
+
+            for (int column = 0; column < output.Columns; column++)
+            {
+                double result = 0;
+
+                for (int i = 0; i < m1.Columns; i++)
+                {
+                    result += m1.data[m1_index + i] * m1.data[m2_index++];
+                }
+
+                output.data[output_index++] = result;
+            }
+        }
+
+        /// <summary>
         /// Multiply one Matrix by the transpose of the other.
         /// </summary>
         /// <param name="m1">The first Matrix to multiply.</param>
@@ -498,6 +524,18 @@ namespace McNerd.MachineLearning.LinearAlgebra
             {
                 throw new InvalidMatrixDimensionsException("Multiplication cannot be performed on matrices with these dimensions.");
             }
+        }
+
+        /// <summary>
+        /// Multiply a Matrix by its transpose.
+        /// </summary>
+        /// <param name="m1">The Matrix to multiply by its transpose.</param>
+        /// <returns>The result of multiplying m1 with its transpose.</returns>
+        public static Matrix MultiplyTranspose(Matrix m1)
+        {
+            Matrix output = new Matrix(m1.Rows, m1.Rows);
+            Parallel.For(0, m1.Rows, i => MultiplyTransposedRow(i, m1, output));
+            return output;
         }
 
         /// <summary>

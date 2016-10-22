@@ -480,6 +480,39 @@ namespace MLTests.LinearAlgebra
 
             Assert.AreEqual(expectedResult, m3);
         }
+
+        [TestMethod]
+        public void MultiplyTransposeSameMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 6.0, 3.0, 0.0 },
+                { 9.0, 8.0, 6.0 }
+            });
+            Matrix m2 = Matrix.MultiplyTranspose(m1);
+
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 45.0, 78.0 },
+                { 78.0, 181.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidMatrixDimensionsException), "Cannot multiply matrices of these dimensions.")]
+        public void MultiplyTransposeInvalidMatrices()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 6.0, 3.0, 0.0 },
+                { 2.0, 5.0, 1.0 },
+                { 9.0, 8.0, 6.0 }
+            });
+            Matrix m2 = new Matrix(new double[,] {
+                { 1.0, 2.0 },
+                { 4.0, 5.0 }
+            });
+            Matrix m3 = Matrix.MultiplyTranspose(m1, m2);
+        }
         #endregion
 
         #region Equality
