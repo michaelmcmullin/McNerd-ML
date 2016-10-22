@@ -167,26 +167,43 @@ namespace McNerd.MachineLearning.LinearAlgebra
                             throw new NonInvertibleMatrixException("This Matrix is not invertible");
                     }
 
+                    int lineValueIndex = diagonal;
+                    int itemIndex = 0;
+                    int diagonalIndex = diagonal * this.Columns;
+
                     for (int row=0; row < Rows; row++)
                     {
                         if (row != diagonal)
                         {
-                            double lineValue = this[row, diagonal];
+                            double lineValue = this.data[lineValueIndex];
                             for (int column = 0; column < Columns; column++)
                             {
-                                this[row, column] = (this[row, column] * diagonalValue) - (this[diagonal, column] * lineValue);
-                                MResult[row, column] = (MResult[row, column] * diagonalValue) - (MResult[diagonal, column] * lineValue);
+                                int diagonalColumnIndex = diagonalIndex + column;
+                                this.data[itemIndex] = (this.data[itemIndex] * diagonalValue) - (this.data[diagonalColumnIndex] * lineValue);
+                                MResult.data[itemIndex] = (MResult.data[itemIndex] * diagonalValue) - (MResult.data[diagonalColumnIndex] * lineValue);
+                                itemIndex++;
                             }
                         }
+                        else
+                        {
+                            itemIndex += this.Columns;
+                        }
+                        lineValueIndex += this.Columns;
                     }
                 }
 
                 // By now all the rows should be filled in...
+                int indexResult = 0;
+                int indexThis = 0;
+
                 for (int i=0; i<Rows; i++)
                 {
+                    double divisor = this.data[indexThis];
+                    indexThis += this.Columns + 1;
+
                     for (int j=0; j<Columns; j++)
                     {
-                        MResult[i, j] /= this[i, i];
+                        MResult.data[indexResult++] /= divisor;
                     }
                 }
 

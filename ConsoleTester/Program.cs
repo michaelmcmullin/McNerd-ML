@@ -143,6 +143,19 @@ namespace ConsoleTester
 
             #endregion
 
+            #region Test Matrix Inversion
+            Matrix invTest = new Matrix(new double[,] {
+                { 2.0, 1.0, 3.0, 5.0 },
+                { 7.0, 1.0, 9.0, 4.0 },
+                { 2.0, 5.0, 8.0, 2.0 },
+                { 3.0, 7.0, 4.0, 3.0 }
+            });
+
+            for (int i=0; i<100000; i++)
+            {
+                Matrix inv = invTest.Inverse;
+            }
+            #endregion
             Console.ReadLine();
         }
     }
