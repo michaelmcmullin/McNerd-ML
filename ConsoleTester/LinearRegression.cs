@@ -76,5 +76,10 @@ namespace ConsoleTester
 
             return theta;
         }
+
+        public static Matrix NormalEquation(Matrix X, Matrix y)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

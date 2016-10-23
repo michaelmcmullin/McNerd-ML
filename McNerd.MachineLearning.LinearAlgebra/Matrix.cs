@@ -423,6 +423,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
             return sb.ToString();
         }
 
+        #region Private row operations
         /// <summary>
         /// Calculate a single row result of multiplying two matrices.
         /// </summary>
@@ -478,7 +479,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <param name="m1">The first matrix to multiply.</param>
         /// <param name="m2">The second matrix to multiply.</param>
         /// <param name="output">The matrix to store the results in.</param>
-        private static void MultiplyTransposedRow(int row, Matrix m1, Matrix m2, ref Matrix output)
+        private static void MultiplyByTransposedRow(int row, Matrix m1, Matrix m2, ref Matrix output)
         {
             int m1_index = row * m1.columns;
             int output_index = row * output.Columns;
@@ -504,7 +505,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <param name="column">The zero-indexed column from m2 to calculate.</param>
         /// <param name="m1">The matrix to multiply with its transpose.</param>
         /// <param name="output">The matrix to store the results in.</param>
-        private static void MultiplyTransposedRow(int row, Matrix m1, ref Matrix output)
+        private static void MultiplyByTransposedRow(int row, Matrix m1, ref Matrix output)
         {
             int m1_index = row * m1.columns;
             int output_index = row * output.Columns;
@@ -522,6 +523,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
                 output.data[output_index++] = result;
             }
         }
+        #endregion
 
         /// <summary>
         /// Multiply one Matrix by the transpose of the other.
@@ -529,12 +531,12 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <param name="m1">The first Matrix to multiply.</param>
         /// <param name="m2">The Matrix to transpose and multiply.</param>
         /// <returns>The result of multiplying m1 with m2.Transpose.</returns>
-        public static Matrix MultiplyTranspose(Matrix m1, Matrix m2)
+        public static Matrix MultiplyByTranspose(Matrix m1, Matrix m2)
         {
             if (m1.Columns == m2.Columns)
             {
                 Matrix output = new Matrix(m1.Rows, m2.Rows);
-                Parallel.For(0, m1.Rows, i => MultiplyTransposedRow(i, m1, m2, ref output));
+                Parallel.For(0, m1.Rows, i => MultiplyByTransposedRow(i, m1, m2, ref output));
                 return output;
             }
             else
@@ -548,10 +550,42 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// </summary>
         /// <param name="m1">The Matrix to multiply by its transpose.</param>
         /// <returns>The result of multiplying m1 with its transpose.</returns>
-        public static Matrix MultiplyTranspose(Matrix m1)
+        public static Matrix MultiplyByTranspose(Matrix m1)
         {
             Matrix output = new Matrix(m1.Rows, m1.Rows);
-            Parallel.For(0, m1.Rows, i => MultiplyTransposedRow(i, m1, ref output));
+            Parallel.For(0, m1.Rows, i => MultiplyByTransposedRow(i, m1, ref output));
+            return output;
+        }
+
+        /// <summary>
+        /// Multiply the Transpose of one Matrix by another Matrix.
+        /// </summary>
+        /// <param name="m1">The Matrix to transpose and multiply.</param>
+        /// <param name="m2">The Matrix to multiply the Transpose of m1 by.</param>
+        /// <returns>The result of multiplying m1.Transpose with m2.</returns>
+        public static Matrix MultiplyTransposeBy(Matrix m1, Matrix m2)
+        {
+            if (m1.Columns == m2.Columns)
+            {
+                Matrix output = new Matrix(m1.Rows, m2.Rows);
+                Parallel.For(0, m1.Rows, i => MultiplyByTransposedRow(i, m1, m2, ref output));
+                return output;
+            }
+            else
+            {
+                throw new InvalidMatrixDimensionsException("Multiplication cannot be performed on matrices with these dimensions.");
+            }
+        }
+
+        /// <summary>
+        /// Multiply a the Transpose of a Matrix by the original Matrix.
+        /// </summary>
+        /// <param name="m1">The Matrix to transpose, and multiply by itself.</param>
+        /// <returns>The result of multiplying m1.Transpose with m1.</returns>
+        public static Matrix MultiplyTransposeBy(Matrix m1)
+        {
+            Matrix output = new Matrix(m1.Rows, m1.Rows);
+            Parallel.For(0, m1.Rows, i => MultiplyByTransposedRow(i, m1, ref output));
             return output;
         }
 

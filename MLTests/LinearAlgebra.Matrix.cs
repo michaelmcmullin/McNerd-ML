@@ -459,7 +459,7 @@ namespace MLTests.LinearAlgebra
         }
 
         [TestMethod]
-        public void MultiplyTransposeValidMatrices()
+        public void MultiplyByTransposeValidMatrices()
         {
             Matrix m1 = new Matrix(new double[,] {
                 { 6.0, 3.0, 0.0 },
@@ -470,7 +470,7 @@ namespace MLTests.LinearAlgebra
                 { 1.0, 2.0, 3.0 },
                 { 4.0, 5.0, 6.0 }
             });
-            Matrix m3 = Matrix.MultiplyTranspose(m1, m2);
+            Matrix m3 = Matrix.MultiplyByTranspose(m1, m2);
 
             Matrix expectedResult = new Matrix(new double[,] {
                 { 12.0, 39.0 },
@@ -482,13 +482,54 @@ namespace MLTests.LinearAlgebra
         }
 
         [TestMethod]
-        public void MultiplyTransposeSameMatrix()
+        public void MultiplyTransposeByValidMatrices()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 6.0, 3.0 },
+                { 2.0, 5.0 },
+                { 9.0, 8.0 }
+            });
+            Matrix m2 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 },
+                { 7.0, 8.0, 9.0 }
+            });
+            Matrix m3 = Matrix.MultiplyTransposeBy(m1, m2);
+
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 77, 94, 111 },
+                { 79, 95, 111 }
+            });
+
+            Assert.AreEqual(expectedResult, m3);
+        }
+
+        [TestMethod]
+        public void MultiplyByTransposeSameMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 6.0, 3.0 },
+                { 2.0, 5.0 },
+                { 9.0, 8.0 }
+            });
+            Matrix m2 = Matrix.MultiplyByTranspose(m1);
+
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 121.0, 100.0 },
+                { 100.0,  98.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestMethod]
+        public void MultiplyTransposeBySameMatrix()
         {
             Matrix m1 = new Matrix(new double[,] {
                 { 6.0, 3.0, 0.0 },
                 { 9.0, 8.0, 6.0 }
             });
-            Matrix m2 = Matrix.MultiplyTranspose(m1);
+            Matrix m2 = Matrix.MultiplyTransposeBy(m1);
 
             Matrix expectedResult = new Matrix(new double[,] {
                 { 45.0, 78.0 },
@@ -511,7 +552,7 @@ namespace MLTests.LinearAlgebra
                 { 1.0, 2.0 },
                 { 4.0, 5.0 }
             });
-            Matrix m3 = Matrix.MultiplyTranspose(m1, m2);
+            Matrix m3 = Matrix.MultiplyByTranspose(m1, m2);
         }
         #endregion
 
