@@ -508,14 +508,19 @@ namespace McNerd.MachineLearning.LinearAlgebra
         private static void MultiplyByTransposedColumn(int column, Matrix m1, Matrix m2, ref Matrix output)
         {
             int output_index = column * output.Columns;
+            int m1_index, m2_index;
 
             for (int m2Col = 0; m2Col < m2.Columns; m2Col++)
             {
                 double result = 0;
+                m1_index = column;
+                m2_index = m2Col;
 
                 for (int m2Row=0; m2Row < m2.Rows; m2Row++)
                 {
-                    result += m1[m2Row, column] * m2[m2Row, m2Col];
+                    result += m1.data[m1_index] * m2.data[m2_index];
+                    m1_index += m1.Columns;
+                    m2_index += m2.Columns;
                 }
 
                 output.data[output_index++] = result;
@@ -557,19 +562,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <param name="output">The matrix to store the results in.</param>
         private static void MultiplyByTransposedColumn(int column, Matrix m1, ref Matrix output)
         {
-            int output_index = column * output.Columns;
-
-            for (int m2Col = 0; m2Col < m1.Columns; m2Col++)
-            {
-                double result = 0;
-
-                for (int m2Row = 0; m2Row < m1.Rows; m2Row++)
-                {
-                    result += m1[m2Row, column] * m1[m2Row, m2Col];
-                }
-
-                output.data[output_index++] = result;
-            }
+            MultiplyByTransposedColumn(column, m1, m1, ref output);
         }
 
         #endregion

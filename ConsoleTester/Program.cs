@@ -143,18 +143,13 @@ namespace ConsoleTester
 
             #endregion
 
-            #region Test Matrix Inversion
-            Matrix invTest = new Matrix(new double[,] {
-                { 2.0, 1.0, 3.0, 5.0 },
-                { 7.0, 1.0, 9.0, 4.0 },
-                { 2.0, 5.0, 8.0, 2.0 },
-                { 3.0, 7.0, 4.0, 3.0 }
-            });
+            #region Test
+            Matrix m1 = Matrix.Identity(1000);
+            Matrix m2 = Matrix.Ones(1000, 1000);
+            Matrix m3 = Matrix.MultiplyTransposeBy(m1, m2);
 
-            for (int i=0; i<100000; i++)
-            {
-                Matrix inv = invTest.Inverse;
-            }
+            Matrix m4 = Matrix.Identity(1000);
+            Matrix m5 = Matrix.MultiplyTransposeBy(m4);
             #endregion
             Console.ReadLine();
         }
