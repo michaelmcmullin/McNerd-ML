@@ -140,6 +140,23 @@ namespace MLTests.LinearAlgebra
         }
 
         [TestMethod]
+        public void Inverse3x3Identity()
+        {
+            Matrix m1 = Matrix.Identity(3);
+
+            Matrix m2 = m1.Inverse;
+
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.0, 0.0, 0.0 },
+                { 0.0, 1.0, 0.0 },
+                { 0.0, 0.0, 1.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+
+        [TestMethod]
         [ExpectedException(typeof(NonInvertibleMatrixException), "Matrix is not invertible.")]
         public void NonInvertibleMatrix()
         {
@@ -482,6 +499,25 @@ namespace MLTests.LinearAlgebra
         }
 
         [TestMethod]
+        public void MultiplyByTransposeSameSquareMatrixTwoParameters()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 6.0, 3.0, 0.0 },
+                { 2.0, 5.0, 1.0 },
+                { 9.0, 8.0, 6.0 }
+            });
+            Matrix m2 = Matrix.MultiplyByTranspose(m1, m1);
+
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 45.0, 27.0, 78.0 },
+                { 27.0, 30.0, 64.0 },
+                { 78.0, 64.0,181.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestMethod]
         public void MultiplyTransposeByValidMatrices()
         {
             Matrix m1 = new Matrix(new double[,] {
@@ -515,8 +551,9 @@ namespace MLTests.LinearAlgebra
             Matrix m2 = Matrix.MultiplyByTranspose(m1);
 
             Matrix expectedResult = new Matrix(new double[,] {
-                { 121.0, 100.0 },
-                { 100.0,  98.0 }
+                { 45.0, 27.0, 78.0 },
+                { 27.0, 29.0, 58.0 },
+                { 78.0, 58.0,145.0 }
             });
 
             Assert.AreEqual(expectedResult, m2);
@@ -532,11 +569,114 @@ namespace MLTests.LinearAlgebra
             Matrix m2 = Matrix.MultiplyTransposeBy(m1);
 
             Matrix expectedResult = new Matrix(new double[,] {
-                { 45.0, 78.0 },
-                { 78.0, 181.0 }
+                {117.0, 90.0, 54.0 },
+                { 90.0, 73.0, 48.0 },
+                { 54.0, 48.0, 36.0 }
             });
 
             Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestMethod]
+        public void MultiplyTransposeBySameMatrixTwoParameters()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 6.0, 3.0, 0.0 },
+                { 9.0, 8.0, 6.0 }
+            });
+            Matrix m2 = Matrix.MultiplyTransposeBy(m1, m1);
+
+            Matrix expectedResult = new Matrix(new double[,] {
+                {117.0, 90.0, 54.0 },
+                { 90.0, 73.0, 48.0 },
+                { 54.0, 48.0, 36.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestMethod]
+        public void MultiplyTransposeBySameMatrixTwoInstancesTwoParameters()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 6.0, 3.0, 0.0 },
+                { 9.0, 8.0, 6.0 }
+            });
+            Matrix m2 = new Matrix(new double[,] {
+                { 6.0, 3.0, 0.0 },
+                { 9.0, 8.0, 6.0 }
+            });
+            Matrix m3 = Matrix.MultiplyTransposeBy(m1, m2);
+
+            Matrix expectedResult = new Matrix(new double[,] {
+                {117.0, 90.0, 54.0 },
+                { 90.0, 73.0, 48.0 },
+                { 54.0, 48.0, 36.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m3);
+        }
+
+        [TestMethod]
+        public void MultiplyTransposeBySameSquareMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 6.0, 3.0, 0.0 },
+                { 2.0, 5.0, 1.0 },
+                { 9.0, 8.0, 6.0 }
+            });
+            Matrix m2 = Matrix.MultiplyTransposeBy(m1);
+
+            Matrix expectedResult = new Matrix(new double[,] {
+                {121.0,100.0, 56.0 },
+                {100.0, 98.0, 53.0 },
+                { 56.0, 53.0, 37.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestMethod]
+        public void MultiplyTransposeBySameSquareMatrixTwoParameters()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 6.0, 3.0, 0.0 },
+                { 2.0, 5.0, 1.0 },
+                { 9.0, 8.0, 6.0 }
+            });
+            Matrix m2 = Matrix.MultiplyTransposeBy(m1, m1);
+
+            Matrix expectedResult = new Matrix(new double[,] {
+                {121.0,100.0, 56.0 },
+                {100.0, 98.0, 53.0 },
+                { 56.0, 53.0, 37.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestMethod]
+        public void MultiplyTransposeBySameSquareMatrixTwoInstancesTwoParameters()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 6.0, 3.0, 0.0 },
+                { 2.0, 5.0, 1.0 },
+                { 9.0, 8.0, 6.0 }
+            });
+            Matrix m2 = new Matrix(new double[,] {
+                { 6.0, 3.0, 0.0 },
+                { 2.0, 5.0, 1.0 },
+                { 9.0, 8.0, 6.0 }
+            });
+            Matrix m3 = Matrix.MultiplyTransposeBy(m1, m2);
+
+            Matrix expectedResult = new Matrix(new double[,] {
+                {121.0,100.0, 56.0 },
+                {100.0, 98.0, 53.0 },
+                { 56.0, 53.0, 37.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m3);
         }
 
         [TestMethod]
