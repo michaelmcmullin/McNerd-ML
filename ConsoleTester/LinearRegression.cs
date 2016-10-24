@@ -77,9 +77,17 @@ namespace ConsoleTester
             return theta;
         }
 
+        /// <summary>
+        /// Find the value of theta (co-efficients in the hypothesis) without iteration.
+        /// </summary>
+        /// <param name="X">Input data, size m*n</param>
+        /// <param name="y">Output results, size m*1</param>
+        /// <returns>An n*1 Matrix of optimal co-efficients to use for our hypothesis function.</returns>
         public static Matrix NormalEquation(Matrix X, Matrix y)
         {
-            throw new NotImplementedException();
+            Matrix output = Matrix.MultiplyTransposeBy(X).Inverse;
+            output = output * (Matrix.MultiplyTransposeBy(X, y));
+            return output;
         }
     }
 }

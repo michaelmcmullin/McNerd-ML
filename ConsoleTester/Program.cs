@@ -143,13 +143,17 @@ namespace ConsoleTester
 
             #endregion
 
-            #region Test
-            Matrix m1 = Matrix.Identity(1000);
-            Matrix m2 = Matrix.Ones(1000, 1000);
-            Matrix m3 = Matrix.MultiplyTransposeBy(m1, m2);
+            #region Normal Equation
+            Console.WriteLine(new String('-', 75));
+            Console.WriteLine("\n");
+            Console.WriteLine("NORMAL EQUATION");
+            Console.WriteLine(new String('=', 75));
 
-            Matrix m4 = Matrix.Identity(1000);
-            Matrix m5 = Matrix.MultiplyTransposeBy(m4);
+            // This gives the same answer as Gradient Descent B above, if GD is allowed
+            // to iterate enough times.
+            Matrix thetaNormal = LinearRegression.NormalEquation(X, y);
+
+            Console.WriteLine(thetaNormal);
             #endregion
             Console.ReadLine();
         }
