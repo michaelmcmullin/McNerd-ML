@@ -779,6 +779,39 @@ namespace McNerd.MachineLearning.LinearAlgebra
             // Create an output Matrix of square dimensions.
             Matrix output = new Matrix(dimension, dimension);
 
+            // Handle odd-numbered dimensions first
+            if (dimension % 2 == 1)
+            {
+                // Set the first value and initialize current position to
+                // halfway across the first row.
+                int startColumn = dimension >> 1;
+                int startRow = 0;
+                output[startRow, startColumn] = 1;
+
+                // Keep moving up and to the right until all squares are filled
+                int newRow, newColumn;
+
+                for (int i = 2; i <= dimension * dimension; i++)
+                {
+                    newRow = startRow-1; newColumn = startColumn+1;
+                    if (newRow < 0) newRow = dimension - 1;
+                    if (newColumn >= dimension) newColumn = 0;
+
+                    if (output[newRow, newColumn] > 0)
+                    {
+                        while (output[startRow, startColumn] > 0)
+                        {
+                            startRow++;
+                            if (startRow >= dimension) startRow = 0;
+                        }
+                    }
+                    else
+                    {
+                        startRow = newRow; startColumn = newColumn;
+                    }
+                    output[startRow, startColumn] = i;
+                }
+            }
 
 
             return output;
