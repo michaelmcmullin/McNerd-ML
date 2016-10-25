@@ -760,6 +760,29 @@ namespace McNerd.MachineLearning.LinearAlgebra
             result.Fill(1.0);
             return result;
         }
+
+        /// <summary>
+        /// Create a Magic Square, where the numbers of each row, column and diagonal
+        /// add up to the same number.
+        /// </summary>
+        /// <param name="dimensions">The number of rows and columns to initialise the
+        /// matrix with. There will be an equal number of rows and columns.</param>
+        /// <returns>A Magic Square Matrix.</returns>
+        public static Matrix Magic(int dimension)
+        {
+            // Handle special cases first
+            if (dimension == 1)
+                return Matrix.Identity(1);
+            if (dimension == 2)
+                throw new InvalidMatrixDimensionsException("A Magic Square cannot have a dimension of 2");
+
+            // Create an output Matrix of square dimensions.
+            Matrix output = new Matrix(dimension, dimension);
+
+
+
+            return output;
+        }
         #endregion
 
         #region Element Operations
