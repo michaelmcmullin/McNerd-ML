@@ -762,6 +762,53 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
 
         /// <summary>
+        /// Create a Magic Square for odd-numbered dimensions greater than 1.
+        /// </summary>
+        /// <param name="dimension">The dimension to use to create the Magic Square.</param>
+        /// <returns>A Magic Square of the required dimensions.</returns>
+        private static Matrix MagicSquareOdd(int dimension)
+        {
+            if (dimension <= 1)
+                throw new InvalidMatrixDimensionsException("Dimensions must be greater than or equal to one.");
+
+            if (dimension % 2 != 1)
+                throw new InvalidMatrixDimensionsException("Dimensions must be an odd number.");
+
+            Matrix output = new Matrix(dimension, dimension);
+
+            // Set the first value and initialize current position to
+            // halfway across the first row.
+            int startColumn = dimension >> 1;
+            int startRow = 0;
+            output[startRow, startColumn] = 1;
+
+            // Keep moving up and to the right until all squares are filled
+            int newRow, newColumn;
+
+            for (int i = 2; i <= dimension * dimension; i++)
+            {
+                newRow = startRow - 1; newColumn = startColumn + 1;
+                if (newRow < 0) newRow = dimension - 1;
+                if (newColumn >= dimension) newColumn = 0;
+
+                if (output[newRow, newColumn] > 0)
+                {
+                    while (output[startRow, startColumn] > 0)
+                    {
+                        startRow++;
+                        if (startRow >= dimension) startRow = 0;
+                    }
+                }
+                else
+                {
+                    startRow = newRow; startColumn = newColumn;
+                }
+                output[startRow, startColumn] = i;
+            }
+            return output;
+        }
+
+        /// <summary>
         /// Create a Magic Square, where the numbers of each row, column and diagonal
         /// add up to the same number.
         /// </summary>
@@ -776,43 +823,14 @@ namespace McNerd.MachineLearning.LinearAlgebra
             if (dimension == 2)
                 throw new InvalidMatrixDimensionsException("A Magic Square cannot have a dimension of 2");
 
-            // Create an output Matrix of square dimensions.
-            Matrix output = new Matrix(dimension, dimension);
-
             // Handle odd-numbered dimensions first
             if (dimension % 2 == 1)
             {
-                // Set the first value and initialize current position to
-                // halfway across the first row.
-                int startColumn = dimension >> 1;
-                int startRow = 0;
-                output[startRow, startColumn] = 1;
-
-                // Keep moving up and to the right until all squares are filled
-                int newRow, newColumn;
-
-                for (int i = 2; i <= dimension * dimension; i++)
-                {
-                    newRow = startRow-1; newColumn = startColumn+1;
-                    if (newRow < 0) newRow = dimension - 1;
-                    if (newColumn >= dimension) newColumn = 0;
-
-                    if (output[newRow, newColumn] > 0)
-                    {
-                        while (output[startRow, startColumn] > 0)
-                        {
-                            startRow++;
-                            if (startRow >= dimension) startRow = 0;
-                        }
-                    }
-                    else
-                    {
-                        startRow = newRow; startColumn = newColumn;
-                    }
-                    output[startRow, startColumn] = i;
-                }
+                return (MagicSquareOdd(dimension));
             }
 
+            // Create an output Matrix of square dimensions.
+            Matrix output = new Matrix(dimension, dimension);
 
             return output;
         }
