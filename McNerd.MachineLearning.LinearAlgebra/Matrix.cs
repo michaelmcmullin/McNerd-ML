@@ -829,8 +829,69 @@ namespace McNerd.MachineLearning.LinearAlgebra
                 return (MagicSquareOdd(dimension));
             }
 
-            // Create an output Matrix of square dimensions.
-            Matrix output = new Matrix(dimension, dimension);
+            // Handle 'doubly-even' dimensions (divisible by 4)
+            if (dimension % 4 == 0)
+            {
+                Matrix doubleEven = new Matrix(dimension, dimension);
+
+                // Fill in the diagonals
+                double index = 1;
+                for (int i = 0; i < dimension; i++)
+                {
+                    for (int j = 0; j < dimension; j++)
+                    {
+                        if (i == j || (j+i+1) == dimension)
+                            doubleEven[i, j] = index;
+                        index++;
+                    }
+                }
+
+                return doubleEven;
+            }
+
+            // Other even dimensions (divisible by 2, but not 4) using Strachey's method.
+            int k = dimension;
+            int n = (k - 2) / 4;
+            int qDimension = k / 2;
+            int qElementCount = qDimension * qDimension;
+            Matrix A = MagicSquareOdd(qDimension);
+            Matrix B = Matrix.ElementAdd(A, qElementCount);
+            Matrix C = Matrix.ElementAdd(B, qElementCount);
+            Matrix D = Matrix.ElementAdd(C, qElementCount);
+
+            // Exchange first n columns in A with n columns in D
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < A.Rows; j++)
+                {
+                    double tmp = D[j, i];
+                    D[j, i] = A[j, i];
+                    A[j, i] = tmp;
+                }
+            }
+
+            // Exchange right-most n-1 columns in C with B.
+            for (int i = C.Columns-n+1; i < C.Columns; i++)
+            {
+                for (int j = 0; j < A.Rows; j++)
+                {
+                    double tmp = C[j, i];
+                    C[j, i] = B[j, i];
+                    B[j, i] = tmp;
+                }
+            }
+
+            // Exchange Middle and Centre-Middle squares in D with A
+            int middle = (qDimension / 2);
+            double swap = D[middle, 0]; D[middle, 0] = A[middle, 0]; A[middle, 0] = swap;
+            swap = D[middle, middle]; D[middle, middle] = A[middle, middle]; A[middle, middle] = swap;
+
+
+            Matrix row1 = Matrix.Join(A, C, MatrixDimensions.Columns);
+            Matrix row2 = Matrix.Join(D, B, MatrixDimensions.Columns);
+
+            Matrix output = Matrix.Join(row1, row2, MatrixDimensions.Rows);
+
 
             return output;
         }
