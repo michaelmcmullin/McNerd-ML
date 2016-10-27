@@ -360,6 +360,91 @@ namespace MLTests.LinearAlgebra
 
             Assert.AreEqual(expectedResult, m1);
         }
+
+        [TestCategory("Matrix: Magic Square"), TestMethod]
+        public void CheckIfNonSquareIsMagicSquare()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 15.0, 14.0, 4.0 },
+                { 12.0, 6.0, 7.0, 9.0 },
+                { 8.0, 10.0, 11.0, 5.0 }
+            });
+
+            Assert.AreEqual(false, m1.IsMagic);
+        }
+
+        [TestCategory("Matrix: Magic Square"), TestMethod]
+        public void CheckIf1x1MatrixIsMagicSquare()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0 }
+            });
+
+            Assert.AreEqual(true, m1.IsMagic);
+        }
+
+        [TestCategory("Matrix: Magic Square"), TestMethod]
+        public void CheckIf2x2MatrixIsMagicSquare()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0 },
+                { 3.0, 4.0 }
+            });
+
+            Assert.AreEqual(false, m1.IsMagic);
+        }
+
+        [TestCategory("Matrix: Magic Square"), TestMethod]
+        public void CheckIfRepeatingNumbersMatrixIsMagicSquare()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 15.0, 14.0, 1.0 },
+                { 9.0, 6.0, 7.0, 9.0 },
+                { 8.0, 10.0, 8.0, 5.0 },
+                { 13.0, 0.0, 2.0, 16.0 }
+            });
+
+            Assert.AreEqual(false, m1.IsMagic);
+        }
+
+        [TestCategory("Matrix: Magic Square"), TestMethod]
+        public void CheckIfMagicSquareIsMagicSquare()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 15.0, 14.0, 4.0 },
+                { 12.0, 6.0, 7.0, 9.0 },
+                { 8.0, 10.0, 11.0, 5.0 },
+                { 13.0, 3.0, 2.0, 16.0 }
+            });
+
+            Assert.AreEqual(true, m1.IsMagic);
+        }
+
+        [TestCategory("Matrix: Magic Square"), TestMethod]
+        public void CheckIfMagicRowsIsNotMagicSquare()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0, 4.0 },
+                { 1.0, 2.0, 3.0, 4.0 },
+                { 1.0, 2.0, 3.0, 4.0 },
+                { 1.0, 2.0, 3.0, 4.0 }
+            });
+
+            Assert.AreEqual(false, m1.IsMagic);
+        }
+
+        [TestCategory("Matrix: Magic Square"), TestMethod]
+        public void CheckIfNonMagicSquareIsMagicSquare()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0, 4.0 },
+                { 5.0, 6.0, 7.0, 8.0 },
+                { 9.0, 10.0, 11.0, 12.0 },
+                { 13.0, 14.0, 15.0, 16.0 }
+            });
+
+            Assert.AreEqual(false, m1.IsMagic);
+        }
         #endregion
         #endregion
 

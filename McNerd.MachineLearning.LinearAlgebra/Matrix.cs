@@ -210,6 +210,54 @@ namespace McNerd.MachineLearning.LinearAlgebra
                 return MResult;
             }
         }
+
+        /// <summary>
+        /// Determine if this Matrix is a Magic Square.
+        /// </summary>
+        public bool IsMagic
+        {
+            get
+            {
+                if (Columns != Rows) return false;
+                if (Columns == 2) return false;
+
+                double sum = 0;
+                double diagonalSum = 0;
+                double reverseDiagonalSum = 0;
+                var usedElements = new Dictionary<double, double>();
+
+                for (int i = 0; i < Rows; i++)
+                {
+                    double rowSum = 0;
+                    double columnSum = 0;
+
+                    for (int j = 0; j < Columns; j++)
+                    {
+                        double thisElement = this[i, j];
+
+                        // If we're reading the first row, we just calculate what all the other
+                        // rows and columns should add up to.
+                        if (i == 0)
+                        {
+                            sum += thisElement;
+                        }
+                        rowSum += thisElement;
+                        columnSum += this[j, i];
+
+                        if (!usedElements.ContainsKey(thisElement))
+                            usedElements[thisElement] = 1;
+                        else
+                            return false; // This Matrix does not contain distinct numbers
+                    }
+                    if (rowSum != sum || columnSum != sum) return false;
+
+                    diagonalSum += this[i, i];
+                    reverseDiagonalSum += this[i, Columns - i - 1];
+                }
+
+                return reverseDiagonalSum == sum && diagonalSum == sum;
+            }
+        }
         #endregion
 
         #region Operations
