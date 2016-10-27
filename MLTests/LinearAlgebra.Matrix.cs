@@ -342,6 +342,20 @@ namespace MLTests.LinearAlgebra
         }
 
         [TestCategory("Matrix: Magic Square"), TestMethod]
+        public void Create8x8MagicSquare()
+        {
+            Matrix m1 = Matrix.Magic(8);
+            Assert.IsTrue(m1.IsMagic);
+        }
+
+        [TestCategory("Matrix: Magic Square"), TestMethod]
+        public void Create9x9MagicSquare()
+        {
+            Matrix m1 = Matrix.Magic(9);
+            Assert.IsTrue(m1.IsMagic);
+        }
+
+        [TestCategory("Matrix: Magic Square"), TestMethod]
         public void Create10x10MagicSquare()
         {
             Matrix m1 = Matrix.Magic(10);
@@ -362,6 +376,20 @@ namespace MLTests.LinearAlgebra
         }
 
         [TestCategory("Matrix: Magic Square"), TestMethod]
+        public void Create11x11MagicSquare()
+        {
+            Matrix m1 = Matrix.Magic(11);
+            Assert.IsTrue(m1.IsMagic);
+        }
+
+        [TestCategory("Matrix: Magic Square"), TestMethod]
+        public void Create12x12MagicSquare()
+        {
+            Matrix m1 = Matrix.Magic(12);
+            Assert.IsTrue(m1.IsMagic);
+        }
+
+        [TestCategory("Matrix: Magic Square"), TestMethod]
         public void CheckIfNonSquareIsMagicSquare()
         {
             Matrix m1 = new Matrix(new double[,] {
@@ -370,7 +398,7 @@ namespace MLTests.LinearAlgebra
                 { 8.0, 10.0, 11.0, 5.0 }
             });
 
-            Assert.AreEqual(false, m1.IsMagic);
+            Assert.IsFalse(m1.IsMagic);
         }
 
         [TestCategory("Matrix: Magic Square"), TestMethod]
@@ -380,7 +408,7 @@ namespace MLTests.LinearAlgebra
                 { 1.0 }
             });
 
-            Assert.AreEqual(true, m1.IsMagic);
+            Assert.IsTrue(m1.IsMagic);
         }
 
         [TestCategory("Matrix: Magic Square"), TestMethod]
@@ -391,7 +419,7 @@ namespace MLTests.LinearAlgebra
                 { 3.0, 4.0 }
             });
 
-            Assert.AreEqual(false, m1.IsMagic);
+            Assert.IsFalse(m1.IsMagic);
         }
 
         [TestCategory("Matrix: Magic Square"), TestMethod]
@@ -404,7 +432,7 @@ namespace MLTests.LinearAlgebra
                 { 13.0, 0.0, 2.0, 16.0 }
             });
 
-            Assert.AreEqual(false, m1.IsMagic);
+            Assert.IsFalse(m1.IsMagic);
         }
 
         [TestCategory("Matrix: Magic Square"), TestMethod]
@@ -417,7 +445,7 @@ namespace MLTests.LinearAlgebra
                 { 13.0, 3.0, 2.0, 16.0 }
             });
 
-            Assert.AreEqual(true, m1.IsMagic);
+            Assert.IsTrue(m1.IsMagic);
         }
 
         [TestCategory("Matrix: Magic Square"), TestMethod]
@@ -430,7 +458,7 @@ namespace MLTests.LinearAlgebra
                 { 1.0, 2.0, 3.0, 4.0 }
             });
 
-            Assert.AreEqual(false, m1.IsMagic);
+            Assert.IsFalse(m1.IsMagic);
         }
 
         [TestCategory("Matrix: Magic Square"), TestMethod]
@@ -443,7 +471,7 @@ namespace MLTests.LinearAlgebra
                 { 13.0, 14.0, 15.0, 16.0 }
             });
 
-            Assert.AreEqual(false, m1.IsMagic);
+            Assert.IsFalse(m1.IsMagic);
         }
         #endregion
         #endregion
