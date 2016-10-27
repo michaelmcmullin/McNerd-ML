@@ -301,10 +301,10 @@ namespace MLTests.LinearAlgebra
         {
             Matrix m1 = Matrix.Magic(4);
             Matrix expectedResult = new Matrix(new double[,] {
-                { 16.0, 2.0, 3.0, 13.0 },
-                { 5.0, 11.0, 10.0, 8.0 },
-                { 9.0, 7.0, 6.0, 12.0 },
-                { 4.0, 14.0, 15.0, 1.0 }
+                { 1.0, 15.0, 14.0, 4.0 },
+                { 12.0, 6.0, 7.0, 9.0 },
+                { 8.0, 10.0, 11.0, 5.0 },
+                { 13.0, 3.0, 2.0, 16.0 }
             });
 
             Assert.AreEqual(expectedResult, m1);

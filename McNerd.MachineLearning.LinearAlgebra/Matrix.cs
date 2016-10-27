@@ -834,14 +834,21 @@ namespace McNerd.MachineLearning.LinearAlgebra
             {
                 Matrix doubleEven = new Matrix(dimension, dimension);
 
-                // Fill in the diagonals
                 double index = 1;
-                for (int i = 0; i < dimension; i++)
+                for (int i = 0, r = dimension-1; i < dimension; i++, r--)
                 {
-                    for (int j = 0; j < dimension; j++)
+                    for (int j = 0, c = dimension-1; j < dimension; j++, c--)
                     {
-                        if (i == j || (j+i+1) == dimension)
+                        // Fill in the diagonals
+                        if (i == j || (j + i + 1) == dimension)
+                        {
                             doubleEven[i, j] = index;
+                        }
+                        else
+                        {
+                            // Otherwise, fill in diagonally opposite element
+                            doubleEven[r, c] = index;
+                        }
                         index++;
                     }
                 }
