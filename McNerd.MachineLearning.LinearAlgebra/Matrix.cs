@@ -30,6 +30,15 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <param name="b">The second number to process.</param>
         /// <returns>The result of performing an operation on both inputs.</returns>
         public delegate double ProcessNumbers(double a, double b);
+
+        /// <summary>
+        /// General purpose delegate for processing a Matrix and giving
+        /// a result.
+        /// </summary>
+        /// <param name="a">The Matrix to process.</param>
+        /// <returns>The result of performing an operation on the Matrix.</returns>
+        public delegate double ProcessMatrix(Matrix a);
+
         #endregion
 
         #region Private Fields
@@ -755,6 +764,47 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
 
         /// <summary>
+        /// Extract a row from this Matrix.
+        /// </summary>
+        /// <param name="row">The zero-index row to extract.</param>
+        /// <returns>A row-vector form Matrix.</returns>
+        public Matrix GetRow(int row)
+        {
+            if (row >= this.Rows)
+                throw new IndexOutOfRangeException("The requested row is out of range");
+            Matrix result = new Matrix(1, this.Columns);
+
+            int index = row * this.Columns;
+            for (int i = 0; i < this.Columns; i++)
+            {
+                result.data[i] = this.data[index + i];
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Extract a column from this Matrix.
+        /// </summary>
+        /// <param name="column">The zero-index column to extract.</param>
+        /// <returns>A column-vector form Matrix.</returns>
+        public Matrix GetColumn(int column)
+        {
+            if (column >= this.Columns)
+                throw new IndexOutOfRangeException("The requested column is out of range");
+            Matrix result = new Matrix(this.Rows, 1);
+
+            int index = column;
+            for (int i = 0; i < this.Rows; i++)
+            {
+                result.data[i] = this.data[index];
+                index += this.Columns;
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Fills the Matrix with a given number.
         /// </summary>
         /// <param name="number">The number to assign to every element in the Matrix.</param>
@@ -1201,6 +1251,31 @@ namespace McNerd.MachineLearning.LinearAlgebra
         {
             return ReduceDimension(m, dimension, (x, y) => x + y);
         }
+        #endregion
+
+        /// <summary>
+        /// Run a set of operations on all elements in a particular dimension to reduce that dimension
+        /// to a single row, and then perform an aggregate operation to produce a statistical 
+        /// </summary>
+        /// <param name="m"></param>
+        /// <param name="dimension"></param>
+        /// <param name="dimensionOperation"></param>
+        /// <param name="aggregateOperation"></param>
+        /// <returns></returns>
+        public static Matrix StatisticalReduce(Matrix m, MatrixDimensions dimension, ProcessMatrix operation)
+        {
+            Matrix result = null;
+
+            switch(dimension)
+            {
+                default:
+                    break;
+            }
+
+            return result;
+        }
+
+        #region Specific implementations of StatisticalReduce
         #endregion
         #endregion
 

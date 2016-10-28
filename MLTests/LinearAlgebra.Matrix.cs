@@ -1440,6 +1440,137 @@ namespace MLTests.LinearAlgebra
         }
 
         #endregion
+
+        #region Extract row/column
+        [TestCategory("Matrix: Extract Rows/Columns"), TestMethod]
+        public void ExtractValidMatrixRow()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0, 4.0 },
+                { 5.0, 6.0, 7.0, 8.0 },
+                { 9.0, 10.0, 11.0, 12.0 },
+                { 13.0, 14.0, 15.0, 16.0 }
+            });
+            Matrix m2 = m1.GetRow(2);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 9.0, 10.0, 11.0, 12.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Extract Rows/Columns"), TestMethod]
+        public void ExtractValidMatrixColumn()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0, 4.0 },
+                { 5.0, 6.0, 7.0, 8.0 },
+                { 9.0, 10.0, 11.0, 12.0 },
+                { 13.0, 14.0, 15.0, 16.0 }
+            });
+            Matrix m2 = m1.GetColumn(2);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 3.0 }, { 7.0 }, { 11.0 }, { 15.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Extract Rows/Columns"), TestMethod]
+        public void ExtractFirstMatrixRow()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0, 4.0 },
+                { 5.0, 6.0, 7.0, 8.0 },
+                { 9.0, 10.0, 11.0, 12.0 },
+                { 13.0, 14.0, 15.0, 16.0 }
+            });
+            Matrix m2 = m1.GetRow(0);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0, 4.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Extract Rows/Columns"), TestMethod]
+        public void ExtractLastMatrixRow()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0, 4.0 },
+                { 5.0, 6.0, 7.0, 8.0 },
+                { 9.0, 10.0, 11.0, 12.0 },
+                { 13.0, 14.0, 15.0, 16.0 }
+            });
+            Matrix m2 = m1.GetRow(3);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 13.0, 14.0, 15.0, 16.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Extract Rows/Columns"), TestMethod]
+        public void ExtractFirstMatrixColumn()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0, 4.0 },
+                { 5.0, 6.0, 7.0, 8.0 },
+                { 9.0, 10.0, 11.0, 12.0 },
+                { 13.0, 14.0, 15.0, 16.0 }
+            });
+            Matrix m2 = m1.GetColumn(0);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.0 }, { 5.0 }, { 9.0 }, { 13.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Extract Rows/Columns"), TestMethod]
+        public void ExtractLastMatrixColumn()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0, 4.0 },
+                { 5.0, 6.0, 7.0, 8.0 },
+                { 9.0, 10.0, 11.0, 12.0 },
+                { 13.0, 14.0, 15.0, 16.0 }
+            });
+            Matrix m2 = m1.GetColumn(3);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 4.0 }, { 8.0 }, { 12.0 }, { 16.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Extract Rows/Columns"), TestMethod]
+        [ExpectedException(typeof(IndexOutOfRangeException), "Requested row is out of range.")]
+        public void ExtractInvalidMatrixRow()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0, 4.0 },
+                { 5.0, 6.0, 7.0, 8.0 },
+                { 9.0, 10.0, 11.0, 12.0 },
+                { 13.0, 14.0, 15.0, 16.0 }
+            });
+            Matrix m2 = m1.GetRow(10);
+        }
+
+        [TestCategory("Matrix: Extract Rows/Columns"), TestMethod]
+        [ExpectedException(typeof(IndexOutOfRangeException), "Requested column is out of range.")]
+        public void ExtractInvalidMatrixColumn()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0, 4.0 },
+                { 5.0, 6.0, 7.0, 8.0 },
+                { 9.0, 10.0, 11.0, 12.0 },
+                { 13.0, 14.0, 15.0, 16.0 }
+            });
+            Matrix m2 = m1.GetColumn(10);
+        }
+
+        #endregion
         #endregion
     }
 }
