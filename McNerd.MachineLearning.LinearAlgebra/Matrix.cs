@@ -1257,17 +1257,47 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// Run a set of operations on all elements in a particular dimension to reduce that dimension
         /// to a single row, and then perform an aggregate operation to produce a statistical 
         /// </summary>
-        /// <param name="m"></param>
-        /// <param name="dimension"></param>
-        /// <param name="dimensionOperation"></param>
-        /// <param name="aggregateOperation"></param>
-        /// <returns></returns>
+        /// <param name="m">The matrix to operate on.</param>
+        /// <param name="dimension">Indicate whether to operate on rows or columns.</param>
+        /// <param name="operation">The delegate method to operate with.</param>
+        /// <remarks>If the current matrix is a row or column vector, then a 1*1 matrix
+        /// will be returned, regardless of which dimension is chosen. If the dimension is
+        /// set to 'Auto', then the first non-singleton dimension is chosen. If no singleton
+        /// dimension exists, then columns are used as the default.</remarks>
         public static Matrix StatisticalReduce(Matrix m, MatrixDimensions dimension, ProcessMatrix operation)
         {
             Matrix result = null;
 
             switch(dimension)
             {
+                case MatrixDimensions.Auto:
+                    if (m.Rows == 1)
+                    {
+                        result = new Matrix(1, 1);
+                        result.data[0] = operation(m);
+                        return result;
+                    }
+                    else if (m.Columns == 1)
+                    {
+                        result = new Matrix(1, 1);
+                        result.data[0] = operation(m);
+                        return result;
+                    }
+                    else
+                    {
+                        // No singleton case? Let's go with columns.
+                        goto case MatrixDimensions.Columns;
+                    }
+                case MatrixDimensions.Columns:
+                    result = new Matrix(1, m.Columns);
+                    for (int i = 0; i < m.Columns; i++)
+                        result.data[i] = operation(m.GetColumn(i));
+                    break;
+                case MatrixDimensions.Rows:
+                    result = new Matrix(m.Rows, 1);
+                    for (int i = 0; i < m.Rows; i++)
+                        result.data[i] = operation(m.GetRow(i));
+                    break;
                 default:
                     break;
             }
@@ -1276,6 +1306,42 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
 
         #region Specific implementations of StatisticalReduce
+        /// <summary>
+        /// Get the mean value of all elements in each dimension of a given Matrix.
+        /// </summary>
+        /// <param name="m">The Matrix whose elements need to be averaged.</param>
+        /// <param name="dimension">The dimension (row or column) to process.</param>
+        /// <returns>A 1*n or n*1 Matrix containing the mean of each element along the
+        /// processed dimension.</returns>
+        public static Matrix Mean(Matrix m, MatrixDimensions dimension = MatrixDimensions.Auto)
+        {
+            return StatisticalReduce(m, dimension, (x) => x.data.Average());
+        }
+
+        /// <summary>
+        /// Get the maximum value of all elements in each dimension of a given Matrix.
+        /// </summary>
+        /// <param name="m">The Matrix to find the maximum value from.</param>
+        /// <param name="dimension">The dimension (row or column) to process.</param>
+        /// <returns>A 1*n or n*1 Matrix containing the maximum of each element along the
+        /// processed dimension.</returns>
+        public static Matrix Max(Matrix m, MatrixDimensions dimension = MatrixDimensions.Auto)
+        {
+            return StatisticalReduce(m, dimension, (x) => x.data.Max());
+        }
+
+        /// <summary>
+        /// Get the minimum value of all elements in each dimension of a given Matrix.
+        /// </summary>
+        /// <param name="m">The Matrix to find the minimum value from.</param>
+        /// <param name="dimension">The dimension (row or column) to process.</param>
+        /// <returns>A 1*n or n*1 Matrix containing the minimum of each element along the
+        /// processed dimension.</returns>
+        public static Matrix Min(Matrix m, MatrixDimensions dimension = MatrixDimensions.Auto)
+        {
+            return StatisticalReduce(m, dimension, (x) => x.data.Min());
+        }
+
         #endregion
         #endregion
 

@@ -1218,7 +1218,185 @@ namespace MLTests.LinearAlgebra
 
         #endregion
 
+        #region Statistical Operations
+        #region Mean
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetMeanColumnsRectangularMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix m2 = Matrix.Mean(m1, MatrixDimensions.Columns);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 2.5, 3.5, 4.5 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
 
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetMeanRowsRectangularMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix m2 = Matrix.Mean(m1, MatrixDimensions.Rows);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 2.0 },
+                { 5.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetMeanColumnsVector()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 }
+            });
+            Matrix m2 = Matrix.Mean(m1);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 2.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetMeanRowsVector()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0 },
+                { 2.0 },
+                { 3.0 }
+            });
+            Matrix m2 = Matrix.Mean(m1);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 2.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+        #endregion
+
+        #region Max
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetMaxColumnsRectangularMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 5.0, 3.0 },
+                { 4.0, 2.0, 6.0 }
+            });
+            Matrix m2 = Matrix.Max(m1, MatrixDimensions.Columns);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 4.0, 5.0, 6.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetMaxRowsRectangularMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix m2 = Matrix.Max(m1, MatrixDimensions.Rows);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 3.0 },
+                { 6.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetMaxColumnsVector()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 }
+            });
+            Matrix m2 = Matrix.Max(m1);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 3.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetMaxRowsVector()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0 },
+                { 2.0 },
+                { 3.0 }
+            });
+            Matrix m2 = Matrix.Max(m1);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 3.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+        #endregion
+
+        #region Min
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetMinColumnsRectangularMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 5.0, 3.0 },
+                { 4.0, 2.0, 6.0 }
+            });
+            Matrix m2 = Matrix.Min(m1, MatrixDimensions.Columns);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetMinRowsRectangularMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix m2 = Matrix.Min(m1, MatrixDimensions.Rows);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.0 },
+                { 4.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetMinColumnsVector()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 }
+            });
+            Matrix m2 = Matrix.Min(m1);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetMinRowsVector()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0 },
+                { 2.0 },
+                { 3.0 }
+            });
+            Matrix m2 = Matrix.Min(m1);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+        #endregion
+
+        #endregion
         #endregion
 
         #region Other Methods
