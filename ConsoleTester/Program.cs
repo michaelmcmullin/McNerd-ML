@@ -17,7 +17,10 @@ namespace ConsoleTester
             #region Linear Regression
             Console.WriteLine("LINEAR REGRESSION");
             Console.WriteLine(new String('=', 75));
-            Console.WriteLine("Calculating Cost Functions");
+
+            #region Compute Cost
+            Console.WriteLine("Cost Functions");
+            Console.WriteLine(new String('-', 75));
             #region Test Cost Function A
             Matrix X = new Matrix(new double[,] {
                 { 2.0, 1.0, 3.0 },
@@ -94,10 +97,9 @@ namespace ConsoleTester
             #endregion
 
             #region Gradient Descent
-            Console.WriteLine(new String('-', 75));
             Console.WriteLine("\n");
-            Console.WriteLine("GRADIENT DESCENT");
-            Console.WriteLine(new String('=', 75));
+            Console.WriteLine("Gradient Descent");
+            Console.WriteLine(new String('-', 75));
 
             #region Gradient Descent A
             X = new Matrix(new double[,] {
@@ -117,6 +119,7 @@ namespace ConsoleTester
             theta = new Matrix(3, 1);
             Matrix result = LinearRegression.GradientDescent(X, y, theta, 0.01, 100);
 
+            Console.WriteLine("Target: 0.23; 0.56; 0.31");
             Console.WriteLine(result);
             #endregion
 
@@ -138,23 +141,61 @@ namespace ConsoleTester
             theta = new Matrix(2, 1);
             result = LinearRegression.GradientDescent(X, y, theta, 0.01, 1000);
 
+            Console.WriteLine("Target: 5.2; -0.57");
+            Console.WriteLine(result);
+            #endregion
+
+            #region Gradient Descent C
+            // Starting from a non-zero theta
+            X = new Matrix(new double[,] {
+                { 1.0, 5.0 },
+                { 1.0, 2.0 }
+            });
+
+            y = new Matrix(new double[,] {
+                { 1.0 },
+                { 6.0 }
+            });
+
+            theta = new Matrix(new double[,] { { 0.5 }, { 0.5 } });
+            result = LinearRegression.GradientDescent(X, y, theta, 0.1, 10);
+
+            Console.WriteLine("Target: 1.7; 0.19");
             Console.WriteLine(result);
             #endregion
 
             #endregion
 
             #region Normal Equation
-            Console.WriteLine(new String('-', 75));
             Console.WriteLine("\n");
-            Console.WriteLine("NORMAL EQUATION");
-            Console.WriteLine(new String('=', 75));
+            Console.WriteLine("Normal Equation");
+            Console.WriteLine(new String('-', 75));
 
-            // This gives the same answer as Gradient Descent B above, if GD is allowed
+            // This gives the same answer as Gradient Descent A above, if GD is allowed
             // to iterate enough times.
+            X = new Matrix(new double[,] {
+                { 2.0, 1.0, 3.0 },
+                { 7.0, 1.0, 9.0 },
+                { 1.0, 8.0, 1.0 },
+                { 3.0, 7.0, 4.0 }
+            });
+
+            y = new Matrix(new double[,] {
+                { 2.0 },
+                { 5.0 },
+                { 5.0 },
+                { 6.0 }
+            });
+
+            theta = new Matrix(2, 1);
             Matrix thetaNormal = LinearRegression.NormalEquation(X, y);
 
+            Console.WriteLine("Target: 0.008; 0.568; 0.486");
             Console.WriteLine(thetaNormal);
             #endregion
+
+            #endregion
+
             Console.ReadLine();
         }
     }
