@@ -1396,6 +1396,65 @@ namespace MLTests.LinearAlgebra
         }
         #endregion
 
+        #region Range
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetRangeColumnsRectangularMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 5.0, 3.0 },
+                { 4.0, 2.0, 6.0 }
+            });
+            Matrix m2 = Matrix.Range(m1, MatrixDimensions.Columns);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 3.0, 3.0, 3.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetRangeRowsRectangularMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix m2 = Matrix.Range(m1, MatrixDimensions.Rows);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 2.0 },
+                { 2.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetRangeColumnsVector()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 }
+            });
+            Matrix m2 = Matrix.Range(m1);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 2.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetRangeRowsVector()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0 },
+                { 2.0 },
+                { 3.0 }
+            });
+            Matrix m2 = Matrix.Range(m1);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 2.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+        #endregion
+
         #endregion
         #endregion
 

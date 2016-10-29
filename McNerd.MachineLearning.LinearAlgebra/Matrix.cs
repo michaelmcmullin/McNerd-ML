@@ -1342,6 +1342,18 @@ namespace McNerd.MachineLearning.LinearAlgebra
             return StatisticalReduce(m, dimension, (x) => x.data.Min());
         }
 
+        /// <summary>
+        /// Get the range of values of all elements in each dimension of a given Matrix.
+        /// </summary>
+        /// <param name="m">The Matrix to find the range of.</param>
+        /// <param name="dimension">The dimension (row or column) to process.</param>
+        /// <returns>A 1*n or n*1 Matrix containing the range of each element along the
+        /// processed dimension.</returns>
+        public static Matrix Range(Matrix m, MatrixDimensions dimension = MatrixDimensions.Auto)
+        {
+            return StatisticalReduce(m, dimension, (x) => x.data.Max() - x.data.Min());
+        }
+
         #endregion
         #endregion
 
