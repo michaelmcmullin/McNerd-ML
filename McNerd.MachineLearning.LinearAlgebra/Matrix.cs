@@ -1354,6 +1354,70 @@ namespace McNerd.MachineLearning.LinearAlgebra
             return StatisticalReduce(m, dimension, (x) => x.data.Max() - x.data.Min());
         }
 
+        /// <summary>
+        /// Get the median value of all elements in each dimension of a given Matrix.
+        /// </summary>
+        /// <param name="m">The Matrix to find the median of.</param>
+        /// <param name="dimension">The dimension (row or column) to process.</param>
+        /// <returns>A 1*n or n*1 Matrix containing the median of each element along the
+        /// processed dimension.</returns>
+        public static Matrix Median(Matrix m, MatrixDimensions dimension = MatrixDimensions.Auto)
+        {
+            return StatisticalReduce(m, dimension, GetMedian);
+        }
+        private static double GetMedian(Matrix vector)
+        {
+            if (vector.data.Length == 1)
+                return vector.data[0];
+            if (vector.data.Length == 2)
+                return (vector.data[0] + vector.data[1]) / 2;
+
+            List<double> data = vector.data.ToList(); data.Sort();
+            int index = data.Count / 2;
+            if (data.Count % 2 != 0)
+                return data[index];
+            else
+                return (data[index] + data[index + 1]) / 2;
+        }
+
+        /// <summary>
+        /// Get the mode from all elements in each dimension of a given Matrix.
+        /// </summary>
+        /// <param name="m">The Matrix to find the mode of.</param>
+        /// <param name="dimension">The dimension (row or column) to process.</param>
+        /// <returns>A 1*n or n*1 Matrix containing the mode of each element along the
+        /// processed dimension.</returns>
+        public static Matrix Mode(Matrix m, MatrixDimensions dimension = MatrixDimensions.Auto)
+        {
+            return StatisticalReduce(m, dimension, GetMode);
+        }
+        private static double GetMode(Matrix vector)
+        {
+            if (vector.data.Length == 1)
+                return vector.data[0];
+
+            // Group all the elements by identical values, and find the maximum
+            // count. Then return the minimum value that matches the maximum count.
+            var groups = vector.data.GroupBy(element => element);
+            int maxCount = groups.Max(group => group.Count());
+            var modeValues = groups.Where(group => (group.Count() == maxCount));
+
+            if (modeValues.Count() == 1)
+                return modeValues.First().Key;
+
+            // For consistency with Octave, if there are multiple modes, return
+            // the one with the smallest value.
+            double minValue = modeValues.First().Key;
+            foreach (var modeValue in modeValues)
+            {
+                if (modeValue.Key < minValue)
+                    minValue = modeValue.Key;
+            }
+
+            return minValue;
+        }
+
+
         #endregion
         #endregion
 

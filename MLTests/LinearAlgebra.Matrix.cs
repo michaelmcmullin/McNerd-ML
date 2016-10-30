@@ -1455,6 +1455,166 @@ namespace MLTests.LinearAlgebra
         }
         #endregion
 
+        #region Median
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetMedianColumnsRectangularMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 5.0, 3.0 },
+                { 4.0, 2.0, 6.0 }
+            });
+            Matrix m2 = Matrix.Median(m1, MatrixDimensions.Columns);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 2.5, 3.5, 4.5 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetMedianRowsRectangularMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix m2 = Matrix.Median(m1, MatrixDimensions.Rows);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 2.0 },
+                { 5.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetMedianColumnsVector()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 2.0, 4.0, 3.0 }
+            });
+            Matrix m2 = Matrix.Median(m1);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 3.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetMedianRowsVector()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 6.0 },
+                { 2.0 },
+                { 3.0 }
+            });
+            Matrix m2 = Matrix.Median(m1);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 3.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+        #endregion
+
+        #region Mode
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetModeColumnsRectangularMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 5.0, 3.0 },
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 2.0, 6.0 }
+            });
+            Matrix m2 = Matrix.Mode(m1, MatrixDimensions.Columns);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetModeRowsRectangularMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 3.0, 3.0 },
+                { 4.0, 4.0, 6.0 }
+            });
+            Matrix m2 = Matrix.Mode(m1, MatrixDimensions.Rows);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 3.0 },
+                { 4.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetModeColumnsVector()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 2.0, 4.0, 2.0 }
+            });
+            Matrix m2 = Matrix.Mode(m1);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 2.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetModeRowsVector()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 6.0 },
+                { 2.0 },
+                { 2.0 },
+                { 3.0 }
+            });
+            Matrix m2 = Matrix.Mode(m1);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 2.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetModeWhereNoMultipleValues()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 }
+            });
+            Matrix m2 = Matrix.Mode(m1);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetModeWhereSeveralPossibilities()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 2.0, 2.0, 1.0, 1.0, 3.0, 3.0 }
+            });
+            Matrix m2 = Matrix.Mode(m1);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetModeWhereSingleElement()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 3.0 }
+            });
+            Matrix m2 = Matrix.Mode(m1);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 3.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        #endregion
+
         #endregion
         #endregion
 
