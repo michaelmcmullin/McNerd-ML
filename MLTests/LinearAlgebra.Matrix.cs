@@ -1514,6 +1514,87 @@ namespace MLTests.LinearAlgebra
         }
         #endregion
 
+        #region Quartile 1
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetQuartile1ColumnsFourRowsMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 5.0, 3.0 },
+                { 4.0, 2.0, 6.0 },
+                { 7.0, 8.0, 9.0 },
+                { 10.0, 11.0, 12.0 }
+            });
+            Matrix m2 = Matrix.Quartile1(m1, MatrixDimensions.Columns);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 2.5, 3.5, 4.5 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetQuartile1ColumnsSixRowsMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 5.0, 3.0 },
+                { 4.0, 2.0, 6.0 },
+                { 7.0, 8.0, 9.0 },
+                { 10.0, 11.0, 12.0 },
+                { 13.0, 14.0, 15.0 },
+                { 16.0, 17.0, 18.0 }
+            });
+            Matrix m2 = Matrix.Quartile1(m1, MatrixDimensions.Columns);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 4, 5, 6 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetQuartile1ColumnsOddRowsMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 5.0, 3.0 },
+                { 4.0, 2.0, 6.0 },
+                { 7.0, 8.0, 9.0 },
+                { 10.0, 11.0, 12.0 },
+                { 14.0, 15.0, 16.0 }
+            });
+            Matrix m2 = Matrix.Quartile1(m1, MatrixDimensions.Columns);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 3.25, 4.25, 5.25 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetQuartile1SingleRowsMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 5.0, 3.0 }
+            });
+            Matrix m2 = Matrix.Quartile1(m1, MatrixDimensions.Auto);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.5 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetQuartile1TwoRowsMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 5.0, 3.0 },
+                { 4.0, 2.0, 6.0 }
+            });
+            Matrix m2 = Matrix.Quartile1(m1, MatrixDimensions.Columns);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        #endregion
+
         #region Mode
         [TestCategory("Matrix: Statistical Operations"), TestMethod]
         public void GetModeColumnsRectangularMatrix()
