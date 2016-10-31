@@ -1405,7 +1405,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
                 if (upperBound % 2 != 0)
                     return data[index];
                 else
-                    return (data[index-1] + data[index]) / 2;
+                    return (data[index - 1] + data[index]) / 2;
             }
             // Handle 4n+1 number of elements
             if ((data.Count - 1) % 4 == 0)
@@ -1417,7 +1417,52 @@ namespace McNerd.MachineLearning.LinearAlgebra
             if ((data.Count - 3) % 4 == 0)
             {
                 int n = (data.Count - 3) / 4;
-                return ((data[n] * 0.75) + (data[n+1] * 0.25));
+                return ((data[n] * 0.75) + (data[n + 1] * 0.25));
+            }
+
+            return 0.0;
+        }
+
+        /// <summary>
+        /// Get the third quartile value of all elements in each dimension of a given Matrix.
+        /// </summary>
+        /// <param name="m">The Matrix to find the third quartile of.</param>
+        /// <param name="dimension">The dimension (row or column) to process.</param>
+        /// <returns>A 1*n or n*1 Matrix containing the third quartile of each element along the
+        /// processed dimension.</returns>
+        public static Matrix Quartile3(Matrix m, MatrixDimensions dimension = MatrixDimensions.Auto)
+        {
+            return StatisticalReduce(m, dimension, GetQuartile3);
+        }
+        private static double GetQuartile3(Matrix vector)
+        {
+            if (vector.data.Length == 1)
+                return vector.data[0];
+
+            List<double> data = vector.data.ToList(); data.Sort();
+            // Handle even number of elements
+            if (data.Count % 2 == 0)
+            {
+                int upperBound = data.Count / 2;
+                int index = upperBound / 2;
+                if (upperBound % 2 != 0)
+                    return data[index + upperBound];
+                else
+                    return (data[index + upperBound - 1] + data[index + upperBound]) / 2;
+            }
+            // Handle 4n+1 number of elements
+            if ((data.Count - 1) % 4 == 0)
+            {
+                int n = (data.Count - 1) / 4;
+                int index = 3 * n;
+                return ((data[index] * 0.75) + (data[index + 1] * 0.25));
+            }
+            // Handle 4n+3 number of elements
+            if ((data.Count - 3) % 4 == 0)
+            {
+                int n = (data.Count - 3) / 4;
+                int index = 3 * n;
+                return ((data[index + 1] * 0.25) + (data[index + 2] * 0.75));
             }
 
             return 0.0;
