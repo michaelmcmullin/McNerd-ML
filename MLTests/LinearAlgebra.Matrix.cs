@@ -1278,6 +1278,67 @@ namespace MLTests.LinearAlgebra
         }
         #endregion
 
+        #region Mean Square
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetMeanSquareColumnsRectangularMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix m2 = Matrix.MeanSquare(m1, MatrixDimensions.Columns);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 8.5, 14.5, 22.5 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetMeanSquareRowsRectangularMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0, 4.0 },
+                { 4.0, 5.0, 6.0, 7.0 }
+            });
+            Matrix m2 = Matrix.MeanSquare(m1, MatrixDimensions.Rows);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 7.5 },
+                { 31.5 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetMeanSquareColumnsVector()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0, 4.0 }
+            });
+            Matrix m2 = Matrix.MeanSquare(m1);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 7.5 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetMeanSquareRowsVector()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0 },
+                { 2.0 },
+                { 3.0 },
+                { 4.0 }
+            });
+            Matrix m2 = Matrix.MeanSquare(m1);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 7.5 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+        #endregion
+
+
         #region Max
         [TestCategory("Matrix: Statistical Operations"), TestMethod]
         public void GetMaxColumnsRectangularMatrix()

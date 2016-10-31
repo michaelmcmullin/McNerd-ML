@@ -1333,6 +1333,11 @@ namespace McNerd.MachineLearning.LinearAlgebra
         private static double GetMeanSquare(Matrix m)
         {
             double result = 0.0;
+            foreach (double element in m)
+            {
+                result += Math.Pow(element, 2);
+            }
+            result /= m.data.Count();
             return result;
         }
 
