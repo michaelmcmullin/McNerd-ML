@@ -1341,7 +1341,6 @@ namespace McNerd.MachineLearning.LinearAlgebra
             return result;
         }
 
-
         /// <summary>
         /// Get the maximum value of all elements in each dimension of a given Matrix.
         /// </summary>
@@ -1539,6 +1538,31 @@ namespace McNerd.MachineLearning.LinearAlgebra
             }
 
             return minValue;
+        }
+
+        /// <summary>
+        /// Calculate the variance of the elements in a given Matrix.
+        /// </summary>
+        /// <param name="m">The Matrix to find the variance of.</param>
+        /// <param name="dimension">The dimension (row or column) to process.</param>
+        /// <returns>A 1*n or n*1 Matrix containing the variance of each element along the
+        /// processed dimension.</returns>
+        public static Matrix Variance(Matrix m, MatrixDimensions dimension = MatrixDimensions.Auto)
+        {
+            return StatisticalReduce(m, dimension, GetVariance);
+        }
+        private static double GetVariance(Matrix vector)
+        {
+            double mean = vector.data.Average();
+            double result = 0.0;
+            int n = vector.data.Count();
+
+            foreach(double element in vector)
+            {
+                result += Math.Pow(element - mean, 2);
+            }
+
+            return result/(n-1);
         }
         #endregion
         #endregion

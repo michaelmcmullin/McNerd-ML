@@ -1338,7 +1338,6 @@ namespace MLTests.LinearAlgebra
         }
         #endregion
 
-
         #region Max
         [TestCategory("Matrix: Statistical Operations"), TestMethod]
         public void GetMaxColumnsRectangularMatrix()
@@ -1917,6 +1916,65 @@ namespace MLTests.LinearAlgebra
             Assert.AreEqual(expectedResult, m2);
         }
 
+        #endregion
+
+        #region Variance
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetVarianceColumnsRectangularMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix m2 = Matrix.Variance(m1, MatrixDimensions.Columns);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 4.5, 4.5, 4.5 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetVarianceRowsRectangularMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix m2 = Matrix.Variance(m1, MatrixDimensions.Rows);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.0 },
+                { 1.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetVarianceColumnsVector()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 }
+            });
+            Matrix m2 = Matrix.Variance(m1);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetVarianceRowsVector()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0 },
+                { 2.0 },
+                { 3.0 }
+            });
+            Matrix m2 = Matrix.Variance(m1);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
         #endregion
 
         #endregion
