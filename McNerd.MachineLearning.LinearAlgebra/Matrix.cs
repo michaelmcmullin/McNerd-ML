@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
     /// </summary>
     public enum MatrixDimensions { Auto, Rows, Columns }
 
-    public class Matrix
+    public class Matrix : IEnumerable
     {
         #region Delegates
         /// <summary>
@@ -155,16 +156,16 @@ namespace McNerd.MachineLearning.LinearAlgebra
                     throw new InvalidMatrixDimensionsException("Inverse requires a Matrix to be square.");
                 Matrix MResult = Matrix.Identity(Rows);
 
-                for (int diagonal=0; diagonal < Rows; diagonal++)
+                for (int diagonal = 0; diagonal < Rows; diagonal++)
                 {
                     double diagonalValue = this[diagonal, diagonal];
 
                     // Ensure the diagonal value is not zero by swapping another row if necessary.
                     if (diagonalValue == 0)
                     {
-                        for (int i=0; i<Rows; i++)
+                        for (int i = 0; i < Rows; i++)
                         {
-                            if (i != diagonal && this[i,diagonal] != 0 && this[diagonal,i] != 0)
+                            if (i != diagonal && this[i, diagonal] != 0 && this[diagonal, i] != 0)
                             {
                                 this.SwapRows(diagonal, i);
                                 MResult.SwapRows(diagonal, i);
@@ -180,7 +181,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
                     int itemIndex = 0;
                     int diagonalIndex = diagonal * this.Columns;
 
-                    for (int row=0; row < Rows; row++)
+                    for (int row = 0; row < Rows; row++)
                     {
                         if (row != diagonal)
                         {
@@ -205,12 +206,12 @@ namespace McNerd.MachineLearning.LinearAlgebra
                 int indexResult = 0;
                 int indexThis = 0;
 
-                for (int i=0; i<Rows; i++)
+                for (int i = 0; i < Rows; i++)
                 {
                     double divisor = this.data[indexThis];
                     indexThis += this.Columns + 1;
 
-                    for (int j=0; j<Columns; j++)
+                    for (int j = 0; j < Columns; j++)
                     {
                         MResult.data[indexResult++] /= divisor;
                     }
@@ -573,7 +574,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
                 m1_index = column;
                 m2_index = m2Col;
 
-                for (int m2Row=0; m2Row < m2.Rows; m2Row++)
+                for (int m2Row = 0; m2Row < m2.Rows; m2Row++)
                 {
                     result += m1.data[m1_index] * m2.data[m2_index];
                     m1_index += m1.Columns;
@@ -702,7 +703,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
             if (indexRow1 > data.Length || indexRow2 > data.Length)
                 throw new IndexOutOfRangeException("SwapRow method called with non-existent rows.");
 
-            for (int i=0; i<Columns; i++)
+            for (int i = 0; i < Columns; i++)
             {
                 tmp[i] = data[indexRow1 + i];
                 data[indexRow1 + i] = data[indexRow2 + i];
@@ -720,7 +721,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         public static Matrix Join(Matrix m1, Matrix m2, MatrixDimensions dimension = MatrixDimensions.Auto)
         {
             Matrix result = null;
-            switch(dimension)
+            switch (dimension)
             {
                 case MatrixDimensions.Columns:
                     if (m1.Rows != m2.Rows)
@@ -933,9 +934,9 @@ namespace McNerd.MachineLearning.LinearAlgebra
                 Matrix doubleEven = new Matrix(dimension, dimension);
 
                 double index = 1;
-                for (int i = 0, r = dimension-1; i < dimension; i++, r--)
+                for (int i = 0, r = dimension - 1; i < dimension; i++, r--)
                 {
-                    for (int j = 0, c = dimension-1; j < dimension; j++, c--)
+                    for (int j = 0, c = dimension - 1; j < dimension; j++, c--)
                     {
                         // Fill in the diagonals
                         if (i == j || (j + i + 1) == dimension)
@@ -976,7 +977,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
             }
 
             // Exchange right-most n-1 columns in C with B.
-            for (int i = C.Columns-n+1; i < C.Columns; i++)
+            for (int i = C.Columns - n + 1; i < C.Columns; i++)
             {
                 for (int j = 0; j < A.Rows; j++)
                 {
@@ -1203,7 +1204,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
             Matrix result = null;
 
             // Process calculations
-            switch(dimension)
+            switch (dimension)
             {
                 case MatrixDimensions.Auto:
                     // Inspired by Octave, 'Auto' will process the first non-singleton dimension.
@@ -1268,7 +1269,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         {
             Matrix result = null;
 
-            switch(dimension)
+            switch (dimension)
             {
                 case MatrixDimensions.Auto:
                     if (m.Rows == 1)
@@ -1317,6 +1318,24 @@ namespace McNerd.MachineLearning.LinearAlgebra
         {
             return StatisticalReduce(m, dimension, (x) => x.data.Average());
         }
+
+        /// <summary>
+        /// Get the mean value of all elements squared in each dimension of a given Matrix.
+        /// </summary>
+        /// <param name="m">The Matrix whose squared elements need to be averaged.</param>
+        /// <param name="dimension">The dimension (row or column) to process.</param>
+        /// <returns>A 1*n or n*1 Matrix containing the mean square of each element along the
+        /// processed dimension.</returns>
+        public static Matrix MeanSquare(Matrix m, MatrixDimensions dimension = MatrixDimensions.Auto)
+        {
+            return StatisticalReduce(m, dimension, GetMeanSquare);
+        }
+        private static double GetMeanSquare(Matrix m)
+        {
+            double result = 0.0;
+            return result;
+        }
+
 
         /// <summary>
         /// Get the maximum value of all elements in each dimension of a given Matrix.
@@ -1516,12 +1535,20 @@ namespace McNerd.MachineLearning.LinearAlgebra
 
             return minValue;
         }
-
-
         #endregion
         #endregion
 
         #endregion
+
+        /// <summary>
+        /// Implement the GetEnumerator method to run against the data array.
+        /// </summary>
+        /// <returns>Returns an enumerator for the data array.</returns>
+        public IEnumerator GetEnumerator()
+        {
+            return data.GetEnumerator();
+        }
+
     }
 
     /// <summary>
