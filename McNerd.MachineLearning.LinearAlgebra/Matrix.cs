@@ -1564,6 +1564,20 @@ namespace McNerd.MachineLearning.LinearAlgebra
 
             return result/(n-1);
         }
+
+
+        /// <summary>
+        /// Calculate the standard deviation of values of all elements in each dimension of a given Matrix.
+        /// </summary>
+        /// <param name="m">The Matrix to find the standard deviation of.</param>
+        /// <param name="dimension">The dimension (row or column) to process.</param>
+        /// <returns>A 1*n or n*1 Matrix containing the standard deviation of each element along the
+        /// processed dimension.</returns>
+        public static Matrix StandardDeviation(Matrix m, MatrixDimensions dimension = MatrixDimensions.Auto)
+        {
+            return StatisticalReduce(m, dimension, (x) => Math.Sqrt(GetVariance(x)));
+        }
+
         #endregion
         #endregion
 

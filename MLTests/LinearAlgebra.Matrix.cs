@@ -1977,6 +1977,79 @@ namespace MLTests.LinearAlgebra
         }
         #endregion
 
+        #region Standard Deviation
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetStandardDeviationColumnsRectangularMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 4.0 },
+                { 2.0, 5.0 },
+                { 3.0, 6.0 }
+            });
+            Matrix m2 = Matrix.StandardDeviation(m1, MatrixDimensions.Columns);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.0, 1.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetStandardDeviationRowsRectangularMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix m2 = Matrix.StandardDeviation(m1, MatrixDimensions.Rows);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.0 },
+                { 1.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetStandardDeviationColumnsVector()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 }
+            });
+            Matrix m2 = Matrix.StandardDeviation(m1);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetStandardDeviationColumnsLongerVector()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 2.0, 4.0, 4.0, 4.0, 5.0, 5.0, 5.0, 7.0, 9.0 }
+            });
+            Matrix m2 = Matrix.StandardDeviation(m1);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 2.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetStandardDeviationRowsVector()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0 },
+                { 2.0 },
+                { 3.0 }
+            });
+            Matrix m2 = Matrix.StandardDeviation(m1);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+        #endregion
+
         #endregion
         #endregion
 
