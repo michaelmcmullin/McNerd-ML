@@ -1355,6 +1355,18 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
 
         /// <summary>
+        /// Get the interquartile range of values of all elements in each dimension of a given Matrix.
+        /// </summary>
+        /// <param name="m">The Matrix to find the interquartile range of.</param>
+        /// <param name="dimension">The dimension (row or column) to process.</param>
+        /// <returns>A 1*n or n*1 Matrix containing the interquartile range of each element along the
+        /// processed dimension.</returns>
+        public static Matrix IQR(Matrix m, MatrixDimensions dimension = MatrixDimensions.Auto)
+        {
+            return StatisticalReduce(m, dimension, (x) => GetQuartile3(x) - GetQuartile1(x) );
+        }
+
+        /// <summary>
         /// Get the median value of all elements in each dimension of a given Matrix.
         /// </summary>
         /// <param name="m">The Matrix to find the median of.</param>

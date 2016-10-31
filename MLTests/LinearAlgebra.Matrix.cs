@@ -1676,6 +1676,87 @@ namespace MLTests.LinearAlgebra
 
         #endregion
 
+        #region Interquartile Range
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetIQRColumnsFourRowsMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 5.0, 3.0 },
+                { 4.0, 2.0, 6.0 },
+                { 7.0, 8.0, 9.0 },
+                { 10.0, 11.0, 12.0 }
+            });
+            Matrix m2 = Matrix.IQR(m1, MatrixDimensions.Columns);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 6.0, 6.0, 6.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetIQRColumnsSixRowsMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 5.0, 3.0 },
+                { 4.0, 2.0, 6.0 },
+                { 7.0, 8.0, 9.0 },
+                { 10.0, 11.0, 12.0 },
+                { 13.0, 14.0, 15.0 },
+                { 16.0, 17.0, 18.0 }
+            });
+            Matrix m2 = Matrix.IQR(m1, MatrixDimensions.Columns);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 9.0, 9.0, 9.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetIQRColumnsOddRowsMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 5.0, 3.0 },
+                { 4.0, 2.0, 6.0 },
+                { 7.0, 8.0, 9.0 },
+                { 10.0, 11.0, 12.0 },
+                { 14.0, 15.0, 16.0 }
+            });
+            Matrix m2 = Matrix.IQR(m1, MatrixDimensions.Columns);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 6.0, 6.0, 6.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetIQRSingleRowsMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 5.0, 3.0 }
+            });
+            Matrix m2 = Matrix.IQR(m1, MatrixDimensions.Auto);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 4.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetIQRTwoRowsMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 5.0, 3.0 },
+                { 4.0, 2.0, 6.0 }
+            });
+            Matrix m2 = Matrix.IQR(m1, MatrixDimensions.Columns);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 3.0, 3.0, 3.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        #endregion
+
         #region Mode
         [TestCategory("Matrix: Statistical Operations"), TestMethod]
         public void GetModeColumnsRectangularMatrix()
