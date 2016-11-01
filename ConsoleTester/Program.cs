@@ -15,8 +15,10 @@ namespace ConsoleTester
         static void Main(string[] args)
         {
             #region Linear Regression
+            ConsoleColor c = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("LINEAR REGRESSION");
-            Console.WriteLine(new String('=', 75));
+            Console.ForegroundColor = c;
 
             #region Compute Cost
             Console.WriteLine("Cost Functions");

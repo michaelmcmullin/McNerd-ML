@@ -1033,13 +1033,42 @@ namespace McNerd.MachineLearning.LinearAlgebra
         {
             if (m1 == null || m2 == null)
                 throw new ArgumentNullException("ElementOperation cannot accept null Matrix objects");
-            if (!m1.HasSameDimensions(m2))
+            if (m1.Columns != m2.Columns && m1.Rows != m2.Rows)
                 throw new InvalidMatrixDimensionsException("ElementOperation requires both Matrix objects to have the same dimensions");
 
             Matrix result = new LinearAlgebra.Matrix(m1.Rows, m1.Columns);
 
-            for (int i = 0; i < result.data.Length; i++)
-                result.data[i] = operation(m1.data[i], m2.data[i]);
+            if (m1.HasSameDimensions(m2))
+            {
+                for (int i = 0; i < result.data.Length; i++)
+                    result.data[i] = operation(m1.data[i], m2.data[i]);
+            }
+            else
+            {
+                // Matrix/Vector operations.
+                if (m1.Columns == m2.Columns)
+                {
+                    int index = 0;
+                    for (int i = 0; i < result.data.Length; i++)
+                    {
+                        result.data[i] = operation(m1.data[i], m2.data[index++]);
+                        if (index == m1.Columns) index = 0;
+                    }
+                }
+                else
+                {
+                    // same number of rows
+                    int index = 0;
+                    for (int i = 0; i < result.Rows; i++)
+                    {
+                        for (int j=0; j < result.Columns; j++)
+                        {
+                            result.data[index] = operation(m1.data[index], m2.data[i]);
+                            index++;
+                        }
+                    }
+                }
+            }
 
             return result;
         }

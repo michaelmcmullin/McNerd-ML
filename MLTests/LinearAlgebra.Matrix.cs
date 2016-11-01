@@ -925,7 +925,7 @@ namespace MLTests.LinearAlgebra
         /// <summary>
         /// Test adding 5 to each matrix element
         /// </summary>
-        [TestMethod]
+        [TestCategory("Matrix: Element Operations"), TestMethod]
         public void ElementAddFiveToMatrix()
         {
             Matrix m1 = new Matrix(new double[,] {
@@ -944,7 +944,7 @@ namespace MLTests.LinearAlgebra
         /// <summary>
         /// Test subtracting five from each matrix element
         /// </summary>
-        [TestMethod]
+        [TestCategory("Matrix: Element Operations"), TestMethod]
         public void ElementSubtractFiveFromMatrix()
         {
             Matrix m1 = new Matrix(new double[,] {
@@ -963,7 +963,7 @@ namespace MLTests.LinearAlgebra
         /// <summary>
         /// Test multiplying each matrix element by 3
         /// </summary>
-        [TestMethod]
+        [TestCategory("Matrix: Element Operations"), TestMethod]
         public void ElementMultiplyMatrixByThree()
         {
             Matrix m1 = new Matrix(new double[,] {
@@ -982,7 +982,7 @@ namespace MLTests.LinearAlgebra
         /// <summary>
         /// Test dividing each matrix element by 10
         /// </summary>
-        [TestMethod]
+        [TestCategory("Matrix: Element Operations"), TestMethod]
         public void ElementDivideMatrixByTen()
         {
             Matrix m1 = new Matrix(new double[,] {
@@ -1001,7 +1001,7 @@ namespace MLTests.LinearAlgebra
         /// <summary>
         /// Test raising the power of each element by 2
         /// </summary>
-        [TestMethod]
+        [TestCategory("Matrix: Element Operations"), TestMethod]
         public void ElementSquareMatrix()
         {
             Matrix m1 = new Matrix(new double[,] {
@@ -1020,7 +1020,7 @@ namespace MLTests.LinearAlgebra
         /// <summary>
         /// Test getting the square root of each matrix element.
         /// </summary>
-        [TestMethod]
+        [TestCategory("Matrix: Element Operations"), TestMethod]
         public void ElementSqrtMatrix()
         {
             Matrix m1 = new Matrix(new double[,] {
@@ -1039,7 +1039,7 @@ namespace MLTests.LinearAlgebra
         /// <summary>
         /// Test getting the absolute value of each matrix element.
         /// </summary>
-        [TestMethod]
+        [TestCategory("Matrix: Element Operations"), TestMethod]
         public void ElementAbsMatrix()
         {
             Matrix m1 = new Matrix(new double[,] {
@@ -1060,7 +1060,7 @@ namespace MLTests.LinearAlgebra
         /// <summary>
         /// Test adding two Matrix objects together
         /// </summary>
-        [TestMethod]
+        [TestCategory("Matrix: Element Operations"), TestMethod]
         public void ElementAddMatrixToMatrix()
         {
             Matrix m1 = new Matrix(new double[,] {
@@ -1081,9 +1081,55 @@ namespace MLTests.LinearAlgebra
         }
 
         /// <summary>
+        /// Test adding Matrix and Vector objects together
+        /// </summary>
+        [TestCategory("Matrix: Element Operations"), TestMethod]
+        public void ElementAddVectorToMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix m2 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 }
+            });
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 2.0, 4.0, 6.0 },
+                { 5.0, 7.0, 9.0 }
+            });
+
+            Matrix m3 = Matrix.ElementAdd(m1, m2);
+            Assert.AreEqual(expectedResult, m3);
+        }
+
+        /// <summary>
+        /// Test adding Matrix and Vector objects together
+        /// </summary>
+        [TestCategory("Matrix: Element Operations"), TestMethod]
+        public void ElementAddRowVectorToMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix m2 = new Matrix(new double[,] {
+                { 1.0 },
+                { 2.0 }
+            });
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 2.0, 3.0, 4.0 },
+                { 6.0, 7.0, 8.0 }
+            });
+
+            Matrix m3 = Matrix.ElementAdd(m1, m2);
+            Assert.AreEqual(expectedResult, m3);
+        }
+
+
+        /// <summary>
         /// Test subtracting one Matrix from another
         /// </summary>
-        [TestMethod]
+        [TestCategory("Matrix: Element Operations"), TestMethod]
         public void ElementSubtractMatrixFromMatrix()
         {
             Matrix m1 = new Matrix(new double[,] {
@@ -1104,9 +1150,54 @@ namespace MLTests.LinearAlgebra
         }
 
         /// <summary>
+        /// Test subtracting a vector from a Matrix
+        /// </summary>
+        [TestCategory("Matrix: Element Operations"), TestMethod]
+        public void ElementSubtractVectorFromMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 7.0, 8.0, 9.0 },
+                { 10.0, 11.0, 12.0 }
+            });
+            Matrix m2 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 }
+            });
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 6.0, 6.0, 6.0 },
+                { 9.0, 9.0, 9.0 }
+            });
+
+            Matrix m3 = Matrix.ElementSubtract(m1, m2);
+            Assert.AreEqual(expectedResult, m3);
+        }
+
+        /// <summary>
+        /// Test subtracting a vector from a Matrix
+        /// </summary>
+        [TestCategory("Matrix: Element Operations"), TestMethod]
+        public void ElementSubtractRowVectorFromMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 7.0, 8.0, 9.0 },
+                { 10.0, 11.0, 12.0 }
+            });
+            Matrix m2 = new Matrix(new double[,] {
+                { 1.0 },
+                { 2.0 }
+            });
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 6.0, 7.0, 8.0 },
+                { 8.0, 9.0, 10.0 }
+            });
+
+            Matrix m3 = Matrix.ElementSubtract(m1, m2);
+            Assert.AreEqual(expectedResult, m3);
+        }
+
+        /// <summary>
         /// Test multiplying each matrix element together
         /// </summary>
-        [TestMethod]
+        [TestCategory("Matrix: Element Operations"), TestMethod]
         public void ElementMultiplyMatrixByMatrix()
         {
             Matrix m1 = new Matrix(new double[,] {
@@ -1127,9 +1218,54 @@ namespace MLTests.LinearAlgebra
         }
 
         /// <summary>
+        /// Test multiplying a Matrix by a vector.
+        /// </summary>
+        [TestCategory("Matrix: Element Operations"), TestMethod]
+        public void ElementMultiplyMatrixByVector()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix m2 = new Matrix(new double[,] {
+                { 1.0, 2.0, 1.0 },
+            });
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.0, 4.0, 3.0 },
+                { 4.0, 10.0, 6.0 }
+            });
+
+            Matrix m3 = Matrix.ElementMultiply(m1, m2);
+            Assert.AreEqual(expectedResult, m3);
+        }
+
+        /// <summary>
+        /// Test multiplying a Matrix by a vector.
+        /// </summary>
+        [TestCategory("Matrix: Element Operations"), TestMethod]
+        public void ElementMultiplyMatrixByRowVector()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix m2 = new Matrix(new double[,] {
+                { 1.0 },
+                { 2.0 }
+            });
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 8.0, 10.0, 12.0 }
+            });
+
+            Matrix m3 = Matrix.ElementMultiply(m1, m2);
+            Assert.AreEqual(expectedResult, m3);
+        }
+
+        /// <summary>
         /// Test dividing one Matrix by another
         /// </summary>
-        [TestMethod]
+        [TestCategory("Matrix: Element Operations"), TestMethod]
         public void ElementDivideMatrixByMatrix()
         {
             Matrix m1 = new Matrix(new double[,] {
@@ -1150,9 +1286,54 @@ namespace MLTests.LinearAlgebra
         }
 
         /// <summary>
+        /// Test dividing a Matrix by a vector
+        /// </summary>
+        [TestCategory("Matrix: Element Operations"), TestMethod]
+        public void ElementDivideMatrixByVector()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 10.0, 2.0, 4.0 },
+                { 6.0, 8.0, 2.0 }
+            });
+            Matrix m2 = new Matrix(new double[,] {
+                { 1.0, 2.0, 1.0 }
+            });
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 10.0, 1.0, 4.0 },
+                { 6.0, 4.0, 2.0 }
+            });
+
+            Matrix m3 = Matrix.ElementDivide(m1, m2);
+            Assert.AreEqual(expectedResult, m3);
+        }
+
+        /// <summary>
+        /// Test dividing a Matrix by a vector
+        /// </summary>
+        [TestCategory("Matrix: Element Operations"), TestMethod]
+        public void ElementDivideMatrixByRowVector()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 10.0, 2.0, 4.0 },
+                { 6.0, 8.0, 2.0 }
+            });
+            Matrix m2 = new Matrix(new double[,] {
+                { 1.0 },
+                { 2.0 }
+            });
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 10.0, 2.0, 4.0 },
+                { 3.0, 4.0, 1.0 }
+            });
+
+            Matrix m3 = Matrix.ElementDivide(m1, m2);
+            Assert.AreEqual(expectedResult, m3);
+        }
+
+        /// <summary>
         /// Test that a null Matrix will throw a NullReferenceException exception.
         /// </summary>
-        [TestMethod]
+        [TestCategory("Matrix: Element Operations"), TestMethod]
         [ExpectedException(typeof(NullReferenceException), "Cannot add a null Matrix.")]
         public void ElementMultiplyMatrixByNullMatrix()
         {
@@ -1168,7 +1349,7 @@ namespace MLTests.LinearAlgebra
         /// Test that two different sized Matrix objects will throw an
         /// InvalidMatrixDimensionsException exception.
         /// </summary>
-        [TestMethod]
+        [TestCategory("Matrix: Element Operations"), TestMethod]
         [ExpectedException(typeof(InvalidMatrixDimensionsException), "Matrix dimensions must match.")]
         public void ElementMultiplyMatrixByNonMatchingMatrix()
         {
