@@ -15,14 +15,10 @@ namespace ConsoleTester
         static void Main(string[] args)
         {
             #region Linear Regression
-            ConsoleColor c = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("LINEAR REGRESSION");
-            Console.ForegroundColor = c;
+            WriteH1("Linear Regression");
 
             #region Compute Cost
-            Console.WriteLine("Cost Functions");
-            Console.WriteLine(new String('-', 75));
+            WriteH2("Cost Functions");
             #region Test Cost Function A
             Matrix X = new Matrix(new double[,] {
                 { 2.0, 1.0, 3.0 },
@@ -99,9 +95,7 @@ namespace ConsoleTester
             #endregion
 
             #region Gradient Descent
-            Console.WriteLine("\n");
-            Console.WriteLine("Gradient Descent");
-            Console.WriteLine(new String('-', 75));
+            WriteH2("Gradient Descent");
 
             #region Gradient Descent A
             X = new Matrix(new double[,] {
@@ -121,8 +115,8 @@ namespace ConsoleTester
             theta = new Matrix(3, 1);
             Matrix result = LinearRegression.GradientDescent(X, y, theta, 0.01, 100);
 
-            Console.WriteLine("Target: 0.23; 0.56; 0.31");
-            Console.WriteLine(result);
+            Console.Write("Target: 0.23; 0.56; 0.31;   Actual: ");
+            Console.WriteLine(result.ToString().Replace(" \n", "; "));
             #endregion
 
             #region Gradient Descent B
@@ -143,8 +137,8 @@ namespace ConsoleTester
             theta = new Matrix(2, 1);
             result = LinearRegression.GradientDescent(X, y, theta, 0.01, 1000);
 
-            Console.WriteLine("Target: 5.2; -0.57");
-            Console.WriteLine(result);
+            Console.Write("Target: 5.2; -0.57;   Actual: ");
+            Console.WriteLine(result.ToString().Replace(" \n", "; "));
             #endregion
 
             #region Gradient Descent C
@@ -162,16 +156,48 @@ namespace ConsoleTester
             theta = new Matrix(new double[,] { { 0.5 }, { 0.5 } });
             result = LinearRegression.GradientDescent(X, y, theta, 0.1, 10);
 
-            Console.WriteLine("Target: 1.7; 0.19");
-            Console.WriteLine(result);
+            Console.Write("Target: 1.7; 0.19;    Actual: ");
+            Console.WriteLine(result.ToString().Replace(" \n", "; "));
+            #endregion
+
+            #endregion
+
+            #region Feature Normalization
+            WriteH2("Feature Normalization");
+
+            #region Feature Normalization A
+            X = new Matrix(new double[,] {
+                { 1.0 },
+                { 2.0 },
+                { 3.0 }
+            });
+            result = LinearRegression.FeatureNormalization(X);
+
+            Console.Write("Target: -1.0; 0.0; 1.0;    Actual: ");
+            Console.WriteLine(result.ToString().Replace(" \n", "; "));
+            #endregion
+
+            #region Feature Normalization B
+            X = Matrix.Magic(3);
+            result = LinearRegression.FeatureNormalization(X);
+
+            Console.Write("Target: 1.13 -1.00 0.38; -0.76 0.00 0.76; -0.38 1.00 -1.13;\nActual: ");
+            Console.WriteLine(result.ToString().Replace(" \n", "; "));
+            #endregion
+
+            #region Feature Normalization C
+            X = Matrix.Magic(3);
+            X = Matrix.Join(Matrix.Ones(1, 3) * -1, X, MatrixDimensions.Rows);
+            result = LinearRegression.FeatureNormalization(X);
+
+            Console.Write("Target: -1.21 -1.01 -1.21; 1.21 -0.56 0.67; -0.14 0.34 0.95; 0.14 1.24 -0.41;\nActual: ");
+            Console.WriteLine(result.ToString().Replace(" \n", "; "));
             #endregion
 
             #endregion
 
             #region Normal Equation
-            Console.WriteLine("\n");
-            Console.WriteLine("Normal Equation");
-            Console.WriteLine(new String('-', 75));
+            WriteH2("Normal Equation");
 
             // This gives the same answer as Gradient Descent A above, if GD is allowed
             // to iterate enough times.
@@ -192,13 +218,30 @@ namespace ConsoleTester
             theta = new Matrix(2, 1);
             Matrix thetaNormal = LinearRegression.NormalEquation(X, y);
 
-            Console.WriteLine("Target: 0.008; 0.568; 0.486");
-            Console.WriteLine(thetaNormal);
+            Console.Write("Target: 0.008; 0.568; 0.486;   Actual: ");
+            Console.WriteLine(thetaNormal.ToString().Replace(" \n", "; "));
             #endregion
 
             #endregion
 
             Console.ReadLine();
+        }
+
+        static void WriteH1(string s)
+        {
+            ConsoleColor c = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine(s.ToUpper());
+            Console.ForegroundColor = c;
+        }
+
+        static void WriteH2(string s)
+        {
+            ConsoleColor c = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine(s);
+            //Console.WriteLine(new String('-', 75));
+            Console.ForegroundColor = c;
         }
     }
 }

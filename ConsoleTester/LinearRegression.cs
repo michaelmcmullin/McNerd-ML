@@ -77,6 +77,7 @@ namespace ConsoleTester
             return theta;
         }
 
+
         public static Matrix FeatureNormalization(Matrix X)
         {
             Matrix mu = Matrix.Mean(X);
@@ -85,7 +86,7 @@ namespace ConsoleTester
 
             Matrix mu_matrix = Matrix.Ones(m, 1) * mu;
             Matrix sigma_matrix = Matrix.Ones(m, 1) * sigma;
-            Matrix X_norm = (X - mu_matrix); // TODO: element divide by sigma_matrix;
+            Matrix X_norm = Matrix.ElementDivide(X - mu_matrix, sigma_matrix);
 
             return X_norm;
         }
