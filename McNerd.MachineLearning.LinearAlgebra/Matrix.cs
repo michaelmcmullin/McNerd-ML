@@ -1145,27 +1145,36 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
 
         /// <summary>
-        /// Multiply each element in a given Matrix by a fixed number.
+        /// Get the square root of each element in a given Matrix.
         /// </summary>
         /// <param name="m">The Matrix to process.</param>
-        /// <param name="number">The number to multiply each Matrix element by.</param>
-        /// <returns>A new Matrix containing elements multiplied by the given number.</returns>
+        /// <returns>A new Matrix containing elements that are the square roots of the
+        /// original Matrix elements.</returns>
         public static Matrix ElementSqrt(Matrix m)
         {
             return ElementOperation(m, (x) => Math.Sqrt(x));
         }
 
         /// <summary>
-        /// Multiply each element in a given Matrix by a fixed number.
+        /// Get the absolute value of all Matrix elements.
         /// </summary>
         /// <param name="m">The Matrix to process.</param>
-        /// <param name="number">The number to multiply each Matrix element by.</param>
-        /// <returns>A new Matrix containing elements multiplied by the given number.</returns>
+        /// <returns>A new Matrix containing the absolute value of all elements.</returns>
         public static Matrix ElementAbs(Matrix m)
         {
             return ElementOperation(m, (x) => Math.Abs(x));
         }
 
+        /// <summary>
+        /// Calculate e to the power of m for each element in m.
+        /// </summary>
+        /// <param name="m">The Matrix to process.</param>
+        /// <returns>A Matrix containing elements that are e ^ m for all elements
+        /// in the original Matrix m.</returns>
+        public static Matrix ElementExp(Matrix m)
+        {
+            return ElementOperation(m, (x) => Math.Pow(Math.E, x));
+        }
         #endregion
 
         #region Specific implementations of ElementOperation (matrices)

@@ -1054,6 +1054,24 @@ namespace MLTests.LinearAlgebra
             Matrix m2 = Matrix.ElementAbs(m1);
             Assert.AreEqual(expectedResult, m2);
         }
+
+        /// <summary>
+        /// Test getting the absolute value of each matrix element.
+        /// </summary>
+        [TestCategory("Matrix: Element Operations"), TestMethod]
+        public void ElementExpMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 0.0, 1.0 }
+            });
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.0, Math.E }
+            });
+
+            Matrix m2 = Matrix.ElementExp(m1);
+            Assert.AreEqual(expectedResult, m2);
+        }
+
         #endregion
 
         #region Element Operations (matrix)
