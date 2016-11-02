@@ -297,6 +297,33 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
 
         /// <summary>
+        /// Add a number to each element in a Matrix.
+        /// </summary>
+        /// <param name="number">The number to add to each element in a Matrix.</param>
+        /// <param name="m">The Matrix to add numbers to.</param>
+        /// <returns>The result of adding the number to each element in a Matrix.</returns>
+        public static Matrix operator +(double scalar, Matrix m)
+        {
+            Matrix output = new Matrix(m.rows, m.columns);
+            for (int i = 0; i < m.data.Length; i++)
+            {
+                output.data[i] = scalar + m.data[i];
+            }
+            return output;
+        }
+
+        /// <summary>
+        /// Add a number to each element in a Matrix.
+        /// </summary>
+        /// <param name="number">The number to add to each element in a Matrix.</param>
+        /// <param name="m">The Matrix to add numbers to.</param>
+        /// <returns>The result of adding the number to each element in a Matrix.</returns>
+        public static Matrix operator +(Matrix m, double scalar)
+        {
+            return scalar + m;
+        }
+
+        /// <summary>
         /// Unary negative operator.
         /// </summary>
         /// <param name="m1">The matrix to negate.</param>
@@ -335,6 +362,39 @@ namespace McNerd.MachineLearning.LinearAlgebra
                 throw new InvalidMatrixDimensionsException("Cannot subtract two Matrix objects whose dimensions do not match.");
             }
         }
+
+        /// <summary>
+        /// Subtract each element in a Matrix from a number.
+        /// </summary>
+        /// <param name="number">The number to subtract each element in a Matrix from.</param>
+        /// <param name="m">The Matrix to subtract from the number.</param>
+        /// <returns>The result of subracting each element from a given number.</returns>
+        public static Matrix operator -(double scalar, Matrix m)
+        {
+            Matrix output = new Matrix(m.rows, m.columns);
+            for (int i = 0; i < m.data.Length; i++)
+            {
+                output.data[i] = scalar - m.data[i];
+            }
+            return output;
+        }
+
+        /// <summary>
+        /// Subtract a number from each element in a Matrix.
+        /// </summary>
+        /// <param name="number">The number to subtract from each element in a Matrix.</param>
+        /// <param name="m">The Matrix to subtract the number from.</param>
+        /// <returns>The result of subracting a number from each element in a given Matrix.</returns>
+        public static Matrix operator -(Matrix m, double scalar)
+        {
+            Matrix output = new Matrix(m.rows, m.columns);
+            for (int i = 0; i < m.data.Length; i++)
+            {
+                output.data[i] = m.data[i] - scalar;
+            }
+            return output;
+        }
+
 
         /// <summary>
         /// Multiply two matrices together.

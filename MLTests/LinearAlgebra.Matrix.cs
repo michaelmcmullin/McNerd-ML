@@ -525,6 +525,24 @@ namespace MLTests.LinearAlgebra
             });
             Matrix m3 = m1 + m2;
         }
+
+        [TestMethod]
+        public void AddingNumberAndMatrixTogether()
+        {
+            double number = 4.0;
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 5.0, 6.0, 7.0 },
+                { 8.0, 9.0, 10.0 }
+            });
+
+            Matrix m2 = number + m1;
+            Assert.AreEqual(expectedResult, m2);
+        }
+
         #endregion
 
         #region Subtraction
@@ -575,6 +593,41 @@ namespace MLTests.LinearAlgebra
             });
             Matrix m3 = m1 - m2;
         }
+
+        [TestMethod]
+        public void SubractingMatrixFromScalar()
+        {
+            double number = 10.0;
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 9.0, 8.0, 7.0 },
+                { 6.0, 5.0, 4.0 }
+            });
+
+            Matrix m2 = number - m1;
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestMethod]
+        public void SubractingScalarFromMatrix()
+        {
+            double number = 10.0;
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix expectedResult = new Matrix(new double[,] {
+                { -9.0, -8.0, -7.0 },
+                { -6.0, -5.0, -4.0 }
+            });
+
+            Matrix m2 = m1 - number;
+            Assert.AreEqual(expectedResult, m2);
+        }
+
         #endregion
 
         #region Unary Operators
