@@ -297,6 +297,21 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
 
         /// <summary>
+        /// Unary negative operator.
+        /// </summary>
+        /// <param name="m1">The matrix to negate.</param>
+        /// <returns>The result of negating every element in the given Matrix.</returns>
+        public static Matrix operator -(Matrix m1)
+        {
+            Matrix output = new Matrix(m1.rows, m1.columns);
+            for (int i = 0; i < m1.data.Length; i++)
+            {
+                output.data[i] = -m1.data[i];
+            }
+            return output;
+        }
+
+        /// <summary>
         /// Subtract one matrix from another.
         /// </summary>
         /// <param name="m1">The first matrix to subtract from.</param>
