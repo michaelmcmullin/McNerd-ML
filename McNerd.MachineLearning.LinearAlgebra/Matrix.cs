@@ -439,11 +439,37 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// </summary>
         /// <param name="m">The matrix to apply multiplication to.</param>
         /// <param name="scalar">The scalar value to multiply each element of the matrix by.</param>
-        /// <returns>A matrix representing the scalar multiplication of scalar * m.</returns>
+        /// <returns>A matrix representing the scalar multiplication of m * scalar.</returns>
         public static Matrix operator *(Matrix m, double scalar)
         {
             // Same as above, but ensuring commutativity - i.e. (s * m) == (m * s).
             return scalar * m;
+        }
+
+        /// <summary>
+        /// Scalar division of a matrix.
+        /// </summary>
+        /// <param name="scalar">The scalar value to divide each element of the matrix by.</param>
+        /// <param name="m">The matrix to apply division to.</param>
+        /// <returns>A matrix representing the scalar division of scalar / m.</returns>
+        public static Matrix operator /(double scalar, Matrix m)
+        {
+            Matrix output = new Matrix(m.rows, m.columns);
+            Parallel.For(0, m.rows, i => DivideScalarByRow(i, m, scalar, ref output));
+            return output;
+        }
+
+        /// <summary>
+        /// Scalar division of a matrix.
+        /// </summary>
+        /// <param name="m">The matrix to apply division to.</param>
+        /// <param name="scalar">The scalar value to division each element of the matrix by.</param>
+        /// <returns>A matrix representing the scalar division of m / scalar.</returns>
+        public static Matrix operator /(Matrix m, double scalar)
+        {
+            Matrix output = new Matrix(m.rows, m.columns);
+            Parallel.For(0, m.rows, i => DivideRow(i, m, scalar, ref output));
+            return output;
         }
 
         /// <summary>
@@ -696,6 +722,45 @@ namespace McNerd.MachineLearning.LinearAlgebra
         private static void MultiplyByTransposedColumn(int column, Matrix m1, ref Matrix output)
         {
             MultiplyByTransposedColumn(column, m1, m1, ref output);
+        }
+
+        /// <summary>
+        /// Calculate the results of dividing each element in a matrix
+        /// row by a scalar value.
+        /// </summary>
+        /// <param name="row">The zero-indexed row to calculate.</param>
+        /// <param name="m">The matrix to divide by a scalar value.</param>
+        /// <param name="scalar">The scalar value to divide the matrix by.</param>
+        /// <param name="output">The matrix that contains the results of dividing the input
+        /// matrix by a scalar value.</param>
+        private static void DivideRow(int row, Matrix m, double scalar, ref Matrix output)
+        {
+            int m_index = row * m.columns;
+
+            for (int i = m_index; i < m_index + output.Columns; i++)
+            {
+                output.data[i] = m.data[i] / scalar;
+            }
+        }
+
+
+        /// <summary>
+        /// Calculate the results of dividing a scalar value by each element
+        /// in a matrix.
+        /// </summary>
+        /// <param name="row">The zero-indexed row to calculate.</param>
+        /// <param name="m">The matrix to divide into a scalar value.</param>
+        /// <param name="scalar">The scalar value to divide by the matrix elements.</param>
+        /// <param name="output">The matrix that contains the results of dividing the scalar
+        /// value by each element in the matrix.</param>
+        private static void DivideScalarByRow(int row, Matrix m, double scalar, ref Matrix output)
+        {
+            int m_index = row * m.columns;
+
+            for (int i = m_index; i < m_index + output.Columns; i++)
+            {
+                output.data[i] = scalar / m.data[i];
+            }
         }
 
         #endregion

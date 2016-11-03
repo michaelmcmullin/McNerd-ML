@@ -478,7 +478,7 @@ namespace MLTests.LinearAlgebra
 
         #region Operator Tests
         #region Addition
-        [TestMethod]
+        [TestCategory("Matrix: Operator Overloads"), TestMethod]
         public void AddingTwoDefinedMatricesTogether()
         {
             Matrix m1 = new Matrix(new double[,] {
@@ -498,7 +498,7 @@ namespace MLTests.LinearAlgebra
             Assert.AreEqual(expectedResult, m3);
         }
 
-        [TestMethod]
+        [TestCategory("Matrix: Operator Overloads"), TestMethod]
         [ExpectedException(typeof(NullReferenceException), "Cannot add a null Matrix.")]
         public void AddingDefinedMatrixToNullMatrix()
         {
@@ -511,7 +511,7 @@ namespace MLTests.LinearAlgebra
             Matrix m3 = m1 + m2;
         }
 
-        [TestMethod]
+        [TestCategory("Matrix: Operator Overloads"), TestMethod]
         [ExpectedException(typeof(InvalidMatrixDimensionsException), "Matrix dimensions must match.")]
         public void AddingTwoUnevenDefinedMatricesTogether()
         {
@@ -526,8 +526,8 @@ namespace MLTests.LinearAlgebra
             Matrix m3 = m1 + m2;
         }
 
-        [TestMethod]
-        public void AddingNumberAndMatrixTogether()
+        [TestCategory("Matrix: Operator Overloads"), TestMethod]
+        public void AddingScalarAndMatrixTogether()
         {
             double number = 4.0;
             Matrix m1 = new Matrix(new double[,] {
@@ -543,10 +543,27 @@ namespace MLTests.LinearAlgebra
             Assert.AreEqual(expectedResult, m2);
         }
 
+        [TestCategory("Matrix: Operator Overloads"), TestMethod]
+        public void AddingMatrixAndScalarTogether()
+        {
+            double number = 4.0;
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 5.0, 6.0, 7.0 },
+                { 8.0, 9.0, 10.0 }
+            });
+
+            Matrix m2 = m1 + number;
+            Assert.AreEqual(expectedResult, m2);
+        }
+
         #endregion
 
         #region Subtraction
-        [TestMethod]
+        [TestCategory("Matrix: Operator Overloads"), TestMethod]
         public void SubractingOneDefinedMatrixFromAnother()
         {
             Matrix m1 = new Matrix(new double[,] {
@@ -566,7 +583,7 @@ namespace MLTests.LinearAlgebra
             Assert.AreEqual(expectedResult, m3);
         }
 
-        [TestMethod]
+        [TestCategory("Matrix: Operator Overloads"), TestMethod]
         [ExpectedException(typeof(NullReferenceException), "Cannot subtract a null Matrix.")]
         public void SubtractingNullMatrixFromDefinedMatrix()
         {
@@ -579,7 +596,7 @@ namespace MLTests.LinearAlgebra
             Matrix m3 = m1 - m2;
         }
 
-        [TestMethod]
+        [TestCategory("Matrix: Operator Overloads"), TestMethod]
         [ExpectedException(typeof(InvalidMatrixDimensionsException), "Matrix dimensions must match.")]
         public void SubractingTwoUnevenDefinedMatrices()
         {
@@ -594,7 +611,7 @@ namespace MLTests.LinearAlgebra
             Matrix m3 = m1 - m2;
         }
 
-        [TestMethod]
+        [TestCategory("Matrix: Operator Overloads"), TestMethod]
         public void SubractingMatrixFromScalar()
         {
             double number = 10.0;
@@ -611,7 +628,7 @@ namespace MLTests.LinearAlgebra
             Assert.AreEqual(expectedResult, m2);
         }
 
-        [TestMethod]
+        [TestCategory("Matrix: Operator Overloads"), TestMethod]
         public void SubractingScalarFromMatrix()
         {
             double number = 10.0;
@@ -631,7 +648,7 @@ namespace MLTests.LinearAlgebra
         #endregion
 
         #region Unary Operators
-        [TestMethod]
+        [TestCategory("Matrix: Operator Overloads"), TestMethod]
         public void NegatingAMatrix()
         {
             Matrix m1 = new Matrix(new double[,] {
@@ -649,7 +666,7 @@ namespace MLTests.LinearAlgebra
         #endregion
 
         #region Multiplication
-        [TestMethod]
+        [TestCategory("Matrix: Operator Overloads"), TestMethod]
         public void MultiplyingTwoDefinedMatricesTogether()
         {
             Matrix m1 = new Matrix(new double[,] {
@@ -672,7 +689,7 @@ namespace MLTests.LinearAlgebra
             Assert.AreEqual(expectedResult, m3);
         }
 
-        [TestMethod]
+        [TestCategory("Matrix: Operator Overloads"), TestMethod]
         [ExpectedException(typeof(NullReferenceException), "Cannot multiply a null Matrix.")]
         public void MultiplyingDefinedMatrixWithNull()
         {
@@ -686,7 +703,7 @@ namespace MLTests.LinearAlgebra
             Matrix m3 = m1 * m2;
         }
 
-        [TestMethod]
+        [TestCategory("Matrix: Operator Overloads"), TestMethod]
         [ExpectedException(typeof(InvalidMatrixDimensionsException), "Matrix 1 column count must match matrix 2 row count.")]
         public void MultiplyingTwoIncorrectDimensionMatricesTogether()
         {
@@ -703,7 +720,7 @@ namespace MLTests.LinearAlgebra
             Matrix m3 = m1 * m2;
         }
 
-        [TestMethod]
+        [TestCategory("Matrix: Operator Overloads"), TestMethod]
         public void ScalarMultiplicationOfDefinedMatrix()
         {
             Matrix m1 = new Matrix(new double[,] {
@@ -724,7 +741,7 @@ namespace MLTests.LinearAlgebra
             Assert.AreEqual(expectedResult, m3);
         }
 
-        [TestMethod]
+        [TestCategory("Matrix: Operator Overloads"), TestMethod]
         [ExpectedException(typeof(NullReferenceException), "Cannot multiply a null Matrix.")]
         public void ScalarMultiplicationOfNullMatrix()
         {
@@ -733,7 +750,7 @@ namespace MLTests.LinearAlgebra
             Matrix m2 = scalar * m1;
         }
 
-        [TestMethod]
+        [TestCategory("Matrix: Operator Overloads"), TestMethod]
         public void MultiplyingMatrixAndVectorTogether()
         {
             Matrix m1 = new Matrix(new double[,] {
@@ -975,8 +992,45 @@ namespace MLTests.LinearAlgebra
         }
         #endregion
 
+        #region Division
+        [TestCategory("Matrix: Operator Overloads"), TestMethod]
+        public void DivideScalarByMatrix()
+        {
+            double number = 12.0;
+            Matrix m1 = new Matrix(new double[,] {
+                { 2.0, 3.0, 4.0 },
+                { 6.0, 10.0, 12.0 }
+            });
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 6.0, 4.0, 3.0 },
+                { 2.0, 1.2, 1.0 }
+            });
+
+            Matrix m2 = number / m1;
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Operator Overloads"), TestMethod]
+        public void DivideMatrixByScalar()
+        {
+            double number = 4.0;
+            Matrix m1 = new Matrix(new double[,] {
+                { 8.0, 12.0, 16.0 },
+                { 20.0, 24.0, 28.0 }
+            });
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 2.0, 3.0, 4.0 },
+                { 5.0, 6.0, 7.0 }
+            });
+
+            Matrix m2 = m1 / number;
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        #endregion
+
         #region Equality
-        [TestMethod]
+        [TestCategory("Matrix: Operator Overloads"), TestMethod]
         public void EqualityOperatorOnTwoMatrices()
         {
             Matrix m1 = new Matrix(new double[,] {
