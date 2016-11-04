@@ -36,6 +36,11 @@ namespace ConsoleTester
                     LinearRegressionDemo();
                     WriteCommands();
                     break;
+                case '2':
+                    Console.Clear();
+                    LogisticRegressionDemo();
+                    WriteCommands();
+                    break;
                 case 'x':
                     IsExit = true;
                     break;
@@ -256,14 +261,39 @@ namespace ConsoleTester
             #endregion
         }
 
+        static void LogisticRegressionDemo()
+        {
+            WriteH1("Logistic Regression");
+
+            #region Sigmoid Function
+            WriteH2("Sigmoid Function");
+
+            Matrix m1 = new Matrix(new double[,] { { 1200000 } });
+            Matrix sigmoid1 = LogisticRegression.Sigmoid(m1);
+            Console.Write("Target: 1.0   Actual: {0}", sigmoid1);
+
+            m1[0, 0] = -25000;
+            sigmoid1 = LogisticRegression.Sigmoid(m1);
+            Console.Write("Target: 0.0   Actual: {0}", sigmoid1);
+
+            m1[0, 0] = 0;
+            sigmoid1 = LogisticRegression.Sigmoid(m1);
+            Console.Write("Target: 0.5   Actual: {0}", sigmoid1);
+
+            m1 = new Matrix(new double[,] { { 4, 5, 6 } });
+            sigmoid1 = LogisticRegression.Sigmoid(m1);
+            Console.Write("Target: 0.98 0.99 0.997   Actual: {0}", sigmoid1);
+            #endregion
+        }
+
         static void WriteCommands()
         {
             ConsoleColor fc = Console.ForegroundColor;
             ConsoleColor bc = Console.BackgroundColor;
-            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.ForegroundColor = ConsoleColor.Black;
             Console.BackgroundColor = ConsoleColor.Gray;
 
-            Console.Write("\n1:Linear Regression  x:Exit");
+            Console.Write("\n1:Linear Regression\n2:Logistic Regression\nx:Exit");
 
             Console.ForegroundColor = fc;
             Console.BackgroundColor = bc;
