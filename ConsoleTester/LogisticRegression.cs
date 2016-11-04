@@ -16,9 +16,7 @@ namespace ConsoleTester
 
         public static Matrix Predict(Matrix X, Matrix theta)
         {
-            Matrix p = Sigmoid(X * theta);
-
-            return p;
+            return Sigmoid(X * theta) >= 0.5;
         }
     }
 }

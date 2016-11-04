@@ -284,6 +284,20 @@ namespace ConsoleTester
             sigmoid1 = LogisticRegression.Sigmoid(m1);
             Console.Write("Target: 0.98 0.99 0.997   Actual: {0}", sigmoid1);
             #endregion
+
+            #region Predict
+            WriteH2("Prediction");
+
+            m1 = new Matrix(new double[,] { { 1, 1 }, { 1, 2.5 }, { 1, 3 }, { 1, 4 } });
+            Matrix theta = new Matrix(new double[,] { { -3.5 }, { 1.3 } });
+            Matrix prediction = LogisticRegression.Predict(m1, theta);
+            Console.WriteLine("Target: 0.0 ; 0.0 ; 1.0 ; 1.0 ;  Actual: {0}", prediction.ToString().Replace("\n", "; "));
+
+            m1 = Matrix.Magic(3);
+            theta = new Matrix(new double[,] { { 4 }, { 3 }, { -8 } });
+            prediction = LogisticRegression.Predict(m1, theta);
+            Console.WriteLine("Target: 0.0 ; 0.0 ; 1.0 ;        Actual: {0}", prediction.ToString().Replace("\n", "; "));
+            #endregion
         }
 
         static void WriteCommands()
