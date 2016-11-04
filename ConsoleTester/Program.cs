@@ -14,7 +14,40 @@ namespace ConsoleTester
     {
         static void Main(string[] args)
         {
-            #region Linear Regression
+            bool Exit = false;
+            WriteCommands();
+
+            while(!Exit)
+            {
+                Exit = GetCommand();
+            }
+        }
+
+        static bool GetCommand()
+        {
+            bool IsExit = false;
+
+            ConsoleKeyInfo key = Console.ReadKey(true);
+
+            switch (key.KeyChar)
+            {
+                case '1':
+                    Console.Clear();
+                    LinearRegressionDemo();
+                    WriteCommands();
+                    break;
+                case 'x':
+                    IsExit = true;
+                    break;
+                default:
+                    break;
+            }
+
+            return IsExit;
+        }
+
+        static void LinearRegressionDemo()
+        {
             WriteH1("Linear Regression");
 
             #region Compute Cost
@@ -221,10 +254,19 @@ namespace ConsoleTester
             Console.Write("Target: 0.008; 0.568; 0.486;   Actual: ");
             Console.WriteLine(thetaNormal.ToString().Replace(" \n", "; "));
             #endregion
+        }
 
-            #endregion
+        static void WriteCommands()
+        {
+            ConsoleColor fc = Console.ForegroundColor;
+            ConsoleColor bc = Console.BackgroundColor;
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.BackgroundColor = ConsoleColor.Gray;
 
-            Console.ReadLine();
+            Console.Write("\n1:Linear Regression  x:Exit");
+
+            Console.ForegroundColor = fc;
+            Console.BackgroundColor = bc;
         }
 
         static void WriteH1(string s)
