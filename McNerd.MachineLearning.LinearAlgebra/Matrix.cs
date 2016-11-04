@@ -493,6 +493,66 @@ namespace McNerd.MachineLearning.LinearAlgebra
         {
             return !(m1 == m2);
         }
+
+        /// <summary>
+        /// Create a Matrix truth table containing 1 and 0 representing
+        /// values that are less than the given scalar.
+        /// </summary>
+        /// <param name="m">The Matrix to compare to the scalar value.</param>
+        /// <param name="scalar">A scalar value used for comparison.</param>
+        /// <returns>A Matrix with 1s and 0s representing true and false for the
+        /// comparison.</returns>
+        public static Matrix operator <(Matrix m, double scalar)
+        {
+            Matrix output = new Matrix(m.rows, m.columns);
+            Parallel.For(0, m.rows, i => LessThanRow(i, m, scalar, ref output));
+            return output;
+        }
+
+        /// <summary>
+        /// Create a Matrix truth table containing 1 and 0 representing
+        /// values that are greater than the given scalar.
+        /// </summary>
+        /// <param name="m">The Matrix to compare to the scalar value.</param>
+        /// <param name="scalar">A scalar value used for comparison.</param>
+        /// <returns>A Matrix with 1s and 0s representing true and false for the
+        /// comparison.</returns>
+        public static Matrix operator >(Matrix m, double scalar)
+        {
+            Matrix output = new Matrix(m.rows, m.columns);
+            Parallel.For(0, m.rows, i => GreaterThanRow(i, m, scalar, ref output));
+            return output;
+        }
+
+        /// <summary>
+        /// Create a Matrix truth table containing 1 and 0 representing
+        /// values that are less than or equal to the given scalar.
+        /// </summary>
+        /// <param name="m">The Matrix to compare to the scalar value.</param>
+        /// <param name="scalar">A scalar value used for comparison.</param>
+        /// <returns>A Matrix with 1s and 0s representing true and false for the
+        /// comparison.</returns>
+        public static Matrix operator <=(Matrix m, double scalar)
+        {
+            Matrix output = new Matrix(m.rows, m.columns);
+            Parallel.For(0, m.rows, i => LessThanOrEqualToRow(i, m, scalar, ref output));
+            return output;
+        }
+
+        /// <summary>
+        /// Create a Matrix truth table containing 1 and 0 representing
+        /// values that are greater than or equal to the given scalar.
+        /// </summary>
+        /// <param name="m">The Matrix to compare to the scalar value.</param>
+        /// <param name="scalar">A scalar value used for comparison.</param>
+        /// <returns>A Matrix with 1s and 0s representing true and false for the
+        /// comparison.</returns>
+        public static Matrix operator >=(Matrix m, double scalar)
+        {
+            Matrix output = new Matrix(m.rows, m.columns);
+            Parallel.For(0, m.rows, i => GreaterThanOrEqualToRow(i, m, scalar, ref output));
+            return output;
+        }
         #endregion
 
         #region Methods
@@ -743,7 +803,6 @@ namespace McNerd.MachineLearning.LinearAlgebra
             }
         }
 
-
         /// <summary>
         /// Calculate the results of dividing a scalar value by each element
         /// in a matrix.
@@ -760,6 +819,78 @@ namespace McNerd.MachineLearning.LinearAlgebra
             for (int i = m_index; i < m_index + output.Columns; i++)
             {
                 output.data[i] = scalar / m.data[i];
+            }
+        }
+
+        /// <summary>
+        /// Calculate if each element in a row is greater than or equal to the given value, creating
+        /// a 1.0 if true, or 0.0 otherwise.
+        /// </summary>
+        /// <param name="row">The zero-indexed row to calculate.</param>
+        /// <param name="m">The matrix to compare to the scalar value.</param>
+        /// <param name="scalar">The scalar value to compare to the matrix elements.</param>
+        /// <param name="output">The matrix that contains the comparison results.</param>
+        private static void GreaterThanOrEqualToRow(int row, Matrix m, double scalar, ref Matrix output)
+        {
+            int m_index = row * m.columns;
+
+            for (int i = m_index; i < m_index + output.Columns; i++)
+            {
+                output.data[i] = m.data[i] >= scalar ? 1.0 : 0.0;
+            }
+        }
+
+        /// <summary>
+        /// Calculate if each element in a row is greater than the given value, creating
+        /// a 1.0 if true, or 0.0 otherwise.
+        /// </summary>
+        /// <param name="row">The zero-indexed row to calculate.</param>
+        /// <param name="m">The matrix to compare to the scalar value.</param>
+        /// <param name="scalar">The scalar value to compare to the matrix elements.</param>
+        /// <param name="output">The matrix that contains the comparison results.</param>
+        private static void GreaterThanRow(int row, Matrix m, double scalar, ref Matrix output)
+        {
+            int m_index = row * m.columns;
+
+            for (int i = m_index; i < m_index + output.Columns; i++)
+            {
+                output.data[i] = m.data[i] > scalar ? 1.0 : 0.0;
+            }
+        }
+
+        /// <summary>
+        /// Calculate if each element in a row is less than or equal to the given value, creating
+        /// a 1.0 if true, or 0.0 otherwise.
+        /// </summary>
+        /// <param name="row">The zero-indexed row to calculate.</param>
+        /// <param name="m">The matrix to compare to the scalar value.</param>
+        /// <param name="scalar">The scalar value to compare to the matrix elements.</param>
+        /// <param name="output">The matrix that contains the comparison results.</param>
+        private static void LessThanOrEqualToRow(int row, Matrix m, double scalar, ref Matrix output)
+        {
+            int m_index = row * m.columns;
+
+            for (int i = m_index; i < m_index + output.Columns; i++)
+            {
+                output.data[i] = m.data[i] <= scalar ? 1.0 : 0.0;
+            }
+        }
+
+        /// <summary>
+        /// Calculate if each element in a row is less than the given value, creating
+        /// a 1.0 if true, or 0.0 otherwise.
+        /// </summary>
+        /// <param name="row">The zero-indexed row to calculate.</param>
+        /// <param name="m">The matrix to compare to the scalar value.</param>
+        /// <param name="scalar">The scalar value to compare to the matrix elements.</param>
+        /// <param name="output">The matrix that contains the comparison results.</param>
+        private static void LessThanRow(int row, Matrix m, double scalar, ref Matrix output)
+        {
+            int m_index = row * m.columns;
+
+            for (int i = m_index; i < m_index + output.Columns; i++)
+            {
+                output.data[i] = m.data[i] < scalar ? 1.0 : 0.0;
             }
         }
 

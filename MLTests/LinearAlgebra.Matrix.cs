@@ -1046,6 +1046,72 @@ namespace MLTests.LinearAlgebra
         }
         #endregion
 
+        #region Comparisons
+        [TestCategory("Matrix: Operator Overloads"), TestMethod]
+        public void ElementsInMatrixLessThanScalar()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix m2 = m1 < 3;
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.0, 1.0, 0.0 },
+                { 0.0, 0.0, 0.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Operator Overloads"), TestMethod]
+        public void ElementsInMatrixLessThanOrEqualToScalar()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix m2 = m1 <= 3;
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.0, 1.0, 1.0 },
+                { 0.0, 0.0, 0.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Operator Overloads"), TestMethod]
+        public void ElementsInMatrixGreaterThanScalar()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix m2 = m1 > 3;
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 0.0, 0.0, 0.0 },
+                { 1.0, 1.0, 1.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Operator Overloads"), TestMethod]
+        public void ElementsInMatrixGreaterThanOrEqualToScalar()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix m2 = m1 >= 3;
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 0.0, 0.0, 1.0 },
+                { 1.0, 1.0, 1.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m2);
+        }
+        #endregion
+
         #region Element Operations (scalar)
         /// <summary>
         /// Test adding 5 to each matrix element
