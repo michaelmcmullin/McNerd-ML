@@ -155,7 +155,6 @@ namespace MLTests.LinearAlgebra
             Assert.AreEqual(expectedResult, m2);
         }
 
-
         [TestMethod]
         [ExpectedException(typeof(NonInvertibleMatrixException), "Matrix is not invertible.")]
         public void NonInvertibleMatrix()
@@ -181,6 +180,21 @@ namespace MLTests.LinearAlgebra
             });
 
             Matrix m2 = m1.Inverse;
+        }
+
+        [TestMethod]
+        public void SumOfAllElementsInAMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,]
+            {
+                { 1.0, 2.0, 3.0 }, //6
+                { 4.0, 5.0, 6.0 }, //15
+                { 7.0, 8.0, 9.0 }  //24
+            });
+            double output = m1.SumAllElements;
+
+            double expectedValue = 45;
+            Assert.AreEqual(expectedValue, output);
         }
         #endregion
 

@@ -18,5 +18,18 @@ namespace ConsoleTester
         {
             return Sigmoid(X * theta) >= 0.5;
         }
+
+        public static double CostFunction(Matrix X, Matrix y, Matrix theta)
+        {
+            Matrix h = Sigmoid(X * theta);  // Hypothesis
+            Matrix ev = h - y;              // Error Vector
+
+            double part1 = (-y.Transpose * Matrix.ElementLog(h)).SumAllElements;
+            double part2 = ((1 - y).Transpose * Matrix.ElementLog(1 - h)).SumAllElements;
+
+            double output = (1.0 / (double)X.Rows) * (part1 - part2);
+
+            return output;
+        }
     }
 }

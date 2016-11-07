@@ -268,6 +268,22 @@ namespace McNerd.MachineLearning.LinearAlgebra
                 return reverseDiagonalSum == sum && diagonalSum == sum;
             }
         }
+
+        /// <summary>
+        /// Calculate the sum of all elements in this Matrix.
+        /// </summary>
+        public double SumAllElements
+        {
+            get
+            {
+                double output = 0;
+                foreach(double element in this)
+                {
+                    output += element;
+                }
+                return output;
+            }
+        }
         #endregion
 
         #region Operations
