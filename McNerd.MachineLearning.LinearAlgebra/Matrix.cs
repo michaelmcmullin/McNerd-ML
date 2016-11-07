@@ -1446,6 +1446,18 @@ namespace McNerd.MachineLearning.LinearAlgebra
         {
             return ElementOperation(m, (x) => Math.Pow(Math.E, x));
         }
+
+        /// <summary>
+        /// Calculate the natural logarithm for each element in m.
+        /// </summary>
+        /// <param name="m">The Matrix to process.</param>
+        /// <returns>A Matrix containing elements a that are e ^ a = m for all elements
+        /// in the original Matrix m.</returns>
+        public static Matrix ElementLog(Matrix m)
+        {
+            return ElementOperation(m, (x) => Math.Log(x));
+        }
+
         #endregion
 
         #region Specific implementations of ElementOperation (matrices)

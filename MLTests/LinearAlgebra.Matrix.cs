@@ -1263,6 +1263,23 @@ namespace MLTests.LinearAlgebra
             Assert.AreEqual(expectedResult, m2);
         }
 
+        /// <summary>
+        /// Test getting the natural logarithm value of each matrix element.
+        /// </summary>
+        [TestCategory("Matrix: Element Operations"), TestMethod]
+        public void ElementLogMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, Math.E }
+            });
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 0.0, 1.0 }
+            });
+
+            Matrix m2 = Matrix.ElementLog(m1);
+            Assert.AreEqual(expectedResult, m2);
+        }
+
         #endregion
 
         #region Element Operations (matrix)
