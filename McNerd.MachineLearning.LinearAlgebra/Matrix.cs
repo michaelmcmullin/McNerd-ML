@@ -512,6 +512,37 @@ namespace McNerd.MachineLearning.LinearAlgebra
 
         /// <summary>
         /// Create a Matrix truth table containing 1 and 0 representing
+        /// values that are equal tp the given scalar.
+        /// </summary>
+        /// <param name="m">The Matrix to compare to the scalar value.</param>
+        /// <param name="scalar">A scalar value used for comparison.</param>
+        /// <returns>A Matrix with 1s and 0s representing true and false for the
+        /// comparison.</returns>
+        public static Matrix operator ==(Matrix m, double scalar)
+        {
+            Matrix output = new Matrix(m.rows, m.columns);
+            Parallel.For(0, m.rows, i => EqualToRow(i, m, scalar, ref output));
+            return output;
+        }
+
+
+        /// <summary>
+        /// Create a Matrix truth table containing 1 and 0 representing
+        /// values that are not equal to the given scalar.
+        /// </summary>
+        /// <param name="m">The Matrix to compare to the scalar value.</param>
+        /// <param name="scalar">A scalar value used for comparison.</param>
+        /// <returns>A Matrix with 1s and 0s representing true and false for the
+        /// comparison.</returns>
+        public static Matrix operator !=(Matrix m, double scalar)
+        {
+            Matrix output = new Matrix(m.rows, m.columns);
+            Parallel.For(0, m.rows, i => NotEqualToRow(i, m, scalar, ref output));
+            return output;
+        }
+
+        /// <summary>
+        /// Create a Matrix truth table containing 1 and 0 representing
         /// values that are less than the given scalar.
         /// </summary>
         /// <param name="m">The Matrix to compare to the scalar value.</param>
@@ -907,6 +938,42 @@ namespace McNerd.MachineLearning.LinearAlgebra
             for (int i = m_index; i < m_index + output.Columns; i++)
             {
                 output.data[i] = m.data[i] < scalar ? 1.0 : 0.0;
+            }
+        }
+
+        /// <summary>
+        /// Calculate if each element in a row is equal to the given value, creating
+        /// a 1.0 if true, or 0.0 otherwise.
+        /// </summary>
+        /// <param name="row">The zero-indexed row to calculate.</param>
+        /// <param name="m">The matrix to compare to the scalar value.</param>
+        /// <param name="scalar">The scalar value to compare to the matrix elements.</param>
+        /// <param name="output">The matrix that contains the comparison results.</param>
+        private static void EqualToRow(int row, Matrix m, double scalar, ref Matrix output)
+        {
+            int m_index = row * m.columns;
+
+            for (int i = m_index; i < m_index + output.Columns; i++)
+            {
+                output.data[i] = m.data[i] == scalar ? 1.0 : 0.0;
+            }
+        }
+
+        /// <summary>
+        /// Calculate if each element in a row is not equal to the given value, creating
+        /// a 1.0 if true, or 0.0 otherwise.
+        /// </summary>
+        /// <param name="row">The zero-indexed row to calculate.</param>
+        /// <param name="m">The matrix to compare to the scalar value.</param>
+        /// <param name="scalar">The scalar value to compare to the matrix elements.</param>
+        /// <param name="output">The matrix that contains the comparison results.</param>
+        private static void NotEqualToRow(int row, Matrix m, double scalar, ref Matrix output)
+        {
+            int m_index = row * m.columns;
+
+            for (int i = m_index; i < m_index + output.Columns; i++)
+            {
+                output.data[i] = m.data[i] != scalar ? 1.0 : 0.0;
             }
         }
 

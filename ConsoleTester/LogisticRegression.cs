@@ -31,5 +31,34 @@ namespace ConsoleTester
 
             return output;
         }
+
+        public static double CostFunction(Matrix X, Matrix y, Matrix theta, double lambda)
+        {
+            double output = CostFunction(X, y, theta);
+
+            theta[0, 0] = 0;
+            double theta_sq = (theta.Transpose * theta).SumAllElements;
+
+            output += ((lambda / (2.0 * (double)X.Rows)) * theta_sq);
+
+            return output;
+        }
+
+        public static Matrix OneVsAll(Matrix X, Matrix y, int numberOfLabels, double lambda)
+        {
+            int m = X.Rows;
+            int n = X.Columns;
+            X = Matrix.Join(Matrix.Ones(m, 1), X, MatrixDimensions.Columns);
+            
+            Matrix all_theta = new Matrix(numberOfLabels, n+1);
+
+            for (int c=0; c < numberOfLabels; c++)
+            {
+
+            }
+
+            return all_theta;
+        }
+
     }
 }

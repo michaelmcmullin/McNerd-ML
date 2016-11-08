@@ -312,6 +312,27 @@ namespace ConsoleTester
 
             #region Regularized Cost Function
             WriteH2("Regularized Cost Function");
+            J = LogisticRegression.CostFunction(X, y, theta, 3);
+            Console.WriteLine("Target: 7.6832 ;  Actual: {0}", J);
+
+            X = new Matrix(new double[,] {
+                { 1.0, 0.1, 0.6, 1.1 },
+                { 1.0, 0.2, 0.7, 1.2 },
+                { 1.0, 0.3, 0.8, 1.3 },
+                { 1.0, 0.4, 0.9, 1.4 },
+                { 1.0, 0.5, 1.0, 1.5 }
+            });
+            y = new Matrix(new double[,] {
+                { 1.0 },
+                { 0.0 },
+                { 1.0 },
+                { 0.0 },
+                { 1.0 }
+            });
+            theta = new Matrix(new double[,] { { -2 }, { -1 }, { 1 }, { 2 } });
+            J = LogisticRegression.CostFunction(X, y, theta, 3);
+            Console.WriteLine("Target: 2.5348 ;  Actual: {0}", J);
+
             #endregion
         }
 
