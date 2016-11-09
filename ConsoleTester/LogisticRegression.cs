@@ -19,29 +19,37 @@ namespace ConsoleTester
             return Sigmoid(X * theta) >= 0.5;
         }
 
-        public static double CostFunction(Matrix X, Matrix y, Matrix theta)
+        public static Tuple<double, Matrix> CostFunction(Matrix X, Matrix y, Matrix theta)
         {
+            double m = (double)X.Rows;
             Matrix h = Sigmoid(X * theta);  // Hypothesis
             Matrix ev = h - y;              // Error Vector
 
             double part1 = (-y.Transpose * Matrix.ElementLog(h)).SumAllElements;
             double part2 = ((1 - y).Transpose * Matrix.ElementLog(1 - h)).SumAllElements;
 
-            double output = (1.0 / (double)X.Rows) * (part1 - part2);
-
-            return output;
+            double J = (1.0 / m) * (part1 - part2);
+            Matrix grad = (1 / m) * (X.Transpose*(h-y));
+            return Tuple.Create(J, grad);
         }
 
-        public static double CostFunction(Matrix X, Matrix y, Matrix theta, double lambda)
+        public static Tuple<double, Matrix> CostFunction(Matrix X, Matrix y, Matrix theta, double lambda)
         {
-            double output = CostFunction(X, y, theta);
+            double m = (double)X.Rows;
+            Matrix h = Sigmoid(X * theta);  // Hypothesis
+            Matrix ev = h - y;              // Error Vector
+            double part1 = (-y.Transpose * Matrix.ElementLog(h)).SumAllElements;
+            double part2 = ((1 - y).Transpose * Matrix.ElementLog(1 - h)).SumAllElements;
+
+            double J = (1.0 / m) * (part1 - part2);
 
             theta[0, 0] = 0;
             double theta_sq = (theta.Transpose * theta).SumAllElements;
 
-            output += ((lambda / (2.0 * (double)X.Rows)) * theta_sq);
+            J += ((lambda / (2.0 * m)) * theta_sq);
+            Matrix grad = ((1 / m) * (X.Transpose*(h-y))) + ((lambda/m) * theta);
 
-            return output;
+            return Tuple.Create(J, grad);
         }
 
         public static Matrix OneVsAll(Matrix X, Matrix y, int numberOfLabels, double lambda)
@@ -54,11 +62,17 @@ namespace ConsoleTester
 
             for (int c=0; c < numberOfLabels; c++)
             {
-
+                Matrix initial_theta = new Matrix(n+1, 1);
             }
 
             return all_theta;
         }
 
+        public static Matrix Minimize(Matrix X, Matrix y, Matrix theta, double lambda)
+        {
+            Matrix output = Matrix.Ones(1, theta.Rows);
+
+            return output;
+        }
     }
 }

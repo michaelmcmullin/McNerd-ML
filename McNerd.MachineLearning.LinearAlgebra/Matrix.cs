@@ -1139,6 +1139,23 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
 
         /// <summary>
+        /// Replace a given row with the contents of the first row in another
+        /// Matrix.
+        /// </summary>
+        /// <param name="row">The row to change.</param>
+        /// <param name="m">The Matrix to get new values from.</param>
+        public void SetRow(int row, Matrix m)
+        {
+            if (row >= this.Rows)
+                throw new IndexOutOfRangeException("The requested row is out of range");
+            int index = row * this.Columns;
+            for (int i = 0; i < Math.Min(this.Columns, m.Columns); i++)
+            {
+                this.data[index + i] = m.data[i];
+            }
+        }
+
+        /// <summary>
         /// Extract a column from this Matrix.
         /// </summary>
         /// <param name="column">The zero-index column to extract.</param>

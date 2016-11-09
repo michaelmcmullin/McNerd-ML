@@ -304,16 +304,16 @@ namespace ConsoleTester
             Matrix X = Matrix.Join(Matrix.Ones(3, 1), Matrix.Magic(3), MatrixDimensions.Columns);
             Matrix y = new Matrix(new double[,] { { 1 }, { 0 }, { 1 } });
             theta = new Matrix(new double[,] { { -2 }, { -1 }, { 1 }, { 2 } });
-            double J = LogisticRegression.CostFunction(X, y, theta);
+            Tuple<double, Matrix> cost = LogisticRegression.CostFunction(X, y, theta);
 
-            Console.WriteLine("Target: 4.6832 ;  Actual: {0}", J);
+            Console.WriteLine("Target: 4.6832 ;  Actual: {0}", cost.Item1);
 
             #endregion
 
             #region Regularized Cost Function
             WriteH2("Regularized Cost Function");
-            J = LogisticRegression.CostFunction(X, y, theta, 3);
-            Console.WriteLine("Target: 7.6832 ;  Actual: {0}", J);
+            cost = LogisticRegression.CostFunction(X, y, theta, 3);
+            Console.WriteLine("Target: 7.6832 ;  Actual: {0}", cost.Item1);
 
             X = new Matrix(new double[,] {
                 { 1.0, 0.1, 0.6, 1.1 },
@@ -330,11 +330,33 @@ namespace ConsoleTester
                 { 1.0 }
             });
             theta = new Matrix(new double[,] { { -2 }, { -1 }, { 1 }, { 2 } });
-            J = LogisticRegression.CostFunction(X, y, theta, 3);
-            Console.WriteLine("Target: 2.5348 ;  Actual: {0}", J);
+            cost = LogisticRegression.CostFunction(X, y, theta, 3);
+            Console.WriteLine("Target: 2.5348 ;  Actual: {0}", cost.Item1);
 
             #endregion
-        }
+
+            #region OneVsAll
+            WriteH2("One vs All");
+            X = new Matrix(new double[,] {
+                { 8.0, 1.0, 6.0 },
+                { 3.0, 5.0, 7.0 },
+                { 4.0, 9.0, 2.0 },
+                { 0.84147, 0.90930, 0.14112 },
+                { 0.54030, -0.41615, -0.98999 }
+            });
+            y = new Matrix(new double[,] {
+                { 1.0 },
+                { 2.0 },
+                { 2.0 },
+                { 1.0 },
+                { 3.0 }
+            });
+
+            Matrix all_theta = LogisticRegression.OneVsAll(X, y, 3, 0.1);
+
+            Console.WriteLine(all_theta);
+            #endregion
+    }
 
         static void WriteCommands()
         {
