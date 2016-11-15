@@ -88,6 +88,12 @@ namespace McNerd.MachineLearning.LinearAlgebra
                 }
             }
         }
+
+        public Matrix(Matrix m) : this(m.Rows, m.Columns)
+        {
+            for (int i = 0; i < data.Length; i++)
+                data[i] = m.data[i];
+        }
         #endregion
 
         #region Indexers

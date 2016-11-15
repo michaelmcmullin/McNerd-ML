@@ -351,6 +351,12 @@ namespace ConsoleTester
                 { 1.0 },
                 { 3.0 }
             });
+            //Matrix testTheta = new Matrix(4, 1);
+            //Matrix X0 = Matrix.Join(Matrix.Ones(5, 1), X, MatrixDimensions.Columns);
+            //cost = LogisticRegression.CostFunction(X0, y==1, testTheta, 0.1);
+            //Console.WriteLine(cost.Item1);
+            //Console.WriteLine(cost.Item2);
+
 
             Matrix all_theta = LogisticRegression.OneVsAll(X, y, 3, 0.1);
 
