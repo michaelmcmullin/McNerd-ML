@@ -9,16 +9,37 @@ namespace ConsoleTester
 {
     class LogisticRegression
     {
+        /// <summary>
+        /// Compute the Sigmoid (logistic) function of a given Matrix.
+        /// </summary>
+        /// <param name="z">The Matrix to compute the Sigmoid function of.</param>
+        /// <returns>A Matrix translating the original values into numbers
+        /// between 0 and 1.</returns>
         public static Matrix Sigmoid(Matrix z)
         {
             return 1 / (1 + Matrix.ElementExp(-z));
         }
 
+        /// <summary>
+        /// Predict if each element in a Matrix is 'true' or 'false'
+        /// (actually '1' or '0').
+        /// </summary>
+        /// <param name="X">The original feature Matrix.</param>
+        /// <param name="theta">The theta values to apply to each feature.</param>
+        /// <returns>A Matrix of 1 or 0 if a classification is likely or unlikely.</returns>
         public static Matrix Predict(Matrix X, Matrix theta)
         {
             return Sigmoid(X * theta) >= 0.5;
         }
 
+        /// <summary>
+        /// Calculate the cost function for logistic regression.
+        /// </summary>
+        /// <param name="X">The original features Matrix.</param>
+        /// <param name="y">The results Matrix.</param>
+        /// <param name="theta">The theta values to apply to each feature.</param>
+        /// <returns>The cost of using the given value of theta, and the gradient of
+        /// the cost (useful for iterative minimization functions)</returns>
         public static Tuple<double, Matrix> CostFunction(Matrix X, Matrix y, Matrix theta)
         {
             double m = (double)X.Rows;
@@ -33,6 +54,17 @@ namespace ConsoleTester
             return Tuple.Create(J, grad);
         }
 
+
+        /// <summary>
+        /// Calculate the regularized cost function for logistic regression.
+        /// </summary>
+        /// <param name="X">The original features Matrix.</param>
+        /// <param name="y">The results Matrix.</param>
+        /// <param name="theta">The theta values to apply to each feature.</param>
+        /// <param name="lambda">The regularization parameter which helps reduce overfitting.
+        /// Note that using values that are too high will lead to underfitting.</param>
+        /// <returns>The cost of using the given value of theta, and the gradient of
+        /// the cost (useful for iterative minimization functions)</returns>
         public static Tuple<double, Matrix> CostFunction(Matrix X, Matrix y, Matrix theta, double lambda)
         {
             double m = (double)X.Rows;
@@ -53,6 +85,20 @@ namespace ConsoleTester
             return Tuple.Create(J, grad);
         }
 
+        /// <summary>
+        /// Create multiple logistic regression classifiers, one for each class we're
+        /// trying to categorize.
+        /// </summary>
+        /// <param name="X">The features Matrix (n x m).</param>
+        /// <param name="y">The results Matrix (n x 1).</param>
+        /// <param name="numberOfLabels">The number of items to classify.</param>
+        /// <param name="lambda">The regularization parameter.</param>
+        /// <returns>A Matrix where each row is a learned set of parameters for that
+        /// particular class.</returns>
+        /// <remarks>At the moment, this method is classifying specific numbers, from
+        /// 1 to numberOfLabels. This is a little unrealistic, as data sets might have
+        /// completely different labelling requirements. A future improvement might be
+        /// to pass an array of labels.</remarks>
         public static Matrix OneVsAll(Matrix X, Matrix y, int numberOfLabels, double lambda)
         {
             int m = X.Rows;
@@ -72,8 +118,31 @@ namespace ConsoleTester
             return all_theta;
         }
 
+        /// <summary>
+        /// The signature of a method that can be passed to the Minimize method.
+        /// </summary>
+        /// <param name="X">The features Matrix (n x m).</param>
+        /// <param name="y">The results Matrix (n x 1).</param>
+        /// <param name="theta">The initial theta values.</param>
+        /// <param name="lambda">The regularization parameter.</param>
+        /// <returns>The cost of using the given value of theta, and the gradient of
+        /// the cost (useful for iterative minimization functions)</returns>
         public delegate Tuple<double, Matrix> MinimizeFunction(Matrix X, Matrix y, Matrix theta, double lambda);
 
+        /// <summary>
+        /// Minimize the cost function for an initial set of values.
+        /// </summary>
+        /// <param name="f">A function that calculates the cost, and a vector
+        /// of partial derivatives.</param>
+        /// <param name="Features">The features being assessed for each label.</param>
+        /// <param name="y">A truth table containing '1' if it matches the label
+        /// being investigated, or '0' if it's not a match.</param>
+        /// <param name="theta">Initial values for theta.</param>
+        /// <param name="lambda">The regularization parameter.</param>
+        /// <param name="maxIterations">The maximum number of iterations to perform
+        /// before stopping.</param>
+        /// <param name="i">The final number of iterations used to find a result.</param>
+        /// <returns>The solution for theta for a given set of labels.</returns>
         public static Matrix Minimize(MinimizeFunction f, Matrix Features, Matrix y, Matrix theta, double lambda, int maxIterations, out int i)
         {
             int length = maxIterations > 0 ? maxIterations : 100;
