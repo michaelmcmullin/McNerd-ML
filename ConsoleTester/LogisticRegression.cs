@@ -177,29 +177,22 @@ namespace ConsoleTester
             double MAX = 20;                         // max 20 function evaluations per line search
             double RATIO = 100;                                      // maximum allowed slope ratio
 
-            // =====================================================================================
-            //argstr = ['feval(f, X'];                      // compose string used to call function
-            //for i = 1:(nargin - 3)
-            //  argstr = [argstr, ',P', int2str(i)];
-            //end
-            //argstr = [argstr, ')'];
-            // =====================================================================================
-
-            //if max(size(length)) == 2, red = length(2); length = length(1); else red = 1; end
-            //                  S =['Iteration '];
             double red = 1;
 
-            /*int*/ i = 0;                                            // zero the run length counter
+            i = 0;                                            // zero the run length counter
             bool ls_failed = false;                             // no previous line search has failed
             // fX = [];
+
+            //[f1 df1] = eval(argstr);                      // get function value and gradient
             Tuple<double, Matrix> cost1 = f(Features, y, theta, lambda);
             double f1 = cost1.Item1;
-            Matrix df1 = new Matrix(cost1.Item2);
-            //[f1 df1] = eval(argstr);                      // get function value and gradient
+            Matrix df1 = cost1.Item2;
+
             i = i + (length < 0 ? 1 : 0);                                            // count epochs?!
-            Matrix s = new Matrix(-df1);                                        // search direction is steepest
-            double d1 = (-s.Transpose * s)[0,0];                                                 // this is the slope
+            Matrix s = -df1;                                        // search direction is steepest
+            double d1 = (-Matrix.MultiplyTransposeBy(s))[0, 0];                                     // this is the slope
             double z1 = red / (1.0 - d1);                                  // initial step is red/(|s|+1)
+            double z2, A, B;
 
             while (i < Math.Abs(length))                                      // while not finished
             {
@@ -213,17 +206,13 @@ namespace ConsoleTester
 
                 //[f2 df2] = eval(argstr);
                 i = i + (length < 0 ? 1 : 0);                                          // count epochs?!
-                double d2 = (df2.Transpose * s)[0,0];
+                double d2 = MultiplyFirstRowTransposeBy(df2, s);
                 double f3 = f1; double d3 = d1; double z3 = -z1;             // initialize point 3 equal to point 1
                 double M = 0;
 
-                if (length > 0)
-                    M = MAX;
-                else
-                    M = Math.Min(MAX, -length - i);
+                M = (length > 0) ? MAX : Math.Min(MAX, -length - i);
 
                 bool success = false; double limit = -1;                     // initialize quantities
-                double z2, A, B;
                 while (true)
                 {
                     while (((f2 > f1 + z1 * RHO * d1) || (d2 > -SIG * d1)) && (M > 0))
@@ -252,7 +241,8 @@ namespace ConsoleTester
                         df2 = new Matrix(cost2.Item2);
 
                         M = M - 1; i = i + (length<0 ? 1 : 0);                           // count epochs?!
-                        d2 = (df2.Transpose*s)[0,0];
+                        //d2 = (df2.Transpose * s)[0, 0];
+                        d2 = MultiplyFirstRowTransposeBy(df2, s); // (Matrix.MultiplyTransposeBy(df2, s))[0, 0];
                         z3 = z3-z2;                    // z3 is now relative to the location of z2
                     }
                     if ((f2 > (f1 + z1 * RHO * d1)) || (d2 > (-SIG * d1)))
@@ -292,7 +282,7 @@ namespace ConsoleTester
                     df2 = new Matrix(cost2.Item2);
 
                     M = M - 1; i = i + (length < 0 ? 1 : 0);                             // count epochs?!
-                    d2 = (df2.Transpose*s)[0,0];
+                    d2 = MultiplyFirstRowTransposeBy(df2, s);
                 }                                                   // end of line search
 
 
@@ -303,11 +293,13 @@ namespace ConsoleTester
                     //fprintf('%s %4i | Cost: %4.6e\r', S, i, f1);
                     s = (df2.Transpose * df2 - df1.Transpose * df2)[0,0] / (df1.Transpose * df1)[0,0] * s - df2;     // Polack-Ribiere direction
                     Matrix tmp = new Matrix(df1); df1 = df2; df2 = tmp;                        // swap derivatives
-                    d2 = (df1.Transpose * s)[0, 0];
+                    //d2 = (df1.Transpose * s)[0, 0];
+                    d2 = (Matrix.MultiplyTransposeBy(df1, s))[0, 0];
                     if (d2 > 0)                                      // new slope must be negative
                     {
                         s = -df1;                              // otherwise use steepest direction
-                        d2 = (-s.Transpose * s)[0, 0];
+                        //d2 = (-s.Transpose * s)[0, 0];
+                        d2 = MultiplyFirstRowTransposeBy(s, true); // d2 = (-Matrix.MultiplyTransposeBy(s))[0, 0];
                     }
                     double TEST = d2-double.MinValue;
                     z1 = z1 * Math.Min(RATIO, d1 / (d2 - double.Epsilon));          // slope ratio but max RATIO
@@ -322,7 +314,7 @@ namespace ConsoleTester
 
                     Matrix tmp = new Matrix(df1); df1 = df2; df2 = tmp;                         // swap derivatives
                     s = -df1;                                                    // try steepest
-                    d1 = (-s.Transpose * s)[0, 0];
+                    d1 = MultiplyFirstRowTransposeBy(s, true);
                     z1 = 1 / (1 - d1);
                     ls_failed = true;                                    //this line search failed
                 }
@@ -330,5 +322,49 @@ namespace ConsoleTester
 
             return theta;
         }
+
+        private static double MultiplyFirstRowTransposeBy(Matrix m1, bool negate = false)
+        {
+            double result = 0;
+
+            if (negate)
+            {
+                for (int i = 0; i < m1.Rows; i++)
+                {
+                    double nextNumber = m1[i, 0];
+                    result += -nextNumber * nextNumber;
+                }
+            }
+            else
+            {
+                for (int i = 0; i < m1.Rows; i++)
+                {
+                    double nextNumber = m1[i, 0];
+                    result += nextNumber * nextNumber;
+                }
+            }
+
+            return result;
+        }
+
+
+        private static double MultiplyFirstRowTransposeBy(Matrix m1, Matrix m2, bool negate = false)
+        {
+            double result = 0;
+
+            if (negate)
+            {
+                for (int i = 0; i < m1.Rows; i++)
+                    result += -m1[i, 0] * m2[i, 0];
+            }
+            else
+            {
+                for (int i = 0; i < m1.Rows; i++)
+                    result += m1[i, 0] * m2[i, 0];
+            }
+
+            return result;
+        }
+
     }
 }
