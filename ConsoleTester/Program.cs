@@ -301,7 +301,7 @@ namespace ConsoleTester
 
             #region Cost Function
             WriteH2("Cost Function");
-            Matrix X = Matrix.Join(Matrix.Ones(3, 1), Matrix.Magic(3), MatrixDimensions.Columns);
+            Matrix X = Matrix.AddIdentityColumn(Matrix.Magic(3));
             Matrix y = new Matrix(new double[,] { { 1 }, { 0 }, { 1 } });
             theta = new Matrix(new double[,] { { -2 }, { -1 }, { 1 }, { 2 } });
             Tuple<double, Matrix> cost = LogisticRegression.CostFunction(X, y, theta);
@@ -376,7 +376,7 @@ namespace ConsoleTester
                 {-2.0,  4.0,-3.0 }
             });
             prediction = LogisticRegression.PredictOneVsAll(all_theta, X);
-            Console.WriteLine("Target: 1; 2; 2; 1;    Actual: {0}", prediction.ToString().Replace("\n", "; "));
+            Console.WriteLine("Target: 0; 1; 1; 0;    Actual: {0}", prediction.ToString().Replace("\n", "; "));
             #endregion
         }
 

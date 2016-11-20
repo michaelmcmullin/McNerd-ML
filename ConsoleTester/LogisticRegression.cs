@@ -365,12 +365,10 @@ namespace ConsoleTester
             return result;
         }
 
-
         public static Matrix PredictOneVsAll(Matrix all_theta, Matrix X)
         {
-            Matrix new_X = Matrix.Join(Matrix.Ones(X.Rows, 1), X, MatrixDimensions.Columns);
-            Matrix h = Sigmoid(Matrix.MultiplyByTranspose(all_theta, new_X));
-            return Matrix.Max(h).Transpose;
+            Matrix h = Sigmoid(Matrix.MultiplyByTranspose(all_theta, Matrix.AddIdentityColumn(X)));
+            return Matrix.MaxIndex(h).Transpose;
         }
     }
 }

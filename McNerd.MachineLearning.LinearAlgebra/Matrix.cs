@@ -1124,6 +1124,25 @@ namespace McNerd.MachineLearning.LinearAlgebra
             return result;
         }
 
+        public static Matrix AddIdentityColumn(Matrix m1, double identityValue = 1)
+        {
+            Matrix m2 = new Matrix(m1.Rows, m1.Columns + 1);
+
+            int dataIndex1 = 0;
+            int dataIndex2 = 0;
+
+            for (int row = 0; row < m1.Rows; row++)
+            {
+                m2.data[dataIndex2++] = identityValue;
+                for (int column = 0; column < m1.Columns; column++)
+                {
+                    m2.data[dataIndex2++] = m1.data[dataIndex1++];
+                }
+            }
+
+            return m2;
+        }
+
         /// <summary>
         /// Extract a row from this Matrix.
         /// </summary>

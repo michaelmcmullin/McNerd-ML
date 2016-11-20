@@ -2845,6 +2845,50 @@ namespace MLTests.LinearAlgebra
 
         #endregion
 
+        #region Add Identity Column
+        [TestMethod]
+        public void AddDefaultIdentityColumn()
+        {
+            Matrix m1 = new Matrix(new double[,]
+            {
+                { 1.0, 2.0 },
+                { 4.0, 5.0 },
+                { 7.0, 8.0 }
+            });
+            Matrix m2 = Matrix.AddIdentityColumn(m1);
+
+            Matrix expectedResult = new Matrix(new double[,]
+            {
+                { 1.0, 1.0, 2.0 },
+                { 1.0, 4.0, 5.0 },
+                { 1.0, 7.0, 8.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestMethod]
+        public void AddSpecificIdentityColumn()
+        {
+            Matrix m1 = new Matrix(new double[,]
+            {
+                { 1.0, 2.0 },
+                { 4.0, 5.0 },
+                { 7.0, 8.0 }
+            });
+            Matrix m2 = Matrix.AddIdentityColumn(m1, 2.0);
+
+            Matrix expectedResult = new Matrix(new double[,]
+            {
+                { 2.0, 1.0, 2.0 },
+                { 2.0, 4.0, 5.0 },
+                { 2.0, 7.0, 8.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m2);
+        }
+        #endregion
+
         #region Extract row/column
         [TestCategory("Matrix: Extract Rows/Columns"), TestMethod]
         public void ExtractValidMatrixRow()
