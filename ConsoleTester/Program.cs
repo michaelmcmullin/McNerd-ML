@@ -378,6 +378,35 @@ namespace ConsoleTester
             prediction = LogisticRegression.PredictOneVsAll(all_theta, X);
             Console.WriteLine("Target: 0; 1; 1; 0;    Actual: {0}", prediction.ToString().Replace("\n", "; "));
             #endregion
+
+            #region PredictNN
+            WriteH2("Predict Neural Network");
+            Matrix Theta1 = new Matrix(new double[,] {
+                { 0.00000, 0.90930, -0.75680 },
+                { 0.47943, 0.59847, -0.97753 },
+                { 0.84147, 0.14112, -0.95892 },
+                { 0.99749, -0.35078, -0.70554 }
+            });
+            Matrix Theta2 = new Matrix(new double[,] {
+                { 0.00000, 0.93204, 0.67546, -0.44252, -0.99616 },
+                { 0.29552, 0.99749, 0.42738, -0.68777, -0.92581 },
+                { 0.56464, 0.97385, 0.14112, -0.87158, -0.77276 },
+                { 0.78333, 0.86321, -0.15775, -0.97753, -0.55069 }
+            });
+
+            X = new Matrix(new double[,] {
+                { 0.84147, 0.41212 },
+                { 0.90930, -0.54402 },
+                { 0.14112, -0.99999 },
+                { -0.75680, -0.53657 },
+                { -0.95892, 0.42017 },
+                { -0.27942, 0.99061 },
+                { 0.65699, 0.65029 },
+                { 0.98936, -0.28790 }
+            });
+            prediction = LogisticRegression.PredictNN(Theta1, Theta2, X);
+            Console.WriteLine("Target: 3.00 ; 0.00 ; 0.00 ; 3.00 ; 3.00 ; 3.00 ; 3.00 ; 1.00 ;\nActual: {0}", prediction.ToString().Replace("\n", "; "));
+            #endregion
         }
 
         static void WriteCommands()
