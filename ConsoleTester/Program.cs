@@ -362,7 +362,23 @@ namespace ConsoleTester
 
             Console.WriteLine(all_theta);
             #endregion
-    }
+
+            #region PredictOneVsAll
+            WriteH2("Predict One vs All");
+            X = new Matrix(new double[,] {
+                { 1.0, 7.0 },
+                { 4.0, 5.0 },
+                { 7.0, 8.0 },
+                { 1.0, 4.0 }
+            });
+            all_theta = new Matrix(new double[,] {
+                { 1.0, -6.0, 3.0 },
+                {-2.0,  4.0,-3.0 }
+            });
+            prediction = LogisticRegression.PredictOneVsAll(all_theta, X);
+            Console.WriteLine("Target: 1; 2; 2; 1;    Actual: {0}", prediction.ToString().Replace("\n", "; "));
+            #endregion
+        }
 
         static void WriteCommands()
         {

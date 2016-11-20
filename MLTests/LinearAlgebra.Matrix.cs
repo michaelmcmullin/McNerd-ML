@@ -1909,6 +1909,125 @@ namespace MLTests.LinearAlgebra
         }
         #endregion
 
+        #region MaxIndex
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetMaxIndexColumnsRectangularMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 5.0, 3.0 },
+                { 4.0, 2.0, 6.0 }
+            });
+            Matrix m2 = Matrix.MaxIndex(m1, MatrixDimensions.Columns);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.0, 0.0, 1.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetMaxIndexRowsRectangularMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix m2 = Matrix.MaxIndex(m1, MatrixDimensions.Rows);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 2.0 },
+                { 2.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetMaxIndexColumnsVector()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 }
+            });
+            Matrix m2 = Matrix.MaxIndex(m1);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 2.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetMaxIndexRowsVector()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0 },
+                { 2.0 },
+                { 3.0 }
+            });
+            Matrix m2 = Matrix.MaxIndex(m1);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 2.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+        #endregion
+
+        #region MinIndex
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetMinIndexColumnsRectangularMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 5.0, 3.0 },
+                { 4.0, 2.0, 6.0 }
+            });
+            Matrix m2 = Matrix.MinIndex(m1, MatrixDimensions.Columns);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 0.0, 1.0, 0.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetMinIndexRowsRectangularMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 },
+                { 4.0, 5.0, 6.0 }
+            });
+            Matrix m2 = Matrix.MinIndex(m1, MatrixDimensions.Rows);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 0.0 },
+                { 0.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetMinIndexColumnsVector()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0 }
+            });
+            Matrix m2 = Matrix.MinIndex(m1);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 0.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestCategory("Matrix: Statistical Operations"), TestMethod]
+        public void GetMinIndexRowsVector()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0 },
+                { 2.0 },
+                { 3.0 }
+            });
+            Matrix m2 = Matrix.MinIndex(m1);
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 0.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+        #endregion
+
+
         #region Range
         [TestCategory("Matrix: Statistical Operations"), TestMethod]
         public void GetRangeColumnsRectangularMatrix()

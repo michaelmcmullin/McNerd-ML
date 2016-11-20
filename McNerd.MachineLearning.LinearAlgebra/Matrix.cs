@@ -1793,6 +1793,58 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
 
         /// <summary>
+        /// Find the index of the maximum value along a given dimension.
+        /// </summary>
+        /// <param name="m">The Matrix to find the maximum value index from.</param>
+        /// <param name="dimension">The dimension (row or column) to process.</param>
+        /// <returns>A 1*n or n*1 Matrix containing the maximum index of each element along the
+        /// processed dimension.</returns>
+        public static Matrix MaxIndex(Matrix m, MatrixDimensions dimension = MatrixDimensions.Auto)
+        {
+            return StatisticalReduce(m, dimension, (x) => GetMaxIndex(x));
+        }
+        private static int GetMaxIndex(Matrix m)
+        {
+            int maxIndex = 0;
+            double maxValue = m.data[0];
+            for (int i=0; i<m.data.Length; i++)
+            {
+                if (m.data[i] > maxValue)
+                {
+                    maxValue = m.data[i];
+                    maxIndex = i;
+                }
+            }
+            return maxIndex;
+        }
+
+        /// <summary>
+        /// Find the index of the minimum value along a given dimension.
+        /// </summary>
+        /// <param name="m">The Matrix to find the minimum value index from.</param>
+        /// <param name="dimension">The dimension (row or column) to process.</param>
+        /// <returns>A 1*n or n*1 Matrix containing the minimum index of each element along the
+        /// processed dimension.</returns>
+        public static Matrix MinIndex(Matrix m, MatrixDimensions dimension = MatrixDimensions.Auto)
+        {
+            return StatisticalReduce(m, dimension, (x) => GetMinIndex(x));
+        }
+        private static int GetMinIndex(Matrix m)
+        {
+            int minIndex = 0;
+            double minValue = m.data[0];
+            for (int i = 0; i < m.data.Length; i++)
+            {
+                if (m.data[i] < minValue)
+                {
+                    minValue = m.data[i];
+                    minIndex = i;
+                }
+            }
+            return minIndex;
+        }
+
+        /// <summary>
         /// Get the range of values of all elements in each dimension of a given Matrix.
         /// </summary>
         /// <param name="m">The Matrix to find the range of.</param>
