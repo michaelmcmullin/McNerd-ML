@@ -322,7 +322,6 @@ namespace ConsoleTester
 
             return theta;
         }
-
         private static double MultiplyFirstRowTransposeBy(Matrix m1, bool negate = false)
         {
             double result = 0;
@@ -346,7 +345,6 @@ namespace ConsoleTester
 
             return result;
         }
-
         private static double MultiplyFirstRowTransposeBy(Matrix m1, Matrix m2, bool negate = false)
         {
             double result = 0;
@@ -365,6 +363,15 @@ namespace ConsoleTester
             return result;
         }
 
+        /// <summary>
+        /// Using a trained classifier (all_theta), predict the index of each classifier
+        /// that applies to each row of X.
+        /// </summary>
+        /// <param name="all_theta">A Matrix where each row is a trained logistic regression
+        /// for a single output classification.</param>
+        /// <param name="X">A Matrix of example rows.</param>
+        /// <returns>A Matrix (column vector, m * 1) containing the zero-based indices of
+        /// the most probable classification prediction for each input row in X.</returns>
         public static Matrix PredictOneVsAll(Matrix all_theta, Matrix X)
         {
             Matrix h = Sigmoid(Matrix.MultiplyByTranspose(all_theta, Matrix.AddIdentityColumn(X)));
