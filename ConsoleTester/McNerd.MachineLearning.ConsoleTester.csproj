@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="LinearRegression.cs" />
     <Compile Include="LogisticRegression.cs" />
+    <Compile Include="NeuralNetwork.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

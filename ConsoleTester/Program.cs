@@ -41,6 +41,11 @@ namespace ConsoleTester
                     LogisticRegressionDemo();
                     WriteCommands();
                     break;
+                case '3':
+                    Console.Clear();
+                    NeuralNetworkDemo();
+                    WriteCommands();
+                    break;
                 case 'x':
                     IsExit = true;
                     break;
@@ -378,6 +383,11 @@ namespace ConsoleTester
             prediction = LogisticRegression.PredictOneVsAll(all_theta, X);
             Console.WriteLine("Target: 0; 1; 1; 0;    Actual: {0}", prediction.ToString().Replace("\n", "; "));
             #endregion
+        }
+
+        static void NeuralNetworkDemo()
+        {
+            WriteH1("Logistic Regression");
 
             #region PredictNN
             WriteH2("Predict Neural Network");
@@ -394,7 +404,7 @@ namespace ConsoleTester
                 { 0.78333, 0.86321, -0.15775, -0.97753, -0.55069 }
             });
 
-            X = new Matrix(new double[,] {
+            Matrix X = new Matrix(new double[,] {
                 { 0.84147, 0.41212 },
                 { 0.90930, -0.54402 },
                 { 0.14112, -0.99999 },
@@ -404,9 +414,10 @@ namespace ConsoleTester
                 { 0.65699, 0.65029 },
                 { 0.98936, -0.28790 }
             });
-            prediction = LogisticRegression.PredictNN(Theta1, Theta2, X);
+            Matrix prediction = NeuralNetwork.Predict(Theta1, Theta2, X);
             Console.WriteLine("Target: 3.00 ; 0.00 ; 0.00 ; 3.00 ; 3.00 ; 3.00 ; 3.00 ; 1.00 ;\nActual: {0}", prediction.ToString().Replace("\n", "; "));
             #endregion
+
         }
 
         static void WriteCommands()
@@ -416,7 +427,10 @@ namespace ConsoleTester
             Console.ForegroundColor = ConsoleColor.Black;
             Console.BackgroundColor = ConsoleColor.Gray;
 
-            Console.Write("\n1:Linear Regression\n2:Logistic Regression\nx:Exit");
+            Console.WriteLine("\n1:Linear Regression");
+            Console.WriteLine("2:Logistic Regression");
+            Console.WriteLine("3:Neural Networks");
+            Console.WriteLine("x:Exit");
 
             Console.ForegroundColor = fc;
             Console.BackgroundColor = bc;
