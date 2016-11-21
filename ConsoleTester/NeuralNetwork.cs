@@ -38,5 +38,13 @@ namespace ConsoleTester
 
             return Matrix.MaxIndex(A3).Transpose;
         }
+
+        public static Matrix SigmoidGradient(Matrix z)
+        {
+            Matrix sg = LogisticRegression.Sigmoid(z);
+            Matrix sg2 = 1.0 - sg;
+
+            return Matrix.ElementMultiply(sg, sg2);
+        }
     }
 }

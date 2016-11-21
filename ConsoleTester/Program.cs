@@ -418,6 +418,14 @@ namespace ConsoleTester
             Console.WriteLine("Target: 3.00 ; 0.00 ; 0.00 ; 3.00 ; 3.00 ; 3.00 ; 3.00 ; 1.00 ;\nActual: {0}", prediction.ToString().Replace("\n", "; "));
             #endregion
 
+            #region Sigmoid Gradient
+            Matrix a = new Matrix ( new double[,] { { -1, -2, -3 } } );
+            X = Matrix.Join(a, Matrix.Magic(3), MatrixDimensions.Rows);
+            Matrix sg = NeuralNetwork.SigmoidGradient(X);
+
+            WriteH2("Sigmoid Gradient");
+            Console.WriteLine(sg);
+            #endregion
         }
 
         static void WriteCommands()
