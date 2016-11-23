@@ -426,6 +426,8 @@ namespace ConsoleTester
             WriteH2("Sigmoid Gradient");
             Console.WriteLine(sg);
             #endregion
+
+
         }
 
         static void WriteCommands()

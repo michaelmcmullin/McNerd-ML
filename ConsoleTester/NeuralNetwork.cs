@@ -39,6 +39,11 @@ namespace ConsoleTester
             return Matrix.MaxIndex(A3).Transpose;
         }
 
+        /// <summary>
+        /// Calculate the gradient of the Sigmoid function at z.
+        /// </summary>
+        /// <param name="z">The Matrix to calculate the gradient for each element.</param>
+        /// <returns>The gradient of the Sigmoid function for each element of z.</returns>
         public static Matrix SigmoidGradient(Matrix z)
         {
             Matrix sg = LogisticRegression.Sigmoid(z);
