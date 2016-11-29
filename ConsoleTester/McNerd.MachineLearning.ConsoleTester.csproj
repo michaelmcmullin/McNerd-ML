@@ -43,6 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataFrame.cs" />
+    <Compile Include="DataFrameColumn.cs" />
+    <Compile Include="DataImporterDummy.cs" />
+    <Compile Include="IDataImporter.cs" />
     <Compile Include="LinearRegression.cs" />
     <Compile Include="LogisticRegression.cs" />
     <Compile Include="NeuralNetwork.cs" />

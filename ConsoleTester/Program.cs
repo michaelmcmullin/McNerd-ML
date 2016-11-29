@@ -46,6 +46,11 @@ namespace ConsoleTester
                     NeuralNetworkDemo();
                     WriteCommands();
                     break;
+                case 't':
+                    Console.Clear();
+                    TestDemo();
+                    WriteCommands();
+                    break;
                 case 'x':
                     IsExit = true;
                     break;
@@ -430,6 +435,17 @@ namespace ConsoleTester
 
         }
 
+        static void TestDemo()
+        {
+            WriteH1("Testing");
+
+            DataImporterDummy di = new DataImporterDummy();
+            DataFrame df = new DataFrame(di);
+            df.Load(String.Empty, true, true);
+
+            Console.WriteLine(df.TotalColumns);
+        }
+
         static void WriteCommands()
         {
             ConsoleColor fc = Console.ForegroundColor;
@@ -440,6 +456,7 @@ namespace ConsoleTester
             Console.WriteLine("\n1:Linear Regression");
             Console.WriteLine("2:Logistic Regression");
             Console.WriteLine("3:Neural Networks");
+            Console.WriteLine("t:Test");
             Console.WriteLine("x:Exit");
 
             Console.ForegroundColor = fc;
