@@ -439,6 +439,8 @@ namespace ConsoleTester
         {
             WriteH1("Testing");
 
+            #region Dummy data importer
+            WriteH2("Dummy Data");
             DataImporterDummy di = new DataImporterDummy();
             DataFrame df = new DataFrame(di);
             df.Load(String.Empty, true, true);
@@ -448,6 +450,20 @@ namespace ConsoleTester
             {
                 Console.WriteLine(h);
             }
+            #endregion
+
+            #region CSV data importer
+            WriteH2("CSV Data (Titanic)");
+            DataImporterCSV di_csv = new DataImporterCSV();
+            DataFrame df_csv = new DataFrame(di_csv);
+            df_csv.Load(@"c:\temp\titanic.csv", true, true);
+
+            Console.WriteLine(df_csv.TotalColumns);
+            foreach (string h in df_csv.Headers)
+            {
+                Console.WriteLine(h);
+            }
+            #endregion
         }
 
         static void WriteCommands()

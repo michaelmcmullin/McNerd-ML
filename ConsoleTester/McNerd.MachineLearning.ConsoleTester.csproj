@@ -33,6 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -45,6 +46,7 @@
   <ItemGroup>
     <Compile Include="DataFrame.cs" />
     <Compile Include="DataFrameColumn.cs" />
+    <Compile Include="DataImporterCSV.cs" />
     <Compile Include="DataImporterDummy.cs" />
     <Compile Include="IDataImporter.cs" />
     <Compile Include="LinearRegression.cs" />
@@ -61,6 +63,9 @@
       <Project>{7a453d02-bb64-4ed4-ae99-144b7f7c5fd7}</Project>
       <Name>McNerd.MachineLearning.LinearAlgebra</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
