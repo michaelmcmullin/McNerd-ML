@@ -83,6 +83,26 @@ namespace ConsoleTester
         }
 
         /// <summary>
+        /// Get an expanded list of headers.
+        /// </summary>
+        public List<string> GetHeaders()
+        {
+            List<string> headers = new List<string>();
+
+            switch (columnType)
+            {
+                case DataFrameColumnType.Factors:
+                    headers = factors;
+                    break;
+                default:
+                    headers.Add(Header);
+                    break;
+            }
+
+            return headers;
+        }
+
+        /// <summary>
         /// Add a row to the end of the list.
         /// </summary>
         /// <param name="s">A string representation of the row to add.</param>

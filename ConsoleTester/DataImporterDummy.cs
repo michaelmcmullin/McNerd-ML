@@ -35,6 +35,9 @@ namespace ConsoleTester
 
             while (LoadNextRow(data.Columns))
                 rowCount++;
+
+            data.Columns[3].Header = "Test Header";
+            data.Columns[2].ColumnType = DataFrameColumnType.Factors;
         }
 
         private bool LoadNextRow(List<DataFrameColumn> columns)

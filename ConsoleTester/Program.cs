@@ -444,6 +444,10 @@ namespace ConsoleTester
             df.Load(String.Empty, true, true);
 
             Console.WriteLine(df.TotalColumns);
+            foreach(string h in df.Headers)
+            {
+                Console.WriteLine(h);
+            }
         }
 
         static void WriteCommands()

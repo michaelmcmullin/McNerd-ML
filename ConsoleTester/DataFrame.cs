@@ -135,5 +135,18 @@ namespace ConsoleTester
         {
             get { return columns; }
         }
+
+        public List<string> Headers
+        {
+            get
+            {
+                List<string> headers = new List<string>();
+                foreach(DataFrameColumn col in Columns)
+                {
+                    headers.AddRange(col.GetHeaders());
+                }
+                return headers;
+            }
+        }
     }
 }
