@@ -440,16 +440,16 @@ namespace ConsoleTester
             WriteH1("Testing");
 
             #region Dummy data importer
-            WriteH2("Dummy Data");
-            DataImporterDummy di = new DataImporterDummy();
-            DataFrame df = new DataFrame(di);
-            df.Load(String.Empty, true, true);
+            //WriteH2("Dummy Data");
+            //DataImporterDummy di = new DataImporterDummy();
+            //DataFrame df = new DataFrame(di);
+            //df.Load(String.Empty, true, true);
 
-            Console.WriteLine(df.TotalColumns);
-            foreach(string h in df.Headers)
-            {
-                Console.WriteLine(h);
-            }
+            //Console.WriteLine(df.TotalColumns);
+            //foreach(string h in df.Headers)
+            //{
+            //    Console.WriteLine(h);
+            //}
             #endregion
 
             #region CSV data importer
@@ -458,8 +458,14 @@ namespace ConsoleTester
             DataFrame df_csv = new DataFrame(di_csv);
             df_csv.Load(@"c:\temp\titanic.csv", true, true);
 
-            Console.WriteLine(df_csv.TotalColumns);
+            Console.WriteLine($"Total Columns: {df_csv.TotalColumns}");
             foreach (string h in df_csv.Headers)
+            {
+                Console.WriteLine(h);
+            }
+
+            Console.WriteLine("\nExpanded Headers:");
+            foreach (string h in df_csv.ExpandedHeaders)
             {
                 Console.WriteLine(h);
             }

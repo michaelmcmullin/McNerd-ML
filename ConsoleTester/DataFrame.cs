@@ -136,7 +136,27 @@ namespace ConsoleTester
             get { return columns; }
         }
 
+        /// <summary>
+        /// A List of headers for each column, before expanding into factors, bins, etc.
+        /// </summary>
         public List<string> Headers
+        {
+            get
+            {
+                List<string> headers = new List<string>();
+                foreach (DataFrameColumn col in Columns)
+                {
+                    headers.Add(col.Header);
+                }
+                return headers;
+            }
+        }
+
+        /// <summary>
+        /// A List of expanded headers, after each column has been broken up into its
+        /// constituent parts (e.g. factors)
+        /// </summary>
+        public List<string> ExpandedHeaders
         {
             get
             {
