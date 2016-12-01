@@ -473,6 +473,8 @@ namespace ConsoleTester
             {
                 Console.WriteLine(h);
             }
+
+            Console.WriteLine(columnGender);
             #endregion
         }
 

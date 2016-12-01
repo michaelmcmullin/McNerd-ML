@@ -72,7 +72,6 @@ namespace ConsoleTester
             return output;
         }
 
-
         /// <summary>
         /// Get/set the header row value
         /// </summary>
@@ -188,6 +187,50 @@ namespace ConsoleTester
         {
             get { return missingElementValue; }
             set { missingElementValue = value; }
+        }
+
+        /// <summary>
+        /// Convert a subset of the column data to a string.
+        /// </summary>
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine($"Total Columns: {ColumnCount}");
+            sb.AppendLine($"Total Rows: {RowCount}");
+            sb.AppendLine($"Column Type: {ColumnType}");
+
+            int maxRows = Math.Min(10, RowCount);
+            List<string> headers = GetHeaders();
+
+            foreach(string header in headers)
+            {
+                sb.Append($"{header}\t");
+            }
+            sb.Append("\n");
+
+            for (int i = 0; i < maxRows; i++)
+            {
+                switch (ColumnType)
+                {
+                    case DataFrameColumnType.Factors:
+                        for (int j = 0; j < headers.Count; j++)
+                        {
+                            if (rows[i] == headers[j])
+                                sb.Append($"Y\t");
+                                //sb.Append($"{rows[i]}\t");
+                            else
+                                sb.Append("-\t");
+                        }
+                        sb.Append("\n");
+                        break;
+                    default:
+                        sb.AppendLine(rows[i]);
+                        break;
+                }
+            }
+
+            return sb.ToString();
         }
     }
 }
