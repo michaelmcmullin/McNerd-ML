@@ -163,10 +163,41 @@ namespace ConsoleTester
                 List<string> headers = new List<string>();
                 foreach(DataFrameColumn col in Columns)
                 {
-                    headers.AddRange(col.GetHeaders());
+                    if (col.ColumnCount == 1)
+                        headers.AddRange(col.GetHeaders());
+                    else
+                    {
+                        headers.AddRange(col.GetHeaders().Select(h => col.Header + ":" + h));
+                    }
                 }
                 return headers;
             }
+        }
+
+        /// <summary>
+        /// Find a column by its header name.
+        /// </summary>
+        /// <param name="header">The name of the header to search for.</param>
+        /// <param name="caseSentitive">Indicates whether or not the search should
+        /// be case sensitive.</param>
+        /// <returns>The first matching DataFrameColumn, or null.</returns>
+        public DataFrameColumn FindColumn(string header, bool caseSentitive = false)
+        {
+            header = caseSentitive ? header : header.ToLower();
+
+            if (Columns != null)
+            {
+                foreach (DataFrameColumn column in Columns)
+                {
+                    string colHeader = caseSentitive ? column.Header : column.Header.ToLower();
+
+                    if (colHeader == header)
+                    {
+                        return column;
+                    }
+                }
+            }
+            return null;
         }
     }
 }

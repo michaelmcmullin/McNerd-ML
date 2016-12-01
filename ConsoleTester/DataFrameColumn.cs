@@ -88,6 +88,8 @@ namespace ConsoleTester
         public List<string> GetHeaders()
         {
             List<string> headers = new List<string>();
+            if (refresh)
+                SetColumnCount();
 
             switch (columnType)
             {

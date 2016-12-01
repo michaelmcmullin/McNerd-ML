@@ -465,6 +465,10 @@ namespace ConsoleTester
             }
 
             Console.WriteLine("\nExpanded Headers:");
+            DataFrameColumn columnGender = df_csv.FindColumn("sex");
+            if (columnGender != null)
+                columnGender.ColumnType = DataFrameColumnType.Factors;
+
             foreach (string h in df_csv.ExpandedHeaders)
             {
                 Console.WriteLine(h);
