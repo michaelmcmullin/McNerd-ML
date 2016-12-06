@@ -9,17 +9,18 @@ namespace ConsoleTester
     /// <summary>
     /// The type of DataFrameColumn data
     /// </summary>
-    public enum DataFrameColumnType { Empty, Double, Factors }
+    public enum DataFrameColumnType { Ignore, Empty, Double, Factors }
 
     class DataFrameColumn
     {
-        DataFrameColumnType columnType = DataFrameColumnType.Empty;
+        DataFrameColumnType columnType = DataFrameColumnType.Ignore;
         List<string> rows;
         List<string> factors;
         string header;
         int columnCount = 1;
         string missingElement = String.Empty;
         double missingElementValue = 0;
+        bool isResult = false;
         bool refresh = true;
 
         /// <summary>
@@ -232,5 +233,10 @@ namespace ConsoleTester
 
             return sb.ToString();
         }
+
+        /// <summary>
+        /// Indicates whether this column represents the results.
+        /// </summary>
+        public bool IsResult { get { return isResult; } set { isResult = value; } }
     }
 }

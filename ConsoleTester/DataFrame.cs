@@ -23,17 +23,32 @@ namespace ConsoleTester
             importer = di;
         }
 
+        #region Load methods
         /// <summary>
         /// Load data from a given file into this DataFrame
         /// </summary>
         /// <param name="path">The path of the file to load.</param>
         /// <param name="hasHeader">Indicates whether or not the data has a
         /// header row.</param>
-        public void Load(string path, bool hasHeader, bool hasResults)
+        /// <param name="resultColumn">The name of the column to set as the result
+        /// column.</param>
+        public void Load(string path, bool hasHeader, string resultColumn)
         {
-            this.hasResults = hasResults;
-            importer.Load(path, hasHeader, hasResults, this);
+            importer.Load(path, hasHeader, this);
+            SetResultColumn(resultColumn);
         }
+
+        /// <summary>
+        /// Load data from a given file into this DataFrame
+        /// </summary>
+        /// <param name="path">The path of the file to load.</param>
+        /// <param name="hasHeader">Indicates whether or not the data has a
+        /// header row.</param>
+        public void Load(string path, bool hasHeader)
+        {
+            importer.Load(path, hasHeader, this);
+        }
+        #endregion
 
         /// <summary>
         /// Export a Matrix containing only the features of this DataFrame. Exclude
@@ -45,9 +60,9 @@ namespace ConsoleTester
             int maxRows = MaxRows;
             if (maxRows == 0) maxRows = 1;
 
-            int totalColumnCount = TotalColumns;
+            int totalColumnCount = TotalActiveColumns;
             int columnCount = columns.Count;
-            if (hasResults && totalColumnCount > 1) { totalColumnCount--; columnCount--; }
+            //if (hasResults && totalColumnCount > 1) { totalColumnCount--; columnCount--; }
 
             Matrix features = new Matrix(maxRows, totalColumnCount);
 
@@ -57,10 +72,13 @@ namespace ConsoleTester
 
                 for (int column = 0; column < columnCount; column++)
                 {
-                    double[] columnValues = columns[column].ExportMatrixRow(row);
-                    for (int i = 0; i < columns[column].ColumnCount; i++)
+                    if (columns[column].ColumnType != DataFrameColumnType.Ignore && !columns[column].IsResult)
                     {
-                        features[row, featureColumn++] = columnValues[i];
+                        double[] columnValues = columns[column].ExportMatrixRow(row);
+                        for (int i = 0; i < columns[column].ColumnCount; i++)
+                        {
+                            features[row, featureColumn++] = columnValues[i];
+                        }
                     }
                 }
             }
@@ -77,7 +95,10 @@ namespace ConsoleTester
         {
             int maxRows = MaxRows;
             if (maxRows == 0) maxRows = 1;
-            int column = columns.Count - 1;
+            int column = GetResultColumn();
+
+            if (column < 0)
+                return null;
 
             Matrix results = new Matrix(maxRows, 1);
 
@@ -112,8 +133,8 @@ namespace ConsoleTester
         }
 
         /// <summary>
-        /// Get the total number of columns that will ultimately make up the
-        /// final Matrix. Note that some columns may in fact represent a group
+        /// Get the total number of columns available in this DataFrame.
+        /// Note that some columns may in fact represent a group
         /// of columns, so we can't rely on a simple columns.Count
         /// </summary>
         public int TotalColumns
@@ -127,6 +148,32 @@ namespace ConsoleTester
                 return totalCount;
             }
         }
+
+        /// <summary>
+        /// Get the total number of active columns available in this DataFrame.
+        /// If a column is set to a type of Ignore, then it is not included in
+        /// this calculation. Result column is also ignored.
+        /// </summary>
+        public int TotalActiveColumns
+        {
+            get
+            {
+                if (columns == null) return 1;
+                int totalCount = 0;
+                foreach (DataFrameColumn column in columns)
+                {
+                    if (column.ColumnType != DataFrameColumnType.Ignore && !column.IsResult)
+                        totalCount += column.ColumnCount;
+                }
+                return totalCount;
+            }
+        }
+
+        /// <summary>
+        /// Indicates whether this DataFrame has a result column.
+        /// </summary>
+        public bool HasResults { get { return hasResults; } set { hasResults = value; } }
+
 
         /// <summary>
         /// A List of DataFrameColumn objects that make up this DataFrame
@@ -219,6 +266,59 @@ namespace ConsoleTester
                     column.ColumnType = other.ColumnType;
                 }
             }
+        }
+
+        /// <summary>
+        /// Set a column as the result column, ensuring that only one column can
+        /// store results.
+        /// </summary>
+        /// <param name="header">The header name of the column that stores results.</param>
+        /// <returns>true if the column was successfully set as a result column. Otherwise false.</returns>
+        public bool SetResultColumn(string header)
+        {
+            DataFrameColumn column = FindColumn(header);
+            if (column != null)
+            {
+                foreach (DataFrameColumn c in Columns)
+                    c.IsResult = false;
+
+                column.IsResult = hasResults = true;
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Set a column as the result column, ensuring that only one column can
+        /// store results.
+        /// </summary>
+        /// <param name="index">The 0-index of the column that stores results.</param>
+        /// <returns>true if the column was successfully set as a result column. Otherwise false.</returns>
+        public bool SetResultColumn(int index)
+        {
+            if (index < Columns.Count)
+            {
+                foreach (DataFrameColumn c in Columns)
+                    c.IsResult = false;
+
+                Columns[index].IsResult = hasResults = true;
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Find the 0-index of the result columns.
+        /// </summary>
+        /// <returns>The zero based index of the column containing results. If none are
+        /// found, return -1.</returns>
+        public int GetResultColumn()
+        {
+            for (int i = 0; i < Columns.Count; i++)
+                if (Columns[i].IsResult)
+                    return i;
+
+            return -1;
         }
     }
 }

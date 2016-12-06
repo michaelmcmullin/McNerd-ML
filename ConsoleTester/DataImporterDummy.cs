@@ -13,15 +13,13 @@ namespace ConsoleTester
     class DataImporterDummy : IDataImporter
     {
         bool hasHeaders = false;
-        bool hasResults = false;
         int columnCount = 0;
         int rowCount = 0;
 
-        public void Load(string path, bool hasHeaderRow, bool hasResults, DataFrame data)
+        public void Load(string path, bool hasHeaderRow, DataFrame data)
         {
             hasHeaders = hasHeaderRow;
-            this.hasResults = hasResults;
-            columnCount = 5 + (hasResults ? 1 : 0);
+            columnCount = 5;
 
             data.Columns.Clear();
             for (int i = 0; i < columnCount; i++)
@@ -59,9 +57,6 @@ namespace ConsoleTester
             {
                 columns[i].Header = $"Item {i}";
             }
-
-            if (hasResults)
-                columns[columnCount - 1].Header = "Results";
 
             return;
         }

@@ -15,7 +15,7 @@ namespace ConsoleTester
         string delimiter = ",";
         public string Delimiter { get { return delimiter; } set { delimiter = value; } }
 
-        public void Load(string path, bool hasHeaderRow, bool hasResults, DataFrame data)
+        public void Load(string path, bool hasHeaderRow, DataFrame data)
         {
             using (TextFieldParser parser = new TextFieldParser(path))
             {

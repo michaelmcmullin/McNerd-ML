@@ -458,8 +458,8 @@ namespace ConsoleTester
             DataFrame df_train = new DataFrame(di_csv);
             DataFrame df_test = new DataFrame(di_csv);
 
-            df_train.Load(@"c:\temp\titanic.csv", true, true);
-            df_test.Load(@"c:\temp\titanic_test.csv", true, true);
+            df_train.Load(@"c:\temp\titanic.csv", true, "Survived");
+            df_test.Load(@"c:\temp\titanic_test.csv", true);
 
             Console.WriteLine($"Total Columns (training data): {df_train.TotalColumns}");
             Console.WriteLine($"Total Columns (testing data):  {df_test.TotalColumns}");
@@ -478,17 +478,18 @@ namespace ConsoleTester
             df_test.MatchColumns(df_train);
 
 
+            Console.WriteLine($"df_train hasResults? {df_train.HasResults}. df_test hasResults? {df_test.HasResults}");
             Console.WriteLine("\nExpanded Headers:");
 
-            foreach (string h in df_train.ExpandedHeaders)
-            {
-                Console.WriteLine(h);
-            }
+            //foreach (string h in df_train.ExpandedHeaders)
+            //{
+            //    Console.WriteLine(h);
+            //}
 
-            foreach (string h in df_test.ExpandedHeaders)
-            {
-                Console.WriteLine(h);
-            }
+            //foreach (string h in df_test.ExpandedHeaders)
+            //{
+            //    Console.WriteLine(h);
+            //}
 
             //Console.WriteLine(columnGender);
             #endregion

@@ -8,6 +8,6 @@ namespace ConsoleTester
 {
     interface IDataImporter
     {
-        void Load(string path, bool hasHeaderRow, bool hasResults, DataFrame data);
+        void Load(string path, bool hasHeaderRow, DataFrame data);
     }
 }
