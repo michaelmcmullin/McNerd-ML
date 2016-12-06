@@ -199,5 +199,26 @@ namespace ConsoleTester
             }
             return null;
         }
+
+        /// <summary>
+        /// Given a DataFrame, df, ensure any column with the same name has matching
+        /// attributes (i.e. ColumnType)
+        /// </summary>
+        /// <param name="df">The DataFrame whose columns dictate the attributes of
+        /// this DataFrame.</param>
+        public void MatchColumns(DataFrame df, bool caseSensitive = false)
+        {
+            if (Columns == null || Columns.Count == 0)
+                return;
+
+            foreach(DataFrameColumn column in Columns)
+            {
+                DataFrameColumn other = df.FindColumn(column.Header, caseSensitive);
+                if (other != null)
+                {
+                    column.ColumnType = other.ColumnType;
+                }
+            }
+        }
     }
 }

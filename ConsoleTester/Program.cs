@@ -455,26 +455,42 @@ namespace ConsoleTester
             #region CSV data importer
             WriteH2("CSV Data (Titanic)");
             DataImporterCSV di_csv = new DataImporterCSV();
-            DataFrame df_csv = new DataFrame(di_csv);
-            df_csv.Load(@"c:\temp\titanic.csv", true, true);
+            DataFrame df_train = new DataFrame(di_csv);
+            DataFrame df_test = new DataFrame(di_csv);
 
-            Console.WriteLine($"Total Columns: {df_csv.TotalColumns}");
-            foreach (string h in df_csv.Headers)
-            {
-                Console.WriteLine(h);
-            }
+            df_train.Load(@"c:\temp\titanic.csv", true, true);
+            df_test.Load(@"c:\temp\titanic_test.csv", true, true);
 
-            Console.WriteLine("\nExpanded Headers:");
-            DataFrameColumn columnGender = df_csv.FindColumn("sex");
+            Console.WriteLine($"Total Columns (training data): {df_train.TotalColumns}");
+            Console.WriteLine($"Total Columns (testing data):  {df_test.TotalColumns}");
+
+            //foreach (string h in df_train.Headers)
+            //{
+            //    Console.WriteLine(h);
+            //}
+
+            // Change the type of one of the training columns
+            DataFrameColumn columnGender = df_train.FindColumn("sex");
             if (columnGender != null)
                 columnGender.ColumnType = DataFrameColumnType.Factors;
 
-            foreach (string h in df_csv.ExpandedHeaders)
+            // Try and match the types in the testing set
+            df_test.MatchColumns(df_train);
+
+
+            Console.WriteLine("\nExpanded Headers:");
+
+            foreach (string h in df_train.ExpandedHeaders)
             {
                 Console.WriteLine(h);
             }
 
-            Console.WriteLine(columnGender);
+            foreach (string h in df_test.ExpandedHeaders)
+            {
+                Console.WriteLine(h);
+            }
+
+            //Console.WriteLine(columnGender);
             #endregion
         }
 
