@@ -91,14 +91,10 @@ namespace ConsoleTester
         /// </summary>
         /// <param name="X">The features Matrix (n x m).</param>
         /// <param name="y">The results Matrix (n x 1).</param>
-        /// <param name="numberOfLabels">The number of items to classify.</param>
+        /// <param name="labels">The labels to classify against.</param>
         /// <param name="lambda">The regularization parameter.</param>
         /// <returns>A Matrix where each row is a learned set of parameters for that
         /// particular class.</returns>
-        /// <remarks>At the moment, this method is classifying specific numbers, from
-        /// 1 to numberOfLabels. This is a little unrealistic, as data sets might have
-        /// completely different labelling requirements. A future improvement might be
-        /// to pass an array of labels.</remarks>
         public static Matrix OneVsAll(Matrix X, Matrix y, double[] labels, double lambda)
         {
             int m = X.Rows;
