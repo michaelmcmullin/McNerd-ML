@@ -107,7 +107,7 @@ namespace ConsoleTester
                 for (int row = 0; row < maxRows; row++)
                 {
                     double[] columnValues = columns[column].ExportMatrixRow(row);
-                    results[row, 1] = columnValues[0]; // Results column should only have one column. If there are any
+                    results[row, 0] = columnValues[0]; // Results column should only have one column. If there are any
                                                        // additional columns, ignore. Maybe throwing an exception might
                                                        // be more appropriate, but we'll leave that for now.
                 }
@@ -319,6 +319,23 @@ namespace ConsoleTester
                     return i;
 
             return -1;
+        }
+
+        /// <summary>
+        /// Set the type of a given column name.
+        /// </summary>
+        /// <param name="columnName">The name of the column to use.</param>
+        /// <param name="columnType">The new type to define this column as.</param>
+        /// <returns>true if the column is found, otherwise false.</returns>
+        public bool SetColumnType(string columnName, DataFrameColumnType columnType)
+        {
+            DataFrameColumn column = FindColumn(columnName);
+            if (column == null)
+                return false;
+
+            column.ColumnType = columnType;
+
+            return true;
         }
     }
 }

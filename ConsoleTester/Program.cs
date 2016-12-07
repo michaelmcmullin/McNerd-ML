@@ -464,23 +464,27 @@ namespace ConsoleTester
             Console.WriteLine($"Total Columns (training data): {df_train.TotalColumns}");
             Console.WriteLine($"Total Columns (testing data):  {df_test.TotalColumns}");
 
-            //foreach (string h in df_train.Headers)
-            //{
-            //    Console.WriteLine(h);
-            //}
-
             // Change the type of one of the training columns
-            DataFrameColumn columnGender = df_train.FindColumn("sex");
-            if (columnGender != null)
-                columnGender.ColumnType = DataFrameColumnType.Factors;
+            df_train.SetColumnType("sex", DataFrameColumnType.Factors);
+            df_train.SetColumnType("survived", DataFrameColumnType.Double);
 
             // Try and match the types in the testing set
             df_test.MatchColumns(df_train);
 
 
             Console.WriteLine($"df_train hasResults? {df_train.HasResults}. df_test hasResults? {df_test.HasResults}");
-            Console.WriteLine("\nExpanded Headers:");
 
+            // Start calculations
+            Matrix Xtrain = df_train.ExportFeatures();
+            Matrix ytrain = df_train.ExportResults();
+
+            Matrix Xtest = df_test.ExportFeatures();
+
+            // Try Logistic Regression
+            Matrix all_theta = LogisticRegression.OneVsAll(Xtrain, ytrain, 2, 0.1);
+            Matrix prediction = LogisticRegression.PredictOneVsAll(all_theta, Xtest);
+
+            //Console.WriteLine("\nExpanded Headers:");
             //foreach (string h in df_train.ExpandedHeaders)
             //{
             //    Console.WriteLine(h);
