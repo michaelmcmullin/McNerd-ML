@@ -367,8 +367,8 @@ namespace ConsoleTester
             //Console.WriteLine(cost.Item1);
             //Console.WriteLine(cost.Item2);
 
-
-            Matrix all_theta = LogisticRegression.OneVsAll(X, y, 3, 0.1);
+            double[] labels = new double[] { 1.0, 2.0, 3.0 };
+            Matrix all_theta = LogisticRegression.OneVsAll(X, y, labels, 0.1);
 
             Console.WriteLine(all_theta);
             #endregion
@@ -481,7 +481,8 @@ namespace ConsoleTester
             Matrix Xtest = df_test.ExportFeatures();
 
             // Try Logistic Regression
-            Matrix all_theta = LogisticRegression.OneVsAll(Xtrain, ytrain, 2, 0.1);
+            double[] labels = new double[] { 0.0, 1.0 };
+            Matrix all_theta = LogisticRegression.OneVsAll(Xtrain, ytrain, labels, 0.1);
             Matrix prediction = LogisticRegression.PredictOneVsAll(all_theta, Xtest);
 
             //Console.WriteLine("\nExpanded Headers:");

@@ -99,11 +99,12 @@ namespace ConsoleTester
         /// 1 to numberOfLabels. This is a little unrealistic, as data sets might have
         /// completely different labelling requirements. A future improvement might be
         /// to pass an array of labels.</remarks>
-        public static Matrix OneVsAll(Matrix X, Matrix y, int numberOfLabels, double lambda)
+        public static Matrix OneVsAll(Matrix X, Matrix y, double[] labels, double lambda)
         {
             int m = X.Rows;
             int n = X.Columns;
             X = Matrix.Join(Matrix.Ones(m, 1), X, MatrixDimensions.Columns);
+            int numberOfLabels = labels.Length;
 
             Matrix all_theta = new Matrix(numberOfLabels, n + 1);
 
@@ -111,7 +112,7 @@ namespace ConsoleTester
             {
                 Matrix initial_theta = new Matrix(n + 1, 1);
                 int i = 0;
-                Matrix new_theta = Minimize(CostFunction, X, y == (c + 1), initial_theta, lambda, 50, out i);
+                Matrix new_theta = Minimize(CostFunction, X, y == labels[c] /*(c + 1)*/, initial_theta, lambda, 50, out i);
                 all_theta.SetRow(c, new_theta.Transpose);
             }
 
