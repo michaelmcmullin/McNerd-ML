@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using McNerd.MachineLearning.LinearAlgebra;
 
 namespace ConsoleTester
 {
@@ -22,6 +23,21 @@ namespace ConsoleTester
         double missingElementValue = 0;
         bool isResult = false;
         bool refresh = true;
+
+        #region Constructors
+        public DataFrameColumn()
+        {
+
+        }
+
+        public DataFrameColumn(Matrix m, int columnIndex)
+        {
+            for (int i = 0; i < m.Rows; i++)
+            {
+                AddRow(m[i, columnIndex].ToString());
+            }
+        }
+        #endregion
 
         /// <summary>
         /// Convert a given row into an array of values that can be exported

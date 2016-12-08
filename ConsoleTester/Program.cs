@@ -455,8 +455,10 @@ namespace ConsoleTester
             #region CSV data importer
             WriteH2("CSV Data (Titanic)");
             DataImporterCSV di_csv = new DataImporterCSV();
-            DataFrame df_train = new DataFrame(di_csv);
-            DataFrame df_test = new DataFrame(di_csv);
+            DataExporterDummy de_csv = new DataExporterDummy();
+
+            DataFrame df_train = new DataFrame(di_csv, de_csv);
+            DataFrame df_test = new DataFrame(di_csv, de_csv);
 
             df_train.Load(@"c:\temp\titanic.csv", true, "Survived");
             df_test.Load(@"c:\temp\titanic_test.csv", true);
@@ -484,6 +486,12 @@ namespace ConsoleTester
             double[] labels = new double[] { 0.0, 1.0 };
             Matrix all_theta = LogisticRegression.OneVsAll(Xtrain, ytrain, labels, 0.1);
             Matrix prediction = LogisticRegression.PredictOneVsAll(all_theta, Xtest);
+
+            // Exporting
+            DataFrame df_export = df_test;
+            df_export.Columns.Add(new DataFrameColumn(prediction, 0));
+            df_export.Save(@"c:\temp\results.csv");
+
 
             //Console.WriteLine("\nExpanded Headers:");
             //foreach (string h in df_train.ExpandedHeaders)

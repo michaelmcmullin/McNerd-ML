@@ -10,6 +10,8 @@ namespace ConsoleTester
     class DataFrame
     {
         IDataImporter importer;
+        IDataExporter exporter;
+
         List<DataFrameColumn> columns = new List<DataFrameColumn>();
         bool hasResults = false;
 
@@ -18,12 +20,13 @@ namespace ConsoleTester
         /// </summary>
         /// <param name="di">The IDataImporter to use to fetch external data
         /// from a file to fill this DataFrame.</param>
-        public DataFrame(IDataImporter di)
+        public DataFrame(IDataImporter di, IDataExporter de)
         {
             importer = di;
+            exporter = de;
         }
 
-        #region Load methods
+        #region IO methods
         /// <summary>
         /// Load data from a given file into this DataFrame
         /// </summary>
@@ -47,6 +50,15 @@ namespace ConsoleTester
         public void Load(string path, bool hasHeader)
         {
             importer.Load(path, hasHeader, this);
+        }
+
+        /// <summary>
+        /// Save this DataFrame to a file.
+        /// </summary>
+        /// <param name="path">The path to save this DataFrame to.</param>
+        public void Save(string path)
+        {
+            exporter.Save(path);
         }
         #endregion
 
