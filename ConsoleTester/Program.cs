@@ -466,9 +466,9 @@ namespace ConsoleTester
             Console.WriteLine($"Total Columns (training data): {df_train.TotalColumns}");
             Console.WriteLine($"Total Columns (testing data):  {df_test.TotalColumns}");
 
-            // Change the type of one of the training columns
+            // Change the type of some of the training columns
             df_train.SetColumnType("sex", DataFrameColumnType.Factors);
-            df_train.SetColumnType("age", DataFrameColumnType.Double);
+            df_train.SetColumnType("age", DataFrameColumnType.Double); df_train["age"].EmptyValue = 18.0;
             df_train.SetColumnType("survived", DataFrameColumnType.Double);
 
             // Try and match the types in the testing set

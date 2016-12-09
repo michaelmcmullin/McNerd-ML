@@ -63,6 +63,19 @@ namespace ConsoleTester
         #endregion
 
         /// <summary>
+        /// Use an Indexer to get a column.
+        /// </summary>
+        /// <param name="s">The case-insensitive name of the column to search for.</param>
+        /// <returns>The first matching DataFrameColumn, or null.</returns>
+        public DataFrameColumn this[string s]
+        {
+            get
+            {
+                return FindColumn(s);
+            }
+        }
+
+        /// <summary>
         /// Export a Matrix containing only the features of this DataFrame. Exclude
         /// results column, if any.
         /// </summary>
