@@ -485,7 +485,7 @@ namespace ConsoleTester
 
             // Try Logistic Regression
             double[] labels = new double[] { 0.0, 1.0 };
-            Matrix all_theta = LogisticRegression.OneVsAll(Xtrain, ytrain, labels, 0.1);
+            Matrix all_theta = LogisticRegression.OneVsAll(Xtrain, ytrain, labels, 0, 1000);
             Matrix prediction = LogisticRegression.PredictOneVsAll(all_theta, Xtest);
 
             // Exporting

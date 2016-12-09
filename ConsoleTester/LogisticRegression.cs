@@ -95,7 +95,7 @@ namespace ConsoleTester
         /// <param name="lambda">The regularization parameter.</param>
         /// <returns>A Matrix where each row is a learned set of parameters for that
         /// particular class.</returns>
-        public static Matrix OneVsAll(Matrix X, Matrix y, double[] labels, double lambda)
+        public static Matrix OneVsAll(Matrix X, Matrix y, double[] labels, double lambda, int maxIterations = 50)
         {
             int m = X.Rows;
             int n = X.Columns;
@@ -108,7 +108,7 @@ namespace ConsoleTester
             {
                 Matrix initial_theta = new Matrix(n + 1, 1);
                 int i = 0;
-                Matrix new_theta = Minimize(CostFunction, X, y == labels[c] /*(c + 1)*/, initial_theta, lambda, 50, out i);
+                Matrix new_theta = Minimize(CostFunction, X, y == labels[c], initial_theta, lambda, maxIterations, out i);
                 all_theta.SetRow(c, new_theta.Transpose);
             }
 
