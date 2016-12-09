@@ -40,6 +40,17 @@ namespace ConsoleTester
         #endregion
 
         /// <summary>
+        /// Indexer to retrieve the original string value for a given row.
+        /// </summary>
+        /// <param name="row">The row to get/set the value of.</param>
+        /// <returns>The string value contained in the given row.</returns>
+        public string this[int row]
+        {
+            get { return rows[row]; }
+            set { rows[row] = value; }
+        }
+
+        /// <summary>
         /// Convert a given row into an array of values that can be exported
         /// to a Matrix later.
         /// </summary>

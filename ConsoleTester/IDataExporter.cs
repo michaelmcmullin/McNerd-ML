@@ -8,6 +8,6 @@ namespace ConsoleTester
 {
     interface IDataExporter
     {
-        void Save(string path);
+        void Save(string path, DataFrame df);
     }
 }

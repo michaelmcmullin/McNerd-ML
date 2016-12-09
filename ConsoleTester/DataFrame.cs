@@ -58,7 +58,7 @@ namespace ConsoleTester
         /// <param name="path">The path to save this DataFrame to.</param>
         public void Save(string path)
         {
-            exporter.Save(path);
+            exporter.Save(path, this);
         }
         #endregion
 

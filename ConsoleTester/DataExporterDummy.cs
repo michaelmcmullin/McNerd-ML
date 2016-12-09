@@ -8,7 +8,7 @@ namespace ConsoleTester
 {
     class DataExporterDummy : IDataExporter
     {
-        public void Save(string path)
+        public void Save(string path, DataFrame df)
         {
         }
     }

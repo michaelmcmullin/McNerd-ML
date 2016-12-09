@@ -455,7 +455,7 @@ namespace ConsoleTester
             #region CSV data importer
             WriteH2("CSV Data (Titanic)");
             DataImporterCSV di_csv = new DataImporterCSV();
-            DataExporterDummy de_csv = new DataExporterDummy();
+            DataExporterCSV de_csv = new DataExporterCSV();
 
             DataFrame df_train = new DataFrame(di_csv, de_csv);
             DataFrame df_test = new DataFrame(di_csv, de_csv);
@@ -468,6 +468,7 @@ namespace ConsoleTester
 
             // Change the type of one of the training columns
             df_train.SetColumnType("sex", DataFrameColumnType.Factors);
+            df_train.SetColumnType("age", DataFrameColumnType.Double);
             df_train.SetColumnType("survived", DataFrameColumnType.Double);
 
             // Try and match the types in the testing set
@@ -489,7 +490,9 @@ namespace ConsoleTester
 
             // Exporting
             DataFrame df_export = df_test;
-            df_export.Columns.Add(new DataFrameColumn(prediction, 0));
+            DataFrameColumn col_results = new DataFrameColumn(prediction, 0);
+            col_results.Header = "Survived";
+            df_export.Columns.Add(col_results);
             df_export.Save(@"c:\temp\results.csv");
 
 
@@ -518,7 +521,7 @@ namespace ConsoleTester
             Console.WriteLine("\n1:Linear Regression");
             Console.WriteLine("2:Logistic Regression");
             Console.WriteLine("3:Neural Networks");
-            Console.WriteLine("t:Test");
+            Console.WriteLine("t:Titanic [Kaggle.com]");
             Console.WriteLine("x:Exit");
 
             Console.ForegroundColor = fc;
