@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace McNerd.MachineLearning.LinearAlgebra
 {
     /// <summary>
-    /// Describe which dimension of a matrix to work with.
+    /// Describe which dimension of a Matrix to work with.
     /// </summary>
     public enum MatrixDimensions { Auto, Rows, Columns }
 
@@ -44,23 +44,23 @@ namespace McNerd.MachineLearning.LinearAlgebra
 
         #region Private Fields
         /// <summary>
-        /// Storage array for the matrix data.
+        /// Storage array for the Matrix data.
         /// </summary>
         double[] data;
 
         /// <summary>
-        /// Dimensions of the matrix
+        /// Dimensions of the Matrix
         /// </summary>
         int rows, columns;
         #endregion
 
         #region Constructors
         /// <summary>
-        /// Constructor to create a new matrix while specifying the number of
+        /// Constructor to create a new Matrix while specifying the number of
         /// rows and columns.
         /// </summary>
-        /// <param name="rows">The number of rows to initialise the matrix with.</param>
-        /// <param name="cols">The number of columns to initialise the matrix with.</param>
+        /// <param name="rows">The number of rows to initialise the Matrix with.</param>
+        /// <param name="cols">The number of columns to initialise the Matrix with.</param>
         public Matrix(int rows, int columns)
         {
             this.rows = rows;
@@ -69,10 +69,10 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
 
         /// <summary>
-        /// Constructor to create a new square matrix.
+        /// Constructor to create a new square Matrix.
         /// </summary>
         /// <param name="dimensions">The number of rows and columns to initialise the
-        /// matrix with. There will be an equal number of rows and columns.</param>
+        /// Matrix with. There will be an equal number of rows and columns.</param>
         public Matrix(int dimensions) : this(dimensions, dimensions)
         {
         }
@@ -98,10 +98,10 @@ namespace McNerd.MachineLearning.LinearAlgebra
 
         #region Indexers
         /// <summary>
-        /// Indexer to easily access a specific location in this matrix.
+        /// Indexer to easily access a specific location in this Matrix.
         /// </summary>
-        /// <param name="row">The row of the matrix location to access.</param>
-        /// <param name="column">The column of the matrix location to access.</param>
+        /// <param name="row">The row of the Matrix location to access.</param>
+        /// <param name="column">The column of the Matrix location to access.</param>
         /// <returns>The value stored at the given row/column location.</returns>
         /// <remarks>Matrices are zero-indexed.</remarks>
         public double this[int row, int column]
@@ -113,23 +113,23 @@ namespace McNerd.MachineLearning.LinearAlgebra
 
         #region Properties
         /// <summary>
-        /// Indicates whether or not this matrix row and column dimensions are equal.
+        /// Indicates whether or not this Matrix row and column dimensions are equal.
         /// </summary>
         public bool IsSquare => rows == columns;
 
         /// <summary>
-        /// Get the dimensions of this matrix in a single-dimensional array of the form
+        /// Get the dimensions of this Matrix in a single-dimensional array of the form
         /// [rows,columns].
         /// </summary>
         public int[] Dimensions => new int[] { rows, columns };
 
         /// <summary>
-        /// Get the number of rows in this matrix.
+        /// Get the number of rows in this Matrix.
         /// </summary>
         public int Rows => rows;
 
         /// <summary>
-        /// Get the number of columns in this matrix.
+        /// Get the number of columns in this Matrix.
         /// </summary>
         public int Columns => columns;
 
@@ -296,8 +296,8 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <summary>
         /// Add two matrices together.
         /// </summary>
-        /// <param name="m1">The first matrix to add.</param>
-        /// <param name="m2">The second matrix to add.</param>
+        /// <param name="m1">The first Matrix to add.</param>
+        /// <param name="m2">The second Matrix to add.</param>
         /// <returns>The result of adding the two matrices together.</returns>
         /// <exception cref="InvalidMatrixDimensionsException">Thrown when both matrices have
         /// different dimensions.</exception>
@@ -348,7 +348,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <summary>
         /// Unary negative operator.
         /// </summary>
-        /// <param name="m1">The matrix to negate.</param>
+        /// <param name="m1">The Matrix to negate.</param>
         /// <returns>The result of negating every element in the given Matrix.</returns>
         public static Matrix operator -(Matrix m1)
         {
@@ -361,11 +361,11 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
 
         /// <summary>
-        /// Subtract one matrix from another.
+        /// Subtract one Matrix from another.
         /// </summary>
-        /// <param name="m1">The first matrix to subtract from.</param>
-        /// <param name="m2">The second matrix to subtract from the first.</param>
-        /// <returns>The result of subtracting the second matrix from the first.</returns>
+        /// <param name="m1">The first Matrix to subtract from.</param>
+        /// <param name="m2">The second Matrix to subtract from the first.</param>
+        /// <returns>The result of subtracting the second Matrix from the first.</returns>
         /// <exception cref="InvalidMatrixDimensionsException">Thrown when both matrices have
         /// different dimensions.</exception>
         public static Matrix operator -(Matrix m1, Matrix m2)
@@ -421,11 +421,11 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <summary>
         /// Multiply two matrices together.
         /// </summary>
-        /// <param name="m1">An nxm dimension matrix.</param>
-        /// <param name="m2">An mxp dimension matrix.</param>
+        /// <param name="m1">An nxm dimension Matrix.</param>
+        /// <param name="m2">An mxp dimension Matrix.</param>
         /// <returns>An nxp Matrix that is the product of m1 and m2.</returns>
         /// <exception cref="InvalidMatrixDimensionsException">Thrown when the number of columns in the
-        /// first matrix don't match the number of rows in the second matrix.</exception>
+        /// first Matrix don't match the number of rows in the second Matrix.</exception>
         public static Matrix operator *(Matrix m1, Matrix m2)
         {
             if (m1.columns == m2.rows)
@@ -441,11 +441,11 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
 
         /// <summary>
-        /// Scalar multiplication of a matrix.
+        /// Scalar multiplication of a Matrix.
         /// </summary>
-        /// <param name="scalar">The scalar value to multiply each element of the matrix by.</param>
-        /// <param name="m">The matrix to apply multiplication to.</param>
-        /// <returns>A matrix representing the scalar multiplication of scalar * m.</returns>
+        /// <param name="scalar">The scalar value to multiply each element of the Matrix by.</param>
+        /// <param name="m">The Matrix to apply multiplication to.</param>
+        /// <returns>A Matrix representing the scalar multiplication of scalar * m.</returns>
         public static Matrix operator *(double scalar, Matrix m)
         {
             Matrix output = new Matrix(m.rows, m.columns);
@@ -457,11 +457,11 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
 
         /// <summary>
-        /// Scalar multiplication of a matrix.
+        /// Scalar multiplication of a Matrix.
         /// </summary>
-        /// <param name="m">The matrix to apply multiplication to.</param>
-        /// <param name="scalar">The scalar value to multiply each element of the matrix by.</param>
-        /// <returns>A matrix representing the scalar multiplication of m * scalar.</returns>
+        /// <param name="m">The Matrix to apply multiplication to.</param>
+        /// <param name="scalar">The scalar value to multiply each element of the Matrix by.</param>
+        /// <returns>A Matrix representing the scalar multiplication of m * scalar.</returns>
         public static Matrix operator *(Matrix m, double scalar)
         {
             // Same as above, but ensuring commutativity - i.e. (s * m) == (m * s).
@@ -469,11 +469,11 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
 
         /// <summary>
-        /// Scalar division of a matrix.
+        /// Scalar division of a Matrix.
         /// </summary>
-        /// <param name="scalar">The scalar value to divide each element of the matrix by.</param>
-        /// <param name="m">The matrix to apply division to.</param>
-        /// <returns>A matrix representing the scalar division of scalar / m.</returns>
+        /// <param name="scalar">The scalar value to divide each element of the Matrix by.</param>
+        /// <param name="m">The Matrix to apply division to.</param>
+        /// <returns>A Matrix representing the scalar division of scalar / m.</returns>
         public static Matrix operator /(double scalar, Matrix m)
         {
             Matrix output = new Matrix(m.rows, m.columns);
@@ -482,11 +482,11 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
 
         /// <summary>
-        /// Scalar division of a matrix.
+        /// Scalar division of a Matrix.
         /// </summary>
-        /// <param name="m">The matrix to apply division to.</param>
-        /// <param name="scalar">The scalar value to division each element of the matrix by.</param>
-        /// <returns>A matrix representing the scalar division of m / scalar.</returns>
+        /// <param name="m">The Matrix to apply division to.</param>
+        /// <param name="scalar">The scalar value to division each element of the Matrix by.</param>
+        /// <returns>A Matrix representing the scalar division of m / scalar.</returns>
         public static Matrix operator /(Matrix m, double scalar)
         {
             Matrix output = new Matrix(m.rows, m.columns);
@@ -495,10 +495,10 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
 
         /// <summary>
-        /// Override the == operator to compare matrix values.
+        /// Override the == operator to compare Matrix values.
         /// </summary>
-        /// <param name="m1">The first matrix to compare.</param>
-        /// <param name="m2">The second matrix to compare.</param>
+        /// <param name="m1">The first Matrix to compare.</param>
+        /// <param name="m2">The second Matrix to compare.</param>
         /// <returns>True if the values of both matrices match.</returns>
         public static bool operator ==(Matrix m1, Matrix m2)
         {
@@ -506,10 +506,10 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
 
         /// <summary>
-        /// Override the != operator to compare matrix values.
+        /// Override the != operator to compare Matrix values.
         /// </summary>
-        /// <param name="m1">The first matrix to compare.</param>
-        /// <param name="m2">The second matrix to compare.</param>
+        /// <param name="m1">The first Matrix to compare.</param>
+        /// <param name="m2">The second Matrix to compare.</param>
         /// <returns>True if the values of both matrices differ.</returns>
         public static bool operator !=(Matrix m1, Matrix m2)
         {
@@ -610,9 +610,9 @@ namespace McNerd.MachineLearning.LinearAlgebra
 
         #region Methods
         /// <summary>
-        /// Indicates if this matrix has the same dimensions as another supplied matrix.
+        /// Indicates if this Matrix has the same dimensions as another supplied Matrix.
         /// </summary>
-        /// <param name="other">Another matrix to compare this instance to.</param>
+        /// <param name="other">Another Matrix to compare this instance to.</param>
         /// <returns>true if both matrices have the same dimensions. Otherwise, false.</returns>
         public bool HasSameDimensions(Matrix other)
         {
@@ -620,11 +620,11 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
 
         /// <summary>
-        /// Override the Object.Equals method to compare matrix values.
+        /// Override the Object.Equals method to compare Matrix values.
         /// </summary>
-        /// <param name="obj">The object to compare to this matrix.</param>
-        /// <returns>True if obj is a matrix, and its values match the current
-        /// matrix values.</returns>
+        /// <param name="obj">The object to compare to this Matrix.</param>
+        /// <returns>True if obj is a Matrix, and its values match the current
+        /// Matrix values.</returns>
         public override bool Equals(object obj)
         {
             if (obj == null) return false;
@@ -645,9 +645,9 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
 
         /// <summary>
-        /// Compare this matrix with a second matrix by value.
+        /// Compare this Matrix with a second Matrix by value.
         /// </summary>
-        /// <param name="m">The matrix to compare to this one.</param>
+        /// <param name="m">The Matrix to compare to this one.</param>
         /// <returns>True if both matrices contain the same values.</returns>
         public bool Equals(Matrix m)
         {
@@ -669,7 +669,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <summary>
         /// Override the default hash code.
         /// </summary>
-        /// <returns>A bitwise XOR based on rows and columns of this matrix.</returns>
+        /// <returns>A bitwise XOR based on rows and columns of this Matrix.</returns>
         public override int GetHashCode()
         {
             return rows ^ columns;
@@ -700,9 +700,9 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// Calculate a single row result of multiplying two matrices.
         /// </summary>
         /// <param name="row">The zero-indexed row to calculate.</param>
-        /// <param name="m1">The first matrix to multiply.</param>
-        /// <param name="m2">The second matrix to multiply.</param>
-        /// <param name="output">The matrix to store the results in.</param>
+        /// <param name="m1">The first Matrix to multiply.</param>
+        /// <param name="m2">The second Matrix to multiply.</param>
+        /// <param name="output">The Matrix to store the results in.</param>
         private static void MultiplyRow(int row, Matrix m1, Matrix m2, ref Matrix output)
         {
             int m1_index = row * m1.columns;
@@ -725,14 +725,14 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
 
         /// <summary>
-        /// Calculate the results of multiplying each element in a matrix
+        /// Calculate the results of multiplying each element in a Matrix
         /// row by a scalar value.
         /// </summary>
         /// <param name="row">The zero-indexed row to calculate.</param>
-        /// <param name="m">The matrix to multiply by a scalar value.</param>
-        /// <param name="scalar">The scalar value to multiply the matrix by.</param>
-        /// <param name="output">The matrix that contains the results of multiplying the input
-        /// matrix by a scalar value.</param>
+        /// <param name="m">The Matrix to multiply by a scalar value.</param>
+        /// <param name="scalar">The scalar value to multiply the Matrix by.</param>
+        /// <param name="output">The Matrix that contains the results of multiplying the input
+        /// Matrix by a scalar value.</param>
         private static void MultiplyRow(int row, Matrix m, double scalar, ref Matrix output)
         {
             int m_index = row * m.columns;
@@ -747,9 +747,9 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// Calculate a single row result of multiplying two matrices.
         /// </summary>
         /// <param name="row">The zero-indexed row from m1 to calculate.</param>
-        /// <param name="m1">The first matrix to multiply.</param>
-        /// <param name="m2">The second matrix to multiply.</param>
-        /// <param name="output">The matrix to store the results in.</param>
+        /// <param name="m1">The first Matrix to multiply.</param>
+        /// <param name="m2">The second Matrix to multiply.</param>
+        /// <param name="output">The Matrix to store the results in.</param>
         private static void MultiplyByTransposedRow(int row, Matrix m1, Matrix m2, ref Matrix output)
         {
             int m1_index = row * m1.columns;
@@ -774,9 +774,9 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// row in a second Matrix.
         /// </summary>
         /// <param name="column">The zero-indexed row from m1 to transpose into a column.</param>
-        /// <param name="m1">The first matrix to multiply.</param>
-        /// <param name="m2">The second matrix to multiply.</param>
-        /// <param name="output">The matrix to store the results in.</param>
+        /// <param name="m1">The first Matrix to multiply.</param>
+        /// <param name="m2">The second Matrix to multiply.</param>
+        /// <param name="output">The Matrix to store the results in.</param>
         private static void MultiplyByTransposedColumn(int column, Matrix m1, Matrix m2, ref Matrix output)
         {
             int output_index = column * output.Columns;
@@ -800,12 +800,12 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
 
         /// <summary>
-        /// Calculate a single row result of multiplying one matrix with its transpose.
+        /// Calculate a single row result of multiplying one Matrix with its transpose.
         /// </summary>
         /// <param name="row">The zero-indexed row from m1 to calculate.</param>
         /// <param name="column">The zero-indexed column from m2 to calculate.</param>
-        /// <param name="m1">The matrix to multiply with its transpose.</param>
-        /// <param name="output">The matrix to store the results in.</param>
+        /// <param name="m1">The Matrix to multiply with its transpose.</param>
+        /// <param name="output">The Matrix to store the results in.</param>
         private static void MultiplyByTransposedRow(int row, Matrix m1, ref Matrix output)
         {
             int m1_index = row * m1.columns;
@@ -830,22 +830,22 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// row in the original Matrix.
         /// </summary>
         /// <param name="column">The zero-indexed row from m1 to transpose into a column.</param>
-        /// <param name="m1">The matrix to transpose and multiply by the original.</param>
-        /// <param name="output">The matrix to store the results in.</param>
+        /// <param name="m1">The Matrix to transpose and multiply by the original.</param>
+        /// <param name="output">The Matrix to store the results in.</param>
         private static void MultiplyByTransposedColumn(int column, Matrix m1, ref Matrix output)
         {
             MultiplyByTransposedColumn(column, m1, m1, ref output);
         }
 
         /// <summary>
-        /// Calculate the results of dividing each element in a matrix
+        /// Calculate the results of dividing each element in a Matrix
         /// row by a scalar value.
         /// </summary>
         /// <param name="row">The zero-indexed row to calculate.</param>
-        /// <param name="m">The matrix to divide by a scalar value.</param>
-        /// <param name="scalar">The scalar value to divide the matrix by.</param>
-        /// <param name="output">The matrix that contains the results of dividing the input
-        /// matrix by a scalar value.</param>
+        /// <param name="m">The Matrix to divide by a scalar value.</param>
+        /// <param name="scalar">The scalar value to divide the Matrix by.</param>
+        /// <param name="output">The Matrix that contains the results of dividing the input
+        /// Matrix by a scalar value.</param>
         private static void DivideRow(int row, Matrix m, double scalar, ref Matrix output)
         {
             int m_index = row * m.columns;
@@ -858,13 +858,13 @@ namespace McNerd.MachineLearning.LinearAlgebra
 
         /// <summary>
         /// Calculate the results of dividing a scalar value by each element
-        /// in a matrix.
+        /// in a Matrix.
         /// </summary>
         /// <param name="row">The zero-indexed row to calculate.</param>
-        /// <param name="m">The matrix to divide into a scalar value.</param>
-        /// <param name="scalar">The scalar value to divide by the matrix elements.</param>
-        /// <param name="output">The matrix that contains the results of dividing the scalar
-        /// value by each element in the matrix.</param>
+        /// <param name="m">The Matrix to divide into a scalar value.</param>
+        /// <param name="scalar">The scalar value to divide by the Matrix elements.</param>
+        /// <param name="output">The Matrix that contains the results of dividing the scalar
+        /// value by each element in the Matrix.</param>
         private static void DivideScalarByRow(int row, Matrix m, double scalar, ref Matrix output)
         {
             int m_index = row * m.columns;
@@ -880,9 +880,9 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// a 1.0 if true, or 0.0 otherwise.
         /// </summary>
         /// <param name="row">The zero-indexed row to calculate.</param>
-        /// <param name="m">The matrix to compare to the scalar value.</param>
-        /// <param name="scalar">The scalar value to compare to the matrix elements.</param>
-        /// <param name="output">The matrix that contains the comparison results.</param>
+        /// <param name="m">The Matrix to compare to the scalar value.</param>
+        /// <param name="scalar">The scalar value to compare to the Matrix elements.</param>
+        /// <param name="output">The Matrix that contains the comparison results.</param>
         private static void GreaterThanOrEqualToRow(int row, Matrix m, double scalar, ref Matrix output)
         {
             int m_index = row * m.columns;
@@ -898,9 +898,9 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// a 1.0 if true, or 0.0 otherwise.
         /// </summary>
         /// <param name="row">The zero-indexed row to calculate.</param>
-        /// <param name="m">The matrix to compare to the scalar value.</param>
-        /// <param name="scalar">The scalar value to compare to the matrix elements.</param>
-        /// <param name="output">The matrix that contains the comparison results.</param>
+        /// <param name="m">The Matrix to compare to the scalar value.</param>
+        /// <param name="scalar">The scalar value to compare to the Matrix elements.</param>
+        /// <param name="output">The Matrix that contains the comparison results.</param>
         private static void GreaterThanRow(int row, Matrix m, double scalar, ref Matrix output)
         {
             int m_index = row * m.columns;
@@ -916,9 +916,9 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// a 1.0 if true, or 0.0 otherwise.
         /// </summary>
         /// <param name="row">The zero-indexed row to calculate.</param>
-        /// <param name="m">The matrix to compare to the scalar value.</param>
-        /// <param name="scalar">The scalar value to compare to the matrix elements.</param>
-        /// <param name="output">The matrix that contains the comparison results.</param>
+        /// <param name="m">The Matrix to compare to the scalar value.</param>
+        /// <param name="scalar">The scalar value to compare to the Matrix elements.</param>
+        /// <param name="output">The Matrix that contains the comparison results.</param>
         private static void LessThanOrEqualToRow(int row, Matrix m, double scalar, ref Matrix output)
         {
             int m_index = row * m.columns;
@@ -934,9 +934,9 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// a 1.0 if true, or 0.0 otherwise.
         /// </summary>
         /// <param name="row">The zero-indexed row to calculate.</param>
-        /// <param name="m">The matrix to compare to the scalar value.</param>
-        /// <param name="scalar">The scalar value to compare to the matrix elements.</param>
-        /// <param name="output">The matrix that contains the comparison results.</param>
+        /// <param name="m">The Matrix to compare to the scalar value.</param>
+        /// <param name="scalar">The scalar value to compare to the Matrix elements.</param>
+        /// <param name="output">The Matrix that contains the comparison results.</param>
         private static void LessThanRow(int row, Matrix m, double scalar, ref Matrix output)
         {
             int m_index = row * m.columns;
@@ -952,9 +952,9 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// a 1.0 if true, or 0.0 otherwise.
         /// </summary>
         /// <param name="row">The zero-indexed row to calculate.</param>
-        /// <param name="m">The matrix to compare to the scalar value.</param>
-        /// <param name="scalar">The scalar value to compare to the matrix elements.</param>
-        /// <param name="output">The matrix that contains the comparison results.</param>
+        /// <param name="m">The Matrix to compare to the scalar value.</param>
+        /// <param name="scalar">The scalar value to compare to the Matrix elements.</param>
+        /// <param name="output">The Matrix that contains the comparison results.</param>
         private static void EqualToRow(int row, Matrix m, double scalar, ref Matrix output)
         {
             int m_index = row * m.columns;
@@ -970,9 +970,9 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// a 1.0 if true, or 0.0 otherwise.
         /// </summary>
         /// <param name="row">The zero-indexed row to calculate.</param>
-        /// <param name="m">The matrix to compare to the scalar value.</param>
-        /// <param name="scalar">The scalar value to compare to the matrix elements.</param>
-        /// <param name="output">The matrix that contains the comparison results.</param>
+        /// <param name="m">The Matrix to compare to the scalar value.</param>
+        /// <param name="scalar">The scalar value to compare to the Matrix elements.</param>
+        /// <param name="output">The Matrix that contains the comparison results.</param>
         private static void NotEqualToRow(int row, Matrix m, double scalar, ref Matrix output)
         {
             int m_index = row * m.columns;
@@ -1213,10 +1213,10 @@ namespace McNerd.MachineLearning.LinearAlgebra
 
         #region Matrix creation methods
         /// <summary>
-        /// Create an identity matrix
+        /// Create an identity Matrix
         /// </summary>
-        /// <param name="dimensions">The number of rows and columns for this matrix.</param>
-        /// <returns>A square matrix with zeros everywhere, except for the main diagonal which is filled with ones.</returns>
+        /// <param name="dimensions">The number of rows and columns for this Matrix.</param>
+        /// <returns>A square Matrix with zeros everywhere, except for the main diagonal which is filled with ones.</returns>
         public static Matrix Identity(int dimensions)
         {
             Matrix Midentity = new Matrix(dimensions, dimensions);
@@ -1233,8 +1233,8 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <summary>
         /// Create a rows*columns size Matrix filled with 1's.
         /// </summary>
-        /// <param name="rows">The number of rows to initialise the matrix with.</param>
-        /// <param name="cols">The number of columns to initialise the matrix with.</param>
+        /// <param name="rows">The number of rows to initialise the Matrix with.</param>
+        /// <param name="cols">The number of columns to initialise the Matrix with.</param>
         /// <returns>A Matrix object filled with 1's.</returns>
         public static Matrix Ones(int rows, int columns)
         {
@@ -1247,7 +1247,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// Create a square Matrix filled with 1's.
         /// </summary>
         /// <param name="dimensions">The number of rows and columns to initialise the
-        /// matrix with. There will be an equal number of rows and columns.</param>
+        /// Matrix with. There will be an equal number of rows and columns.</param>
         /// <returns>A square Matrix object filled with 1's.</returns>
         public static Matrix Ones(int dimension)
         {
@@ -1308,7 +1308,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// add up to the same number.
         /// </summary>
         /// <param name="dimensions">The number of rows and columns to initialise the
-        /// matrix with. There will be an equal number of rows and columns.</param>
+        /// Matrix with. There will be an equal number of rows and columns.</param>
         /// <returns>A Magic Square Matrix.</returns>
         public static Matrix Magic(int dimension)
         {
@@ -1401,7 +1401,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
 
         #region Element Operations
         /// <summary>
-        /// Run a given operation on every element of a matrix.
+        /// Run a given operation on every element of a Matrix.
         /// </summary>
         /// <param name="m">The Matrix to operate on.</param>
         /// <param name="number">The value to use in each operation.</param>
@@ -1470,7 +1470,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
 
         /// <summary>
-        /// Run a given operation on every element of a matrix.
+        /// Run a given operation on every element of a Matrix.
         /// </summary>
         /// <param name="m">The Matrix to operate on.</param>
         /// <param name="operation">The delegate method to operate with.</param>
@@ -1637,11 +1637,11 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// Run a given operation on all elements in a particular dimension to reduce that dimension
         /// to a single row or column.
         /// </summary>
-        /// <param name="m">The matrix to operate on.</param>
+        /// <param name="m">The Matrix to operate on.</param>
         /// <param name="dimension">Indicate whether to operate on rows or columns.</param>
         /// <param name="operation">The delegate method to operate with.</param>
-        /// <returns>A matrix populated with the results of performing the given operation.</returns>
-        /// <remarks>If the current matrix is a row or column vector, then a 1*1 matrix
+        /// <returns>A Matrix populated with the results of performing the given operation.</returns>
+        /// <remarks>If the current Matrix is a row or column vector, then a 1*1 Matrix
         /// will be returned, regardless of which dimension is chosen. If the dimension is
         /// set to 'Auto', then the first non-singleton dimension is chosen. If no singleton
         /// dimension exists, then columns are used as the default.</remarks>
@@ -1704,10 +1704,10 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// Run a set of operations on all elements in a particular dimension to reduce that dimension
         /// to a single row, and then perform an aggregate operation to produce a statistical 
         /// </summary>
-        /// <param name="m">The matrix to operate on.</param>
+        /// <param name="m">The Matrix to operate on.</param>
         /// <param name="dimension">Indicate whether to operate on rows or columns.</param>
         /// <param name="operation">The delegate method to operate with.</param>
-        /// <remarks>If the current matrix is a row or column vector, then a 1*1 matrix
+        /// <remarks>If the current Matrix is a row or column vector, then a 1*1 Matrix
         /// will be returned, regardless of which dimension is chosen. If the dimension is
         /// set to 'Auto', then the first non-singleton dimension is chosen. If no singleton
         /// dimension exists, then columns are used as the default.</remarks>
@@ -2093,7 +2093,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
     }
 
     /// <summary>
-    /// Custom exception for matrix operations using incorrect dimensions.
+    /// Custom exception for Matrix operations using incorrect dimensions.
     /// </summary>
     public class InvalidMatrixDimensionsException : InvalidOperationException
     {
@@ -2113,7 +2113,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
     }
 
     /// <summary>
-    /// Custom excepction for matrix operations that require invertible matrices. 
+    /// Custom excepction for Matrix operations that require invertible matrices. 
     /// </summary>
     public class NonInvertibleMatrixException : InvalidOperationException
     {
