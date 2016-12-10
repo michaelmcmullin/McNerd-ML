@@ -10,13 +10,15 @@ namespace ConsoleTester
     /// <summary>
     /// The type of DataFrameColumn data
     /// </summary>
-    public enum DataFrameColumnType { Ignore, Empty, Double, Factors }
+    public enum DataFrameColumnType { Ignore, Empty, Double, Factors, Bins }
 
     class DataFrameColumn
     {
         DataFrameColumnType columnType = DataFrameColumnType.Ignore;
         List<string> rows;
         List<string> factors;
+        Bins bins;
+
         string header;
         int columnCount = 1;
         string missingElement = String.Empty;
@@ -90,6 +92,27 @@ namespace ConsoleTester
                             }
                         }
                         break;
+                    case DataFrameColumnType.Bins:
+                        if (bins != null)
+                        {
+                            int binIndex = -1;
+                            string cmpValue = rows[row] == String.Empty ? EmptyElement : rows[row];
+                            double binValue = 0;
+
+                            if (Double.TryParse(rows[row], out binValue))
+                            {
+                                binIndex = bins.binIndex(binValue);
+                            }
+
+                            for (int i = 0; i < columnCount; i++)
+                            {
+                                if (i == binIndex)
+                                    output[i] = 1.0;
+                                else
+                                    output[i] = 0.0;
+                            }
+                        }
+                        break;
                     default:
                         for (int i = 0; i < columnCount; i++)
                             output[i] = EmptyValue;
@@ -122,6 +145,9 @@ namespace ConsoleTester
             {
                 case DataFrameColumnType.Factors:
                     headers = factors;
+                    break;
+                case DataFrameColumnType.Bins:
+                    headers = bins.BinLabels;
                     break;
                 default:
                     headers.Add(Header);
@@ -193,6 +219,12 @@ namespace ConsoleTester
                         columnCount = factors.Count;
                     }
                     break;
+                case DataFrameColumnType.Bins:
+                    if (bins != null)
+                    {
+                        columnCount = bins.BinCount;
+                    }
+                    break;
                 default:
                     break;
             }
@@ -214,7 +246,7 @@ namespace ConsoleTester
         public double EmptyValue
         {
             get { return missingElementValue; }
-            set { missingElementValue = value; }
+            set { missingElementValue = value; missingElement = value.ToString(); }
         }
 
         /// <summary>
@@ -246,7 +278,27 @@ namespace ConsoleTester
                         {
                             if (rows[i] == headers[j])
                                 sb.Append($"Y\t");
-                                //sb.Append($"{rows[i]}\t");
+                            //sb.Append($"{rows[i]}\t");
+                            else
+                                sb.Append("-\t");
+                        }
+                        sb.Append("\n");
+                        break;
+                    case DataFrameColumnType.Bins:
+                        int binIndex = -1;
+                        if (bins != null)
+                        {
+                            double val = 0;
+                            if (Double.TryParse(rows[i], out val))
+                            {
+                                binIndex = bins.binIndex(val);
+                            }
+                        }
+
+                        for (int j = 0; j < headers.Count; j++)
+                        {
+                            if (binIndex == j)
+                                sb.Append($"Y\t");
                             else
                                 sb.Append("-\t");
                         }
@@ -265,5 +317,27 @@ namespace ConsoleTester
         /// Indicates whether this column represents the results.
         /// </summary>
         public bool IsResult { get { return isResult; } set { isResult = value; } }
+
+        /// <summary>
+        /// Specify a number of bin values to use for this column.
+        /// </summary>
+        /// <param name="values">An array of values to use as bin boundaries.</param>
+        public void SetBins(double[] values)
+        {
+            bins = new Bins();
+            foreach (double val in values)
+            {
+                bins.AddBin(val);
+            }
+        }
+
+        /// <summary>
+        /// Copy the bins from this DataFrameColumn to another.
+        /// </summary>
+        /// <param name="other">The DataFrameColumn to copy the bins to.</param>
+        public void CopyBins(DataFrameColumn other)
+        {
+            other.bins = this.bins;
+        }
     }
 }

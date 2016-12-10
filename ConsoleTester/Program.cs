@@ -467,8 +467,15 @@ namespace ConsoleTester
             Console.WriteLine($"Total Columns (testing data):  {df_test.TotalColumns}");
 
             // Change the type of some of the training columns
+            df_train.SetColumnType("pclass", DataFrameColumnType.Factors);
             df_train.SetColumnType("sex", DataFrameColumnType.Factors);
-            df_train.SetColumnType("age", DataFrameColumnType.Double); df_train["age"].EmptyValue = 18.0;
+            df_train.SetColumnType("age", DataFrameColumnType.Bins);
+            df_train["age"].SetBins(new double[] { 0.0, 18.0, 100.0 });
+            df_train["age"].EmptyValue = 18.0;
+            df_train.SetColumnType("fare", DataFrameColumnType.Double);
+            df_train.SetColumnType("sibsp", DataFrameColumnType.Double);
+            df_train.SetColumnType("parch", DataFrameColumnType.Double);
+
             df_train.SetColumnType("survived", DataFrameColumnType.Double);
 
             // Try and match the types in the testing set
@@ -485,7 +492,7 @@ namespace ConsoleTester
 
             // Try Logistic Regression
             double[] labels = new double[] { 0.0, 1.0 };
-            Matrix all_theta = LogisticRegression.OneVsAll(Xtrain, ytrain, labels, 0, 1000);
+            Matrix all_theta = LogisticRegression.OneVsAll(Xtrain, ytrain, labels, 0.1, 1000);
             Matrix prediction = LogisticRegression.PredictOneVsAll(all_theta, Xtest);
 
             // Exporting
