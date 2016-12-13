@@ -3044,6 +3044,77 @@ namespace MLTests.LinearAlgebra
             Assert.AreEqual(expectedResult, m1);
         }
         #endregion
+
+        #region Remove Rows/Columns
+        [TestMethod]
+        public void RemoveDefaultColumnFromMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0, 4.0 },
+                { 5.0, 6.0, 7.0, 8.0 },
+                { 9.0, 10.0, 11.0, 12.0 },
+                { 13.0, 14.0, 15.0, 16.0 }
+            });
+            Matrix m2 = m1.RemoveColumn();
+
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 2.0, 3.0, 4.0 },
+                { 6.0, 7.0, 8.0 },
+                { 10.0, 11.0, 12.0 },
+                { 14.0, 15.0, 16.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestMethod]
+        public void RemoveArbitraryColumnFromMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0, 4.0 },
+                { 5.0, 6.0, 7.0, 8.0 },
+                { 9.0, 10.0, 11.0, 12.0 },
+                { 13.0, 14.0, 15.0, 16.0 }
+            });
+            Matrix m2 = m1.RemoveColumn(2);
+
+            Matrix expectedResult = new Matrix(new double[,] {
+                { 1.0, 2.0, 4.0 },
+                { 5.0, 6.0, 8.0 },
+                { 9.0, 10.0, 12.0 },
+                { 13.0, 14.0, 16.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(IndexOutOfRangeException), "Column out of range.")]
+        public void RemoveOutOfRangeColumnFromMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0, 2.0, 3.0, 4.0 },
+                { 5.0, 6.0, 7.0, 8.0 },
+                { 9.0, 10.0, 11.0, 12.0 },
+                { 13.0, 14.0, 15.0, 16.0 }
+            });
+            Matrix m2 = m1.RemoveColumn(10);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidMatrixDimensionsException), "Cannot remove only column.")]
+        public void RemoveOnlyColumnFromMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,] {
+                { 1.0 },
+                { 5.0 },
+                { 9.0 },
+                { 13.0 }
+            });
+            Matrix m2 = m1.RemoveColumn(0);
+        }
+
+        #endregion
         #endregion
     }
 }

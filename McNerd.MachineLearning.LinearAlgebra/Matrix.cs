@@ -1202,6 +1202,39 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
 
         /// <summary>
+        /// Remove a given column from a Matrix.
+        /// </summary>
+        /// <param name="column">The zero-based index of the column to remove.</param>
+        /// <returns>A new Matrix containing the contents of the original Matrix
+        /// without the specified column.</returns>
+        public Matrix RemoveColumn(int column = 0)
+        {
+            if (column >= this.Columns)
+                throw new IndexOutOfRangeException("The requested column is out of range");
+            if (this.Columns == 1)
+                throw new InvalidMatrixDimensionsException("Cannot remove column as there is only one column to begin with");
+
+            Matrix result = new Matrix(this.Rows, this.Columns-1);
+            int dataIndex = 0, resultIndex = 0;
+            for (int i = 0; i < this.Rows; i++)
+            {
+                for (int j = 0; j < this.Columns; j++)
+                {
+                    if (j != column)
+                    {
+                        result.data[resultIndex++] = this.data[dataIndex++];
+                    }
+                    else
+                    {
+                        dataIndex++;
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Fills the Matrix with a given number.
         /// </summary>
         /// <param name="number">The number to assign to every element in the Matrix.</param>
