@@ -432,6 +432,8 @@ namespace ConsoleTester
             Console.WriteLine(sg);
             #endregion
 
+            #region Neural Network Cost Function
+            #endregion
 
         }
 
