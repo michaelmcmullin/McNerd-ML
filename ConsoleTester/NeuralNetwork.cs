@@ -92,14 +92,38 @@ namespace ConsoleTester
             Matrix part1 = Matrix.ElementMultiply(-y_matrix, log1);
             Matrix part2 = Matrix.ElementMultiply((1 - y_matrix), log2);
 
+            Matrix t0 = input_thetas[0].RemoveColumn(0);
+            Matrix t1 = input_thetas[1].RemoveColumn(0);
+
             // Calculate regularization component
             double multiplier = lambda / (2 * X.Rows);
-            double reg1 = Matrix.ElementPower(input_thetas[0].RemoveColumn(0), 2).SumAllElements;
-            double reg2 = Matrix.ElementPower(input_thetas[1].RemoveColumn(0), 2).SumAllElements;
-
+            double reg1 = Matrix.ElementPower(t0, 2).SumAllElements;
+            double reg2 = Matrix.ElementPower(t1, 2).SumAllElements;
             double r = multiplier * (reg1 + reg2);
+
+            // Calculate cost
             costFunction = (1.0 / X.Rows) * (part1 - part2).SumAllElements + r;
 
+
+            // Back Propogation
+            Matrix d3 = a3 - y_matrix;
+            Matrix d2 = Matrix.ElementMultiply(
+                            (t1.Transpose * d3.Transpose).Transpose,
+                            SigmoidGradient(z2)
+                        );
+
+            Matrix Delta1 = d2.Transpose * a1;
+            Matrix Delta2 = d3.Transpose * a2;
+
+            Matrix Theta1 = Matrix.Join(new Matrix(t0.Rows, 1), t0, MatrixDimensions.Columns);
+            Matrix Theta2 = Matrix.Join(new Matrix(t1.Rows, 1), t1, MatrixDimensions.Columns);
+
+            double scale_value = lambda / X.Rows;
+            Matrix Theta1_scaled = Theta1 * scale_value;
+            Matrix Theta2_scaled = Theta2 * scale_value;
+
+            Matrix Theta1_grad = (Delta1 / X.Rows) + Theta1_scaled;
+            Matrix Theta2_grad = (Delta2 / X.Rows) + Theta2_scaled;
 
             return new Tuple<double, Matrix[]>(costFunction, grad.ToArray());
         }
