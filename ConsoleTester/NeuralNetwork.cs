@@ -58,12 +58,7 @@ namespace ConsoleTester
         {
             double costFunction = 0;
             int num_labels = labels.Length;
-            List<Matrix> grad = new List<Matrix>();
-            foreach(Matrix m in input_thetas)
-            {
-                Matrix output_theta = new Matrix(m.Rows, m.Columns);
-                grad.Add(output_theta);
-            }
+            List<Matrix> output_gradient = new List<Matrix>();
 
             // y_matrix has the following attributes:
             // Rows: same as the number of rows in Y -- one for each example result.
@@ -122,10 +117,10 @@ namespace ConsoleTester
             Matrix Theta1_scaled = Theta1 * scale_value;
             Matrix Theta2_scaled = Theta2 * scale_value;
 
-            Matrix Theta1_grad = (Delta1 / X.Rows) + Theta1_scaled;
-            Matrix Theta2_grad = (Delta2 / X.Rows) + Theta2_scaled;
+            output_gradient.Add( (Delta1 / X.Rows) + Theta1_scaled );
+            output_gradient.Add( (Delta2 / X.Rows) + Theta2_scaled );
 
-            return new Tuple<double, Matrix[]>(costFunction, grad.ToArray());
+            return new Tuple<double, Matrix[]>(costFunction, output_gradient.ToArray());
         }
 
         private static Matrix AssignLabels(Matrix m, double[] labels)

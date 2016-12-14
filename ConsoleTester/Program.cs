@@ -463,6 +463,8 @@ namespace ConsoleTester
 
             WriteH2("Neural Network Cost Function");
             Console.WriteLine($"J: {result.Item1} (Expected Result: 19.474)");
+            Console.WriteLine(result.Item2[0]);
+            Console.WriteLine(result.Item2[1]);
 
             #endregion
 
