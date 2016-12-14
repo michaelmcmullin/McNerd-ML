@@ -53,7 +53,7 @@ namespace ConsoleTester
         }
 
 
-        public Tuple<double, Matrix[]> NNCostFunction(Matrix[] input_thetas, int input_layer_size, int hidden_layer_size,
+        public static Tuple<double, Matrix[]> NNCostFunction(Matrix[] input_thetas, int input_layer_size, int hidden_layer_size,
                                                     double[] labels, Matrix X, Matrix y, double lambda)
         {
             double costFunction = 0;
@@ -94,13 +94,17 @@ namespace ConsoleTester
 
             // Calculate regularization component
             double multiplier = lambda / (2 * X.Rows);
+            double reg1 = Matrix.ElementPower(input_thetas[0].RemoveColumn(0), 2).SumAllElements;
+            double reg2 = Matrix.ElementPower(input_thetas[1].RemoveColumn(0), 2).SumAllElements;
 
-            //Matrix Theta1 = 
+            double r = multiplier * (reg1 + reg2);
+            costFunction = (1.0 / X.Rows) * (part1 - part2).SumAllElements + r;
+
 
             return new Tuple<double, Matrix[]>(costFunction, grad.ToArray());
         }
 
-        private Matrix AssignLabels(Matrix m, double[] labels)
+        private static Matrix AssignLabels(Matrix m, double[] labels)
         {
             Matrix result = new Matrix(m.Rows, labels.Length);
 
