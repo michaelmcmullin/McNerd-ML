@@ -196,6 +196,27 @@ namespace MLTests.LinearAlgebra
             double expectedValue = 45;
             Assert.AreEqual(expectedValue, output);
         }
+
+        [TestMethod]
+        public void UnrollMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,]
+            {
+                { 2.0, 0.0, 4.0 },
+                { 5.0, 0.0, 6.0 }
+            });
+            Matrix m2 = m1.Unrolled;
+            Matrix expectedResult = new Matrix(new double[,]
+            {
+                { 2.0 },
+                { 5.0 },
+                { 0.0 },
+                { 0.0 },
+                { 4.0 },
+                { 6.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
         #endregion
 
         #region Creation methods

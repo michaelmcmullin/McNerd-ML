@@ -290,6 +290,25 @@ namespace McNerd.MachineLearning.LinearAlgebra
                 return output;
             }
         }
+
+        /// <summary>
+        /// Return a Matrix representing all the columns transformed into one
+        /// long column. i.e. : column 1, followed by column 2, etc.
+        /// </summary>
+        public Matrix Unrolled
+        {
+            get
+            {
+                Matrix tm = this.Transpose;
+                Matrix output = new Matrix(this.data.Length, 1);
+
+                for (int i = 0; i < tm.data.Length; i++)
+                {
+                    output.data[i] = tm.data[i];
+                }
+                return output;
+            }
+        }
         #endregion
 
         #region Operations
