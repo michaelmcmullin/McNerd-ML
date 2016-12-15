@@ -459,12 +459,11 @@ namespace ConsoleTester
             });
             double lambda = 4;
 
-            Tuple<double, Matrix[]> result = NeuralNetwork.NNCostFunction(thetas, il, hl, labels, X, y, lambda);
+            Tuple<double, Matrix> result = NeuralNetwork.NNCostFunction(thetas, il, hl, labels, X, y, lambda);
 
             WriteH2("Neural Network Cost Function");
             Console.WriteLine($"J: {result.Item1} (Expected Result: 19.474)");
-            Console.WriteLine(result.Item2[0]);
-            Console.WriteLine(result.Item2[1]);
+            Console.WriteLine(result.Item2);
 
             #endregion
 

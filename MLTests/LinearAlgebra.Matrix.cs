@@ -3136,6 +3136,96 @@ namespace MLTests.LinearAlgebra
         }
 
         #endregion
+
+        #region Reshape Matrix
+        [TestMethod]
+        [ExpectedException(typeof(InvalidMatrixDimensionsException), "Reshaping failed due to invalid dimensions.")]
+        public void ReshapeInvalidMatrixDimensions()
+        {
+            Matrix m1 = new Matrix(new double[,]
+            {
+                { 1.0 },
+                { 2.0 },
+                { 3.0 },
+                { 4.0 },
+                { 5.0 },
+                { 6.0 },
+                { 7.0 },
+                { 8.0 }
+            });
+            Matrix m2 = Matrix.Reshape(m1, 0, 3, 3);
+        }
+
+        [TestMethod]
+        public void ReshapeFullMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,]
+            {
+                { 1.0 },
+                { 2.0 },
+                { 3.0 },
+                { 4.0 },
+                { 5.0 },
+                { 6.0 },
+                { 7.0 },
+                { 8.0 }
+            });
+            Matrix m2 = Matrix.Reshape(m1, 0, 2, 4);
+            Matrix expectedResult = new Matrix(new double[,]
+            {
+                { 1.0, 3.0, 5.0, 7.0 },
+                { 2.0, 4.0, 6.0, 8.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestMethod]
+        public void ReshapeStartOfMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,]
+            {
+                { 1.0 },
+                { 2.0 },
+                { 3.0 },
+                { 4.0 },
+                { 5.0 },
+                { 6.0 },
+                { 7.0 },
+                { 8.0 }
+            });
+            Matrix m2 = Matrix.Reshape(m1, 0, 2, 2);
+            Matrix expectedResult = new Matrix(new double[,]
+            {
+                { 1.0, 3.0 },
+                { 2.0, 4.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestMethod]
+        public void ReshapeEndOfMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,]
+            {
+                { 1.0 },
+                { 2.0 },
+                { 3.0 },
+                { 4.0 },
+                { 5.0 },
+                { 6.0 },
+                { 7.0 },
+                { 8.0 }
+            });
+            Matrix m2 = Matrix.Reshape(m1, 4, 2, 2);
+            Matrix expectedResult = new Matrix(new double[,]
+            {
+                { 5.0, 7.0 },
+                { 6.0, 8.0 }
+            });
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        #endregion
         #endregion
     }
 }

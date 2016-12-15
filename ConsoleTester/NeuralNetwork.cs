@@ -53,7 +53,7 @@ namespace ConsoleTester
         }
 
 
-        public static Tuple<double, Matrix[]> NNCostFunction(Matrix[] input_thetas, int input_layer_size, int hidden_layer_size,
+        public static Tuple<double, Matrix> NNCostFunction(Matrix[] input_thetas, int input_layer_size, int hidden_layer_size,
                                                     double[] labels, Matrix X, Matrix y, double lambda)
         {
             double costFunction = 0;
@@ -117,10 +117,10 @@ namespace ConsoleTester
             Matrix Theta1_scaled = Theta1 * scale_value;
             Matrix Theta2_scaled = Theta2 * scale_value;
 
-            output_gradient.Add( (Delta1 / X.Rows) + Theta1_scaled );
-            output_gradient.Add( (Delta2 / X.Rows) + Theta2_scaled );
+            Matrix Theta1_grad = ( (Delta1 / X.Rows) + Theta1_scaled ).Unrolled;
+            Matrix Theta2_grad = ( (Delta2 / X.Rows) + Theta2_scaled ).Unrolled;
 
-            return new Tuple<double, Matrix[]>(costFunction, output_gradient.ToArray());
+            return new Tuple<double, Matrix>(costFunction, Matrix.Join(Theta1_grad, Theta2_grad, MatrixDimensions.Rows));
         }
 
         private static Matrix AssignLabels(Matrix m, double[] labels)

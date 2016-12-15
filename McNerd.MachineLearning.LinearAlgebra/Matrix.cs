@@ -1143,6 +1143,12 @@ namespace McNerd.MachineLearning.LinearAlgebra
             return result;
         }
 
+        /// <summary>
+        /// Add a column of a particular value at the start of a given Matrix.
+        /// </summary>
+        /// <param name="m1">The Matrix to add the identity column to.</param>
+        /// <param name="identityValue">The identity value, default 1.</param>
+        /// <returns>A new Matrix with an addition column at the start.</returns>
         public static Matrix AddIdentityColumn(Matrix m1, double identityValue = 1)
         {
             Matrix m2 = new Matrix(m1.Rows, m1.Columns + 1);
@@ -2129,6 +2135,18 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
 
         #endregion
+
+        public static Matrix Reshape(Matrix m, int startingIndex, int rows, int columns)
+        {
+            if (m.data.Length < (startingIndex + (rows * columns)))
+                throw new InvalidMatrixDimensionsException("There are not enough elements to reshape the Matrix.");
+
+            Matrix output = new Matrix(rows, columns);
+
+            // TODO;
+
+            return output;
+        }
         #endregion
 
         #endregion
