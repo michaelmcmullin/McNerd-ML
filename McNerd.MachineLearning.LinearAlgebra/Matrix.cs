@@ -2136,6 +2136,15 @@ namespace McNerd.MachineLearning.LinearAlgebra
 
         #endregion
 
+        /// <summary>
+        /// Extract a new Matrix from an existing one, filling in each column sequentially.
+        /// </summary>
+        /// <param name="m">The Matrix to extract data from.</param>
+        /// <param name="startingIndex">The zero-based starting index of the Matrix to start
+        /// extracting data from.</param>
+        /// <param name="rows">The number of rows in the reshaped Matrix.</param>
+        /// <param name="columns">The number of columns in the reshaped Matrix.</param>
+        /// <returns>A new Matrix based on the given dimensions.</returns>
         public static Matrix Reshape(Matrix m, int startingIndex, int rows, int columns)
         {
             if (m.data.Length < (startingIndex + (rows * columns)))
@@ -2143,8 +2152,14 @@ namespace McNerd.MachineLearning.LinearAlgebra
 
             Matrix output = new Matrix(rows, columns);
 
-            // TODO;
-
+            int dataIndex = startingIndex;
+            for (int i = 0; i < columns; i++)
+            {
+                for (int j = 0; j < rows; j++)
+                {
+                    output[j, i] = m.data[dataIndex++];
+                }
+            }
             return output;
         }
         #endregion
