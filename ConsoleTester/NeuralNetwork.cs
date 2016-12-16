@@ -52,7 +52,19 @@ namespace ConsoleTester
             return Matrix.ElementMultiply(sg, sg2);
         }
 
-
+        /// <summary>
+        /// The Neural Network cost function for a two layer classification Neural Network.
+        /// </summary>
+        /// <param name="nn_parameters">The unrolled parameter vector that contains all the weights.</param>
+        /// <param name="input_layer_size">The number of nodes in the input layer.</param>
+        /// <param name="hidden_layer_size">The number of nodes in the hidden layer.</param>
+        /// <param name="labels">A list of classification labels.</param>
+        /// <param name="X">The feature set Matrix.</param>
+        /// <param name="y">The result set Matrix.</param>
+        /// <param name="lambda">The regularization parameter which helps reduce overfitting.
+        /// Note that using values that are too high will lead to underfitting.</param>
+        /// <returns>The cost of using the given value of theta, and the gradient of
+        /// the cost (useful for iterative minimization functions)</returns>
         public static Tuple<double, Matrix> NNCostFunction(Matrix nn_parameters, int input_layer_size, int hidden_layer_size,
                                                     double[] labels, Matrix X, Matrix y, double lambda)
         {
@@ -126,6 +138,15 @@ namespace ConsoleTester
             return new Tuple<double, Matrix>(costFunction, Matrix.Join(Theta1_grad, Theta2_grad, MatrixDimensions.Rows));
         }
 
+        /// <summary>
+        /// Convert the values in an n x 1 Matrix into a truth table against a set of labels.
+        /// </summary>
+        /// <param name="m">The Matrix to retrieve values from.</param>
+        /// <param name="labels">A set of labels to match values against.</param>
+        /// <returns>A truth table Matrix indicating which label is assigned to each
+        /// row value.</returns>
+        /// <remarks>Only the first column in Matrix m is considered. Additional columns
+        /// won't throw an exception, but will be ignored.</remarks>
         private static Matrix AssignLabels(Matrix m, double[] labels)
         {
             Matrix result = new Matrix(m.Rows, labels.Length);
@@ -143,6 +164,19 @@ namespace ConsoleTester
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Randomly initialise the weights of a layer with the specified number of
+        /// input and output connections.
+        /// </summary>
+        /// <param name="LayersIn">The number of input connections.</param>
+        /// <param name="LayersOut">The number of output connections.</param>
+        /// <returns>A Matrix with randomly assigned weights.</returns>
+        public static Matrix RandInitializeWeights(int LayersIn, int LayersOut)
+        {
+            double epsilon_init = 0.12;
+            return Matrix.Rand(LayersOut, 1 + LayersIn) * 2.0 * epsilon_init - epsilon_init;
         }
     }
 }
