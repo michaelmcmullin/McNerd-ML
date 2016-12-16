@@ -53,12 +53,15 @@ namespace ConsoleTester
         }
 
 
-        public static Tuple<double, Matrix> NNCostFunction(Matrix[] input_thetas, int input_layer_size, int hidden_layer_size,
+        public static Tuple<double, Matrix> NNCostFunction(Matrix nn_parameters, int input_layer_size, int hidden_layer_size,
                                                     double[] labels, Matrix X, Matrix y, double lambda)
         {
             double costFunction = 0;
             int num_labels = labels.Length;
             List<Matrix> output_gradient = new List<Matrix>();
+
+            Matrix Theta1 = Matrix.Reshape(nn_parameters, 0, hidden_layer_size, input_layer_size + 1);
+            Matrix Theta2 = Matrix.Reshape(nn_parameters, (hidden_layer_size * (input_layer_size + 1)), num_labels, hidden_layer_size + 1);
 
             // y_matrix has the following attributes:
             // Rows: same as the number of rows in Y -- one for each example result.
@@ -74,11 +77,11 @@ namespace ConsoleTester
             // Add ones to the X Matrix
             Matrix a1 = Matrix.AddIdentityColumn(X);
 
-            Matrix z2 = a1 * input_thetas[0].Transpose;
+            Matrix z2 = a1 * Theta1.Transpose;
             Matrix a2 = LogisticRegression.Sigmoid(z2);
             a2 = Matrix.AddIdentityColumn(a2);
 
-            Matrix z3 = a2 * input_thetas[1].Transpose;
+            Matrix z3 = a2 * Theta2.Transpose;
             Matrix a3 = LogisticRegression.Sigmoid(z3);
 
             Matrix log1 = Matrix.ElementLog(a3);
@@ -87,8 +90,8 @@ namespace ConsoleTester
             Matrix part1 = Matrix.ElementMultiply(-y_matrix, log1);
             Matrix part2 = Matrix.ElementMultiply((1 - y_matrix), log2);
 
-            Matrix t0 = input_thetas[0].RemoveColumn(0);
-            Matrix t1 = input_thetas[1].RemoveColumn(0);
+            Matrix t0 = Theta1.RemoveColumn(0);
+            Matrix t1 = Theta2.RemoveColumn(0);
 
             // Calculate regularization component
             double multiplier = lambda / (2 * X.Rows);
@@ -110,8 +113,8 @@ namespace ConsoleTester
             Matrix Delta1 = d2.Transpose * a1;
             Matrix Delta2 = d3.Transpose * a2;
 
-            Matrix Theta1 = Matrix.Join(new Matrix(t0.Rows, 1), t0, MatrixDimensions.Columns);
-            Matrix Theta2 = Matrix.Join(new Matrix(t1.Rows, 1), t1, MatrixDimensions.Columns);
+            Theta1 = Matrix.Join(new Matrix(t0.Rows, 1), t0, MatrixDimensions.Columns);
+            Theta2 = Matrix.Join(new Matrix(t1.Rows, 1), t1, MatrixDimensions.Columns);
 
             double scale_value = lambda / X.Rows;
             Matrix Theta1_scaled = Theta1 * scale_value;

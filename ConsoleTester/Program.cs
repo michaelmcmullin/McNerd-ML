@@ -433,17 +433,9 @@ namespace ConsoleTester
             #endregion
 
             #region Neural Network Cost Function
-            Theta1 = new Matrix(new double[,] {
-                { 0.1, 0.3, 0.5 },
-                { 0.2, 0.4, 0.6 }
+            Matrix nn = new Matrix(new double[,] {
+                { 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8 }
             });
-            Theta2 = new Matrix(new double[,] {
-                { 0.7, 1.1, 1.5 },
-                { 0.8, 1.2, 1.6 },
-                { 0.9, 1.3, 1.7 },
-                { 1.0, 1.4, 1.8 }
-            });
-            Matrix[] thetas = new Matrix[] { Theta1, Theta2 };
             int il = 2;
             int hl = 2;
             double[] labels = new double[] { 1, 2, 3, 4 };
@@ -459,7 +451,7 @@ namespace ConsoleTester
             });
             double lambda = 4;
 
-            Tuple<double, Matrix> result = NeuralNetwork.NNCostFunction(thetas, il, hl, labels, X, y, lambda);
+            Tuple<double, Matrix> result = NeuralNetwork.NNCostFunction(nn, il, hl, labels, X, y, lambda);
 
             WriteH2("Neural Network Cost Function");
             Console.WriteLine($"J: {result.Item1} (Expected Result: 19.474)");
