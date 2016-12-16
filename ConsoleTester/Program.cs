@@ -392,7 +392,7 @@ namespace ConsoleTester
 
         static void NeuralNetworkDemo()
         {
-            WriteH1("Logistic Regression");
+            WriteH1("Neural Network Regression");
 
             #region PredictNN
             WriteH2("Predict Neural Network");
@@ -458,7 +458,6 @@ namespace ConsoleTester
             Console.WriteLine(result.Item2);
 
             #endregion
-
         }
 
         static void TestDemo()

@@ -1292,7 +1292,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// Create a rows*columns size Matrix filled with 1's.
         /// </summary>
         /// <param name="rows">The number of rows to initialise the Matrix with.</param>
-        /// <param name="cols">The number of columns to initialise the Matrix with.</param>
+        /// <param name="columns">The number of columns to initialise the Matrix with.</param>
         /// <returns>A Matrix object filled with 1's.</returns>
         public static Matrix Ones(int rows, int columns)
         {
@@ -1454,6 +1454,36 @@ namespace McNerd.MachineLearning.LinearAlgebra
 
 
             return output;
+        }
+
+        /// <summary>
+        /// Create a Matrix filled with random numbers between 0.0 and 1.0
+        /// </summary>
+        /// <param name="rows">The number of rows to initialise the Matrix with.</param>
+        /// <param name="columns">The number of columns to initialise the Matrix with.</param>
+        /// <param name="seed">A number used to calculate a starting value for the pseudo-random
+        /// number sequence.</param>
+        /// <returns>A new Matrix filled with random numbers between 0.0 and 1.0</returns>
+        public static Matrix Rand(int rows, int columns, int seed)
+        {
+            Matrix output = new Matrix(rows, columns);
+            Random x = new Random(seed);
+
+            for (int i = 0; i < output.data.Length; i++)
+                output.data[i] = x.NextDouble();
+
+            return output;
+        }
+
+        /// <summary>
+        /// Create a Matrix filled with random numbers between 0.0 and 1.0
+        /// </summary>
+        /// <param name="rows">The number of rows to initialise the Matrix with.</param>
+        /// <param name="columns">The number of columns to initialise the Matrix with.</param>
+        /// <returns>A new Matrix filled with random numbers between 0.0 and 1.0</returns>
+        public static Matrix Rand(int rows, int columns)
+        {
+            return Rand(rows, columns, (int)DateTime.Now.Ticks & 0x0000FFFF);
         }
         #endregion
 
