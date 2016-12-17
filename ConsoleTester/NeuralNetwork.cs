@@ -65,9 +65,12 @@ namespace ConsoleTester
         /// Note that using values that are too high will lead to underfitting.</param>
         /// <returns>The cost of using the given value of theta, and the gradient of
         /// the cost (useful for iterative minimization functions)</returns>
-        public static Tuple<double, Matrix> NNCostFunction(Matrix nn_parameters, int input_layer_size, int hidden_layer_size,
-                                                    double[] labels, Matrix X, Matrix y, double lambda)
+        public static Tuple<double, Matrix> NNCostFunction(Matrix X, Matrix y, Matrix nn_parameters, double lambda, MinimizeOptions options)
         {
+            int input_layer_size = options.InputLayerSize;
+            int hidden_layer_size = options.HiddenLayerSize;
+            double[] labels = options.Labels;
+
             double costFunction = 0;
             int num_labels = labels.Length;
             List<Matrix> output_gradient = new List<Matrix>();
@@ -177,6 +180,41 @@ namespace ConsoleTester
         {
             double epsilon_init = 0.12;
             return Matrix.Rand(LayersOut, 1 + LayersIn) * 2.0 * epsilon_init - epsilon_init;
+        }
+
+        /// <summary>
+        /// Train a neural network
+        /// </summary>
+        /// <param name="X">The feature set Matrix.</param>
+        /// <param name="y">The result set Matrix.</param>
+        /// <param name="input_layer_size">The size of the input layer</param>
+        /// <param name="hidden_layer_size">The size of the hidden layer</param>
+        /// <param name="labels">A list of classification labels.</param>
+        /// <param name="lambda">The regularization parameter which helps reduce overfitting.
+        /// <param name="maxIterations">The maximum number of iterations to run the minimization function.</param>
+        /// <returns>The trained weights for between the input and hidden layers.</returns>
+        public static Matrix[] Train(Matrix X, Matrix y, int input_layer_size, int hidden_layer_size, double[] labels, double lambda, int maxIterations = 50)
+        {
+            int num_labels = labels.Length;
+
+            Matrix initial_Theta1 = RandInitializeWeights(input_layer_size, hidden_layer_size);
+            Matrix initial_Theta2 = RandInitializeWeights(hidden_layer_size, num_labels);
+
+            Matrix initial_nn_params = Matrix.Join(initial_Theta1.Unrolled, initial_Theta2.Unrolled, MatrixDimensions.Rows);
+
+            MinimizeOptions options = new MinimizeOptions();
+            options.InputLayerSize = input_layer_size;
+            options.HiddenLayerSize = hidden_layer_size;
+            options.Labels = labels;
+
+            int i = 0;
+            Matrix new_theta = LogisticRegression.Minimize(NNCostFunction, X, y, initial_nn_params, lambda, maxIterations, options, out i);
+
+            Matrix[] thetas = new Matrix[2];
+            thetas[0] = Matrix.Reshape(new_theta, 0, hidden_layer_size, input_layer_size + 1);
+            thetas[1] = Matrix.Reshape(new_theta, (hidden_layer_size * (input_layer_size + 1)), num_labels, hidden_layer_size + 1);
+
+            return thetas;
         }
     }
 }

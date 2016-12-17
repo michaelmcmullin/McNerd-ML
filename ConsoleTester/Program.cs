@@ -48,7 +48,7 @@ namespace ConsoleTester
                     break;
                 case 't':
                     Console.Clear();
-                    TestDemo();
+                    TitanicDemo();
                     WriteCommands();
                     break;
                 case 'x':
@@ -322,7 +322,8 @@ namespace ConsoleTester
 
             #region Regularized Cost Function
             WriteH2("Regularized Cost Function");
-            cost = LogisticRegression.CostFunction(X, y, theta, 3);
+            MinimizeOptions options = new MinimizeOptions();
+            cost = LogisticRegression.CostFunction(X, y, theta, 3, options);
             Console.WriteLine("Target: 7.6832 ;  Actual: {0}", cost.Item1);
 
             X = new Matrix(new double[,] {
@@ -340,7 +341,7 @@ namespace ConsoleTester
                 { 1.0 }
             });
             theta = new Matrix(new double[,] { { -2 }, { -1 }, { 1 }, { 2 } });
-            cost = LogisticRegression.CostFunction(X, y, theta, 3);
+            cost = LogisticRegression.CostFunction(X, y, theta, 3, options);
             Console.WriteLine("Target: 2.5348 ;  Actual: {0}", cost.Item1);
 
             #endregion
@@ -451,7 +452,11 @@ namespace ConsoleTester
             });
             double lambda = 4;
 
-            Tuple<double, Matrix> result = NeuralNetwork.NNCostFunction(nn, il, hl, labels, X, y, lambda);
+            MinimizeOptions options = new MinimizeOptions();
+            options.InputLayerSize = il;
+            options.HiddenLayerSize = hl;
+            options.Labels = labels;
+            Tuple<double, Matrix> result = NeuralNetwork.NNCostFunction(X, y, nn, lambda, options);
 
             WriteH2("Neural Network Cost Function");
             Console.WriteLine($"J: {result.Item1} (Expected Result: 19.474)");
@@ -460,7 +465,7 @@ namespace ConsoleTester
             #endregion
         }
 
-        static void TestDemo()
+        static void TitanicDemo()
         {
             WriteH1("Testing");
 

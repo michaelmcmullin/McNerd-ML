@@ -55,6 +55,7 @@
     <Compile Include="IDataImporter.cs" />
     <Compile Include="LinearRegression.cs" />
     <Compile Include="LogisticRegression.cs" />
+    <Compile Include="MinimizeOptions.cs" />
     <Compile Include="NeuralNetwork.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

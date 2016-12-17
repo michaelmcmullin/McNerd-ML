@@ -65,7 +65,7 @@ namespace ConsoleTester
         /// Note that using values that are too high will lead to underfitting.</param>
         /// <returns>The cost of using the given value of theta, and the gradient of
         /// the cost (useful for iterative minimization functions)</returns>
-        public static Tuple<double, Matrix> CostFunction(Matrix X, Matrix y, Matrix theta, double lambda)
+        public static Tuple<double, Matrix> CostFunction(Matrix X, Matrix y, Matrix theta, double lambda, MinimizeOptions options)
         {
             double m = (double)X.Rows;
             Matrix t = new Matrix(theta);
@@ -103,12 +103,13 @@ namespace ConsoleTester
             int numberOfLabels = labels.Length;
 
             Matrix all_theta = new Matrix(numberOfLabels, n + 1);
+            MinimizeOptions options = new MinimizeOptions();
 
             for (int c = 0; c < numberOfLabels; c++)
             {
                 Matrix initial_theta = new Matrix(n + 1, 1);
                 int i = 0;
-                Matrix new_theta = Minimize(CostFunction, X, y == labels[c], initial_theta, lambda, maxIterations, out i);
+                Matrix new_theta = Minimize(CostFunction, X, y == labels[c], initial_theta, lambda, maxIterations, options, out i);
                 all_theta.SetRow(c, new_theta.Transpose);
             }
 
@@ -124,7 +125,7 @@ namespace ConsoleTester
         /// <param name="lambda">The regularization parameter.</param>
         /// <returns>The cost of using the given value of theta, and the gradient of
         /// the cost (useful for iterative minimization functions)</returns>
-        public delegate Tuple<double, Matrix> MinimizeFunction(Matrix X, Matrix y, Matrix theta, double lambda);
+        public delegate Tuple<double, Matrix> MinimizeFunction(Matrix X, Matrix y, Matrix theta, double lambda, MinimizeOptions options);
 
         /// <summary>
         /// Minimize the cost function for an initial set of values.
@@ -140,7 +141,7 @@ namespace ConsoleTester
         /// before stopping.</param>
         /// <param name="i">The final number of iterations used to find a result.</param>
         /// <returns>The solution for theta for a given set of labels.</returns>
-        public static Matrix Minimize(MinimizeFunction f, Matrix Features, Matrix y, Matrix theta, double lambda, int maxIterations, out int i)
+        public static Matrix Minimize(MinimizeFunction f, Matrix Features, Matrix y, Matrix theta, double lambda, int maxIterations, MinimizeOptions options, out int i)
         {
             int length = maxIterations > 0 ? maxIterations : 100;
 
@@ -181,7 +182,7 @@ namespace ConsoleTester
             // fX = [];
 
             //[f1 df1] = eval(argstr);                      // get function value and gradient
-            Tuple<double, Matrix> cost1 = f(Features, y, theta, lambda);
+            Tuple<double, Matrix> cost1 = f(Features, y, theta, lambda, options);
             double f1 = cost1.Item1;
             Matrix df1 = cost1.Item2;
 
@@ -197,7 +198,7 @@ namespace ConsoleTester
 
                 Matrix theta0 = new Matrix(theta); double f0 = f1; Matrix df0 = new Matrix(df1);                   // make a copy of current values
                 theta = theta + z1 * s;                                             // begin line search
-                Tuple<double, Matrix> cost2 = f(Features, y, theta, lambda);
+                Tuple<double, Matrix> cost2 = f(Features, y, theta, lambda, options);
                 double f2 = cost2.Item1;
                 Matrix df2 = new Matrix(cost2.Item2);
 
@@ -233,7 +234,7 @@ namespace ConsoleTester
                         z1 = z1 + z2;                                           // update the step
                         theta = theta + z2 * s;
                         // [f2 df2] = eval(argstr);
-                        cost2 = f(Features, y, theta, lambda);
+                        cost2 = f(Features, y, theta, lambda, options);
                         f2 = cost2.Item1;
                         df2 = new Matrix(cost2.Item2);
 
@@ -274,7 +275,7 @@ namespace ConsoleTester
                     f3 = f2; d3 = d2; z3 = -z2;                  // set point 3 equal to point 2
                     z1 = z1 + z2; theta = theta + z2* s;                      // update current estimates
                     //[f2 df2] = eval(argstr);
-                    cost2 = f(Features, y, theta, lambda);
+                    cost2 = f(Features, y, theta, lambda, options);
                     f2 = cost2.Item1;
                     df2 = new Matrix(cost2.Item2);
 
