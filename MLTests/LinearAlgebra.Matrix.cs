@@ -3226,6 +3226,27 @@ namespace MLTests.LinearAlgebra
         }
 
         #endregion
+
+        #region Expand Polynomials
+        [TestMethod]
+        public void ExpandThirdDegreePolynomialsTwoColumnMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,]
+            {
+                { 1.0, 3.0 },
+                { 2.0, 4.0 }
+            });
+            Matrix m2 = m1.ExpandPolynomials(0, 1, 3);
+
+            Matrix expectedResult = new Matrix(new double[,]
+            {
+                { 1.0, 3.0, 1.0, 3.0, 9.0, 1.0, 3.0, 9.0, 27.0 },
+                { 2.0, 4.0, 4.0, 8.0, 16.0, 8.0, 16.0, 32.0, 48.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m2);
+        }
+        #endregion
         #endregion
     }
 }

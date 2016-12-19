@@ -1004,6 +1004,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
 
         #endregion
 
+        #region Multiplying Transpose
         /// <summary>
         /// Multiply one Matrix by the transpose of the other.
         /// </summary>
@@ -1067,6 +1068,9 @@ namespace McNerd.MachineLearning.LinearAlgebra
             Parallel.For(0, m1.Columns, i => MultiplyByTransposedColumn(i, m1, ref output));
             return output;
         }
+        #endregion
+
+        #region Row / Column methods
 
         /// <summary>
         /// Swap two rows in this Matrix.
@@ -1258,6 +1262,27 @@ namespace McNerd.MachineLearning.LinearAlgebra
 
             return result;
         }
+
+        /// <summary>
+        /// Expands two columns in a Matrix to a series of polynomial features.
+        /// </summary>
+        /// <param name="column1">The zero-index of the first column to expand.</param>
+        /// <param name="column2">The zero-index of the second column to expand.</param>
+        /// <param name="degree">The number of polynomial degrees to expand the columns to.</param>
+        /// <returns>A copy of the original Matrix with column1 replaced with X1, X2, X1^2,
+        /// X2^2, X1*X2, X1*X2^2, etc</returns>
+        public Matrix ExpandPolynomials(int column1, int column2, int degree)
+        {
+            if (column1 >= this.Columns || column2 >= this.Columns)
+                throw new IndexOutOfRangeException("A requested column is out of range");
+
+            int outputColumns = (((degree + 1) * (degree + 2)) / 2) - 1;
+            outputColumns += (this.Columns - 2);
+            Matrix result = new Matrix(this.Rows, outputColumns);
+
+            return result;
+        }
+        #endregion
 
         /// <summary>
         /// Fills the Matrix with a given number.
