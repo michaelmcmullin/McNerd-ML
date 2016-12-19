@@ -537,7 +537,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
 
         /// <summary>
         /// Create a Matrix truth table containing 1 and 0 representing
-        /// values that are equal tp the given scalar.
+        /// values that are equal to the given scalar.
         /// </summary>
         /// <param name="m">The Matrix to compare to the scalar value.</param>
         /// <param name="scalar">A scalar value used for comparison.</param>

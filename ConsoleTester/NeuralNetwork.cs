@@ -65,8 +65,9 @@ namespace ConsoleTester
         /// Note that using values that are too high will lead to underfitting.</param>
         /// <returns>The cost of using the given value of theta, and the gradient of
         /// the cost (useful for iterative minimization functions)</returns>
-        public static Tuple<double, Matrix> NNCostFunction(Matrix X, Matrix y, Matrix nn_parameters, double lambda, MinimizeOptions options)
+        public static Tuple<double, Matrix> NNCostFunction(Matrix X, Matrix y, Matrix nn_parameters, MinimizeOptions options)
         {
+            double lambda = options.RegularizationParameter;
             int input_layer_size = options.InputLayerSize;
             int hidden_layer_size = options.HiddenLayerSize;
             double[] labels = options.Labels;
@@ -206,9 +207,11 @@ namespace ConsoleTester
             options.InputLayerSize = input_layer_size;
             options.HiddenLayerSize = hidden_layer_size;
             options.Labels = labels;
+            options.RegularizationParameter = lambda;
+            options.MaxIterations = maxIterations;
 
             int i = 0;
-            Matrix new_theta = LogisticRegression.Minimize(NNCostFunction, X, y, initial_nn_params, lambda, maxIterations, options, out i);
+            Matrix new_theta = LogisticRegression.Minimize(NNCostFunction, X, y, initial_nn_params, options, out i);
 
             Matrix[] thetas = new Matrix[2];
             thetas[0] = Matrix.Reshape(new_theta, 0, hidden_layer_size, input_layer_size + 1);

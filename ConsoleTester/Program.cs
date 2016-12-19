@@ -323,7 +323,8 @@ namespace ConsoleTester
             #region Regularized Cost Function
             WriteH2("Regularized Cost Function");
             MinimizeOptions options = new MinimizeOptions();
-            cost = LogisticRegression.CostFunction(X, y, theta, 3, options);
+            options.RegularizationParameter = 3;
+            cost = LogisticRegression.CostFunction(X, y, theta, options);
             Console.WriteLine("Target: 7.6832 ;  Actual: {0}", cost.Item1);
 
             X = new Matrix(new double[,] {
@@ -341,7 +342,7 @@ namespace ConsoleTester
                 { 1.0 }
             });
             theta = new Matrix(new double[,] { { -2 }, { -1 }, { 1 }, { 2 } });
-            cost = LogisticRegression.CostFunction(X, y, theta, 3, options);
+            cost = LogisticRegression.CostFunction(X, y, theta, options);
             Console.WriteLine("Target: 2.5348 ;  Actual: {0}", cost.Item1);
 
             #endregion
@@ -450,13 +451,13 @@ namespace ConsoleTester
                 { 2 },
                 { 3 }
             });
-            double lambda = 4;
 
             MinimizeOptions options = new MinimizeOptions();
             options.InputLayerSize = il;
             options.HiddenLayerSize = hl;
             options.Labels = labels;
-            Tuple<double, Matrix> result = NeuralNetwork.NNCostFunction(X, y, nn, lambda, options);
+            options.RegularizationParameter = 4;
+            Tuple<double, Matrix> result = NeuralNetwork.NNCostFunction(X, y, nn, options);
 
             WriteH2("Neural Network Cost Function");
             Console.WriteLine($"J: {result.Item1} (Expected Result: 19.474)");
@@ -500,8 +501,9 @@ namespace ConsoleTester
             df_train.SetColumnType("pclass", DataFrameColumnType.Factors);
             df_train.SetColumnType("sex", DataFrameColumnType.Factors);
             df_train.SetColumnType("age", DataFrameColumnType.Bins);
-            df_train["age"].SetBins(new double[] { 0.0, 18.0, 100.0 });
-            df_train["age"].EmptyValue = 18.0;
+            //df_train["age"].SetBins(new double[] { 0.0, 18.0, 100.0 });
+            df_train["age"].SetBins(new double[] { 0.0, 15.0, 25.0, 30.0, 40.0, 50.0, 55.0, 65.0, 75.0, 100.0 });
+            df_train["age"].EmptyValue = 30.27; // Average value of known ages
             df_train.SetColumnType("fare", DataFrameColumnType.Double);
             df_train.SetColumnType("sibsp", DataFrameColumnType.Double);
             df_train.SetColumnType("parch", DataFrameColumnType.Double);
@@ -522,16 +524,29 @@ namespace ConsoleTester
 
             // Try Logistic Regression
             double[] labels = new double[] { 0.0, 1.0 };
-            Matrix all_theta = LogisticRegression.OneVsAll(Xtrain, ytrain, labels, 0.1, 1000);
-            Matrix prediction = LogisticRegression.PredictOneVsAll(all_theta, Xtest);
+            Matrix lr_theta = LogisticRegression.OneVsAll(Xtrain, ytrain, labels, 0.1, 1000);
+            Matrix lr_prediction = LogisticRegression.PredictOneVsAll(lr_theta, Xtest);
+
+            int input_layer_size = Xtrain.Columns;
+            int output_layer_size = labels.Length;
+            int hidden_layer_size = (input_layer_size + output_layer_size) / 2;
+            Matrix[] nn_theta = NeuralNetwork.Train(Xtrain, ytrain, input_layer_size, hidden_layer_size, labels, 0.1, 1000);
+            Matrix nn_prediction = NeuralNetwork.Predict(nn_theta[0], nn_theta[1], Xtest);
 
             // Exporting
-            DataFrame df_export = df_test;
-            DataFrameColumn col_results = new DataFrameColumn(prediction, 0);
-            col_results.Header = "Survived";
-            df_export.Columns.Add(col_results);
-            df_export.Save(@"c:\temp\results.csv");
+            DataFrame df_lr_export = df_test;
+            DataFrame df_nn_export = df_test;
 
+            DataFrameColumn col_lr_results = new DataFrameColumn(lr_prediction, 0);
+            DataFrameColumn col_nn_results = new DataFrameColumn(nn_prediction, 0);
+
+            col_lr_results.Header = col_nn_results.Header = "Survived";
+
+            df_lr_export.Columns.Add(col_lr_results);
+            df_lr_export.Save(@"c:\temp\lr_results.csv");
+
+            df_nn_export.Columns.Add(col_nn_results);
+            df_nn_export.Save(@"c:\temp\nn_results.csv");
 
             //Console.WriteLine("\nExpanded Headers:");
             //foreach (string h in df_train.ExpandedHeaders)

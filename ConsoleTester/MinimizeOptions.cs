@@ -12,8 +12,31 @@ namespace ConsoleTester
     /// </summary>
     class MinimizeOptions
     {
-        public int InputLayerSize { get; set; }
-        public int HiddenLayerSize { get; set; }
+        /// <summary>
+        /// For classification problems, this is an array of possible resulting classes.
+        /// </summary>
         public double[] Labels { get; set; }
+
+        /// <summary>
+        /// The maximum number of iterations required.
+        /// </summary>
+        public int MaxIterations { get; set; }
+
+        /// <summary>
+        /// A parameter to help with regularization, to prevent overfitting the data.
+        /// Leaving this at 0 turns off regularization.
+        /// </summary>
+        public double RegularizationParameter { get; set; }
+
+        /// <summary>
+        /// In Neural Networks, this represents the number of input features.
+        /// </summary>
+        public int InputLayerSize { get; set; }
+
+        /// <summary>
+        /// In Neural Networks, this represents the size of the hidden layer.
+        /// </summary>
+        public int HiddenLayerSize { get; set; }
+
     }
 }
