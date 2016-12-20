@@ -33,7 +33,7 @@ namespace ConsoleTester
                     {
                         if (currentRow == 0)
                         {
-                            data.Columns.Add(new DataFrameColumn());
+                            data.Columns.Add(new DataFrameColumn(data));
                             if (hasHeaderRow)
                                 data.Columns[i].Header = fields[i];
                             else

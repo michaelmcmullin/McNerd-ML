@@ -537,29 +537,13 @@ namespace ConsoleTester
             DataFrame df_lr_export = df_test;
             DataFrame df_nn_export = df_test;
 
-            DataFrameColumn col_lr_results = new DataFrameColumn(lr_prediction, 0);
-            DataFrameColumn col_nn_results = new DataFrameColumn(nn_prediction, 0);
+            DataFrameColumn col_lr_results = new DataFrameColumn(df_lr_export, lr_prediction, 0);
+            DataFrameColumn col_nn_results = new DataFrameColumn(df_nn_export, nn_prediction, 0);
 
             col_lr_results.Header = col_nn_results.Header = "Survived";
 
-            df_lr_export.Columns.Add(col_lr_results);
             df_lr_export.Save(@"c:\temp\lr_results.csv");
-
-            df_nn_export.Columns.Add(col_nn_results);
             df_nn_export.Save(@"c:\temp\nn_results.csv");
-
-            //Console.WriteLine("\nExpanded Headers:");
-            //foreach (string h in df_train.ExpandedHeaders)
-            //{
-            //    Console.WriteLine(h);
-            //}
-
-            //foreach (string h in df_test.ExpandedHeaders)
-            //{
-            //    Console.WriteLine(h);
-            //}
-
-            //Console.WriteLine(columnGender);
             #endregion
         }
 

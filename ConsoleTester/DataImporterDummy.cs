@@ -24,7 +24,7 @@ namespace ConsoleTester
             data.Columns.Clear();
             for (int i = 0; i < columnCount; i++)
             {
-                data.Columns.Add(new DataFrameColumn());
+                data.Columns.Add(new DataFrameColumn(data));
                 data.Columns[i].ColumnType = DataFrameColumnType.Double;
             }
 

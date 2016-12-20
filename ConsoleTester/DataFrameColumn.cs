@@ -14,6 +14,7 @@ namespace ConsoleTester
 
     class DataFrameColumn
     {
+        DataFrame parent;
         DataFrameColumnType columnType = DataFrameColumnType.Ignore;
         List<string> rows;
         List<string> factors;
@@ -27,18 +28,24 @@ namespace ConsoleTester
         bool refresh = true;
 
         #region Constructors
-        public DataFrameColumn()
+        public DataFrameColumn(DataFrame parent)
         {
-
+            Parent = parent;
         }
 
-        public DataFrameColumn(Matrix m, int columnIndex)
+        public DataFrameColumn(DataFrame parent, Matrix m, int columnIndex)
         {
+            Parent = parent;
+            // Check if this column is already in the parent DataFrame. If not, add it.
+            if (!parent.Columns.Contains(this))
+                parent.Columns.Add(this);
+
             for (int i = 0; i < m.Rows; i++)
             {
                 AddRow(m[i, columnIndex].ToString());
             }
         }
+
         #endregion
 
         /// <summary>
@@ -50,6 +57,15 @@ namespace ConsoleTester
         {
             get { return rows[row]; }
             set { rows[row] = value; }
+        }
+
+        /// <summary>
+        /// The DataFrame that this column belongs to.
+        /// </summary>
+        public DataFrame Parent
+        {
+            get { return parent; }
+            set { parent = value; }
         }
 
         /// <summary>
