@@ -1276,9 +1276,36 @@ namespace McNerd.MachineLearning.LinearAlgebra
             if (column1 >= this.Columns || column2 >= this.Columns)
                 throw new IndexOutOfRangeException("A requested column is out of range");
 
-            int outputColumns = (((degree + 1) * (degree + 2)) / 2) - 1;
+            int outputColumns = (((degree + 1) * (degree + 2)) / 2);
             outputColumns += (this.Columns - 2);
             Matrix result = new Matrix(this.Rows, outputColumns);
+
+            for (int row = 0; row < this.Rows; row++)
+            {
+                int colIndex = 0;
+                double value1 = this[row, column1];
+                double value2 = this[row, column2];
+
+                for (int col = 0; col < this.Columns; col++)
+                {
+                    if (col == column1)
+                    {
+                        for (int i = 0; i <= degree; i++)
+                        {
+                            for (int j = 0; j <= i; j++)
+                            {
+                                double component1 = Math.Pow(value1, (double)(i - j));
+                                double component2 = Math.Pow(value2, (double)j);
+                                result[row, colIndex++] = component1 * component2;
+                            }
+                        }
+                    }
+                    else if (col != column2)
+                    {
+                        result[row, colIndex++] = this[row, col];
+                    }
+                }
+            }
 
             return result;
         }

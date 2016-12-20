@@ -3240,11 +3240,87 @@ namespace MLTests.LinearAlgebra
 
             Matrix expectedResult = new Matrix(new double[,]
             {
-                { 1.0, 3.0, 1.0, 3.0, 9.0, 1.0, 3.0, 9.0, 27.0 },
-                { 2.0, 4.0, 4.0, 8.0, 16.0, 8.0, 16.0, 32.0, 48.0 }
+                { 1.0, 1.0, 3.0, 1.0, 3.0, 9.0, 1.0, 3.0, 9.0, 27.0 },
+                { 1.0, 2.0, 4.0, 4.0, 8.0, 16.0, 8.0, 16.0, 32.0, 64.0 }
             });
 
             Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestMethod]
+        public void ExpandThirdDegreePolynomialsStartOfThreeColumnMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,]
+            {
+                { 1.0, 3.0, 10.0 },
+                { 2.0, 4.0, 11.0 }
+            });
+            Matrix m2 = m1.ExpandPolynomials(0, 1, 3);
+
+            Matrix expectedResult = new Matrix(new double[,]
+            {
+                { 1.0, 1.0, 3.0, 1.0, 3.0, 9.0, 1.0, 3.0, 9.0, 27.0, 10.0 },
+                { 1.0, 2.0, 4.0, 4.0, 8.0, 16.0, 8.0, 16.0, 32.0, 64.0, 11.0 }
+            });
+
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+
+        [TestMethod]
+        public void ExpandThirdDegreePolynomialsEndOfThreeColumnMatrix()
+        {
+            Matrix m1 = new Matrix(new double[,]
+            {
+                { 10.0, 1.0, 3.0 },
+                { 11.0, 2.0, 4.0 }
+            });
+            Matrix m2 = m1.ExpandPolynomials(1, 2, 3);
+
+            Matrix expectedResult = new Matrix(new double[,]
+            {
+                { 10.0, 1.0, 1.0, 3.0, 1.0, 3.0, 9.0, 1.0, 3.0, 9.0, 27.0 },
+                { 11.0, 1.0, 2.0, 4.0, 4.0, 8.0, 16.0, 8.0, 16.0, 32.0, 64.0 }
+            });
+
+
+            Assert.AreEqual(expectedResult, m2);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(IndexOutOfRangeException), "Column 1 out of range")]
+        public void ExpandThirdDegreepolynomialsColumn1OutOfRange()
+        {
+            Matrix m1 = new Matrix(new double[,]
+            {
+                { 10.0, 1.0, 3.0 },
+                { 11.0, 2.0, 4.0 }
+            });
+            Matrix m2 = m1.ExpandPolynomials(5, 2, 3);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(IndexOutOfRangeException), "Column 2 out of range")]
+        public void ExpandThirdDegreepolynomialsColumn2OutOfRange()
+        {
+            Matrix m1 = new Matrix(new double[,]
+            {
+                { 10.0, 1.0, 3.0 },
+                { 11.0, 2.0, 4.0 }
+            });
+            Matrix m2 = m1.ExpandPolynomials(1, 5, 3);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(IndexOutOfRangeException), "Both Columns out of range")]
+        public void ExpandThirdDegreepolynomialsBothColumnsOutOfRange()
+        {
+            Matrix m1 = new Matrix(new double[,]
+            {
+                { 10.0, 1.0, 3.0 },
+                { 11.0, 2.0, 4.0 }
+            });
+            Matrix m2 = m1.ExpandPolynomials(6, 5, 3);
         }
         #endregion
         #endregion
