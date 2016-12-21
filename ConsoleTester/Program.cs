@@ -508,10 +508,18 @@ namespace ConsoleTester
             df_train.SetColumnType("sibsp", DataFrameColumnType.Double);
             df_train.SetColumnType("parch", DataFrameColumnType.Double);
 
+            df_train.CreateDataColumn("CabinLetter", GetCabinLetter);
+            df_test.CreateDataColumn("CabinLetter", GetCabinLetter);    // For now, we have to explicitly set both training set
+                                                                        // and test set separately.
+            df_train.SetColumnType("CabinLetter", DataFrameColumnType.Factors);
+
             df_train.SetColumnType("survived", DataFrameColumnType.Double);
 
             // Try and match the types in the testing set
             df_test.MatchColumns(df_train);
+
+            int a1 = df_train.ExpandedHeaders.Count;
+            int a2 = df_test.ExpandedHeaders.Count;
 
 
             Console.WriteLine($"df_train hasResults? {df_train.HasResults}. df_test hasResults? {df_test.HasResults}");
@@ -546,6 +554,20 @@ namespace ConsoleTester
             df_nn_export.Save(@"c:\temp\nn_results.csv");
             #endregion
         }
+
+        /// <summary>
+        /// Extract the first letter of each cabin number.
+        /// </summary>
+        static string GetCabinLetter(DataFrame df, int row)
+        {
+            DataFrameColumn cabin = df["Cabin"];
+            string originalValue = cabin[row].Trim().ToUpper();
+
+            if (originalValue.Length > 0)
+                return originalValue.Substring(0, 1);
+
+            return "None";
+        } 
 
         static void WriteCommands()
         {

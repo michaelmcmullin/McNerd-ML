@@ -55,8 +55,8 @@ namespace ConsoleTester
         /// <returns>The string value contained in the given row.</returns>
         public string this[int row]
         {
-            get { return rows[row]; }
-            set { rows[row] = value; }
+            get { return row < rows.Count ? rows[row] : String.Empty; }
+            set { if (row < rows.Count) rows[row] = value; }
         }
 
         /// <summary>

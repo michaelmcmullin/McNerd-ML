@@ -199,6 +199,23 @@ namespace ConsoleTester
         /// </summary>
         public bool HasResults { get { return hasResults; } set { hasResults = value; } }
 
+        /// <summary>
+        /// Add a new column to this DataFrame.
+        /// </summary>
+        /// <param name="header">The name of this column (must be unique)</param>
+        /// <returns>true if column added successfully. If the header name exists,
+        /// return false.</returns>
+        public bool AddColumn(string header)
+        {
+            // Check for an existing column with the same name.
+            if (this[header] != null) return false;
+
+            // Create a new column
+            DataFrameColumn col = new DataFrameColumn(this);
+            col.Header = header;
+            Columns.Add(col);
+            return true;
+        }
 
         /// <summary>
         /// A List of DataFrameColumn objects that make up this DataFrame
@@ -362,6 +379,34 @@ namespace ConsoleTester
             column.ColumnType = columnType;
 
             return true;
+        }
+
+        /// <summary>
+        /// An operation to perform on each individual item in a column.
+        /// </summary>
+        /// <param name="df">The DataFrame object to refer to if required (useful for
+        /// aquiring values from other columns)</param>
+        /// <param name="row">The zero-based index of the row to operate on.</param>
+        /// <returns>A processed string that can be used as a column value.</returns>
+        public delegate string ColumnRowOperation(DataFrame df, int row);
+
+        /// <summary>
+        /// Create a new DataFrameColumn in this DataFrame, using a custom
+        /// operation to populate it.
+        /// </summary>
+        /// <param name="header">The name of the new column (must be unique).</param>
+        /// <param name="op">The operation to carry out on each row of the new
+        /// column.</param>
+        public void CreateDataColumn(string header, ColumnRowOperation op)
+        {
+            if (AddColumn(header))
+            {
+                DataFrameColumn col = this[header];
+                for (int i = 0; i < this.MaxRows; i++)
+                {
+                    col.AddRow(op(this, i));
+                }
+            }
         }
     }
 }
