@@ -84,7 +84,7 @@ namespace ConsoleTester
         /// <returns>A Matrix object populated with the input data feature set.</returns>
         public Matrix ExportTrainingFeatures()
         {
-            int maxRows = MaxRows;
+            int maxRows = MaxTrainingRows;
             if (maxRows == 0) maxRows = 1;
 
             int totalColumnCount = TotalActiveColumns;
@@ -120,7 +120,7 @@ namespace ConsoleTester
         /// <returns>A Matrix object populated with the test data feature set.</returns>
         public Matrix ExportTestFeatures()
         {
-            int maxRows = MaxRows;
+            int maxRows = MaxTrainingRows;
             if (maxRows == 0) maxRows = 1;
 
             int totalColumnCount = TotalActiveColumns;
@@ -157,7 +157,7 @@ namespace ConsoleTester
         /// <returns>A Matrix containing results of the input data.</returns>
         public Matrix ExportResults()
         {
-            int maxRows = MaxRows;
+            int maxRows = MaxTrainingRows;
             if (maxRows == 0) maxRows = 1;
             int column = GetResultColumn();
 
@@ -181,9 +181,9 @@ namespace ConsoleTester
         }
 
         /// <summary>
-        /// Get the maximum number of rows available in any of the columns.
+        /// Get the maximum number of training rows available in any of the columns.
         /// </summary>
-        public int MaxRows
+        public int MaxTrainingRows
         {
             get
             {
@@ -195,6 +195,23 @@ namespace ConsoleTester
                 return maxRows;
             }
         }
+
+        /// <summary>
+        /// Get the maximum number of test rows available in any of the columns.
+        /// </summary>
+        public int MaxTestRows
+        {
+            get
+            {
+                int maxRows = 0;
+                foreach (DataFrameColumn column in columns)
+                {
+                    if (column.TestRowCount > maxRows) maxRows = column.TestRowCount;
+                }
+                return maxRows;
+            }
+        }
+
 
         /// <summary>
         /// Get the total number of columns available in this DataFrame.
@@ -442,7 +459,7 @@ namespace ConsoleTester
             if (AddColumn(header))
             {
                 DataFrameColumn col = this[header];
-                for (int i = 0; i < this.MaxRows; i++)
+                for (int i = 0; i < this.MaxTrainingRows; i++)
                 {
                     col.AddTrainingRow(op(this, i));
                 }

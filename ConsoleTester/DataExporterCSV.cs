@@ -27,7 +27,7 @@ namespace ConsoleTester
                 }
                 file.WriteLine(headers);
 
-                for (int row = 0; row < df.MaxRows; row++)
+                for (int row = 0; row < df.MaxTrainingRows; row++)
                 {
                     StringBuilder sb = new StringBuilder();
 
