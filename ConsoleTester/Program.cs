@@ -492,7 +492,7 @@ namespace ConsoleTester
 
             df_train.Load(@"c:\temp\titanic.csv", @"c:\temp\titanic_test.csv", true, "Survived");
 
-            Console.WriteLine($"Total Columns (training data): {df_train.TotalColumns}");
+            Console.WriteLine($"Total Columns: {df_train.TotalColumns}");
 
             // Change the type of some of the training columns
             df_train.SetColumnType("pclass", DataFrameColumnType.Factors);

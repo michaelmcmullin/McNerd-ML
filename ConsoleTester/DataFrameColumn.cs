@@ -77,12 +77,15 @@ namespace ConsoleTester
         /// <param name="row">The index of the row to export.</param>
         /// <returns>An array of double values that can be inserted into a
         /// Matrix.</returns>
-        public double[] ExportMatrixRow(int row)
+        public double[] ExportMatrixRow(int row, bool testRow = false)
         {
+            List<string> rows = testRow ? testRows : trainingRows;
+            int maxRows = testRow ? TestRowCount : TrainingRowCount;
+
             double[] output = new double[ColumnCount];
             double elementValue = 0;
 
-            if (row >= TrainingRowCount)
+            if (row >= maxRows)
             {
                 for (int i = 0; i < columnCount; i++)
                 {
@@ -94,7 +97,7 @@ namespace ConsoleTester
                 switch (columnType)
                 {
                     case DataFrameColumnType.Double:
-                        if (!double.TryParse(trainingRows[row], out elementValue))
+                        if (!double.TryParse(rows[row], out elementValue))
                             elementValue = EmptyValue;
                         output[0] = elementValue;
                         break;
@@ -103,7 +106,7 @@ namespace ConsoleTester
                         {
                             for (int i = 0; i < columnCount; i++)
                             {
-                                if (trainingRows[row] == factors[i])
+                                if (rows[row] == factors[i])
                                     output[i] = 1.0;
                                 else
                                     output[i] = 0.0;
@@ -114,10 +117,10 @@ namespace ConsoleTester
                         if (bins != null)
                         {
                             int binIndex = -1;
-                            string cmpValue = trainingRows[row] == String.Empty ? EmptyElement : trainingRows[row];
+                            string cmpValue = rows[row] == String.Empty ? EmptyElement : rows[row];
                             double binValue = 0;
 
-                            if (Double.TryParse(trainingRows[row], out binValue))
+                            if (Double.TryParse(rows[row], out binValue))
                             {
                                 binIndex = bins.binIndex(binValue);
                             }

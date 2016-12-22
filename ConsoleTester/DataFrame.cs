@@ -120,7 +120,7 @@ namespace ConsoleTester
         /// <returns>A Matrix object populated with the test data feature set.</returns>
         public Matrix ExportTestFeatures()
         {
-            int maxRows = MaxTrainingRows;
+            int maxRows = MaxTestRows;
             if (maxRows == 0) maxRows = 1;
 
             int totalColumnCount = TotalActiveColumns;
@@ -137,7 +137,7 @@ namespace ConsoleTester
                 {
                     if (columns[column].ColumnType != DataFrameColumnType.Ignore && !columns[column].IsResult)
                     {
-                        double[] columnValues = columns[column].ExportMatrixRow(row);
+                        double[] columnValues = columns[column].ExportMatrixRow(row, true);
                         for (int i = 0; i < columns[column].ColumnCount; i++)
                         {
                             features[row, featureColumn++] = columnValues[i];
