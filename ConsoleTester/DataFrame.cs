@@ -78,11 +78,11 @@ namespace ConsoleTester
         }
 
         /// <summary>
-        /// Export a Matrix containing only the features of this DataFrame. Exclude
+        /// Export a Matrix containing only the training features of this DataFrame. Exclude
         /// results column, if any.
         /// </summary>
         /// <returns>A Matrix object populated with the input data feature set.</returns>
-        public Matrix ExportFeatures()
+        public Matrix ExportTrainingFeatures()
         {
             int maxRows = MaxRows;
             if (maxRows == 0) maxRows = 1;
@@ -112,6 +112,43 @@ namespace ConsoleTester
 
             return features;
         }
+
+        /// <summary>
+        /// A placeholder method that will eventually export the test features.
+        /// Currently exporting the training features again.
+        /// </summary>
+        /// <returns>A Matrix object populated with the test data feature set.</returns>
+        public Matrix ExportTestFeatures()
+        {
+            int maxRows = MaxRows;
+            if (maxRows == 0) maxRows = 1;
+
+            int totalColumnCount = TotalActiveColumns;
+            int columnCount = columns.Count;
+            //if (hasResults && totalColumnCount > 1) { totalColumnCount--; columnCount--; }
+
+            Matrix features = new Matrix(maxRows, totalColumnCount);
+
+            for (int row = 0; row < maxRows; row++)
+            {
+                int featureColumn = 0;
+
+                for (int column = 0; column < columnCount; column++)
+                {
+                    if (columns[column].ColumnType != DataFrameColumnType.Ignore && !columns[column].IsResult)
+                    {
+                        double[] columnValues = columns[column].ExportMatrixRow(row);
+                        for (int i = 0; i < columns[column].ColumnCount; i++)
+                        {
+                            features[row, featureColumn++] = columnValues[i];
+                        }
+                    }
+                }
+            }
+
+            return features;
+        }
+
 
         /// <summary>
         /// Retrieve a Matrix containing the results column of this DataFrame, assumed to

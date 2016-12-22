@@ -489,13 +489,10 @@ namespace ConsoleTester
             DataExporterCSV de_csv = new DataExporterCSV();
 
             DataFrame df_train = new DataFrame(di_csv, de_csv);
-            DataFrame df_test = new DataFrame(di_csv, de_csv);
 
             df_train.Load(@"c:\temp\titanic.csv", @"c:\temp\titanic_test.csv", true, "Survived");
-            df_test.Load(@"c:\temp\titanic_test.csv", "", true);
 
             Console.WriteLine($"Total Columns (training data): {df_train.TotalColumns}");
-            Console.WriteLine($"Total Columns (testing data):  {df_test.TotalColumns}");
 
             // Change the type of some of the training columns
             df_train.SetColumnType("pclass", DataFrameColumnType.Factors);
@@ -507,24 +504,17 @@ namespace ConsoleTester
             df_train.SetColumnType("fare", DataFrameColumnType.Double);
             df_train.SetColumnType("sibsp", DataFrameColumnType.Double);
             df_train.SetColumnType("parch", DataFrameColumnType.Double);
-
             df_train.CreateDataColumn("CabinLetter", GetCabinLetter);
-            df_test.CreateDataColumn("CabinLetter", GetCabinLetter);    // For now, we have to explicitly set both training set
-                                                                        // and test set separately.
             df_train.SetColumnType("CabinLetter", DataFrameColumnType.Factors);
-
             df_train.SetColumnType("survived", DataFrameColumnType.Double);
 
-            // Try and match the types in the testing set
-            df_test.MatchColumns(df_train);
-
-            Console.WriteLine($"df_train hasResults? {df_train.HasResults}. df_test hasResults? {df_test.HasResults}");
+            Console.WriteLine($"df_train hasResults? {df_train.HasResults}.");
 
             // Start calculations
-            Matrix Xtrain = df_train.ExportFeatures();
+            Matrix Xtrain = df_train.ExportTrainingFeatures();
             Matrix ytrain = df_train.ExportResults();
 
-            Matrix Xtest = df_test.ExportFeatures();
+            Matrix Xtest = df_train.ExportTestFeatures();
 
             // Try Logistic Regression
             double[] labels = new double[] { 0.0, 1.0 };
@@ -538,8 +528,8 @@ namespace ConsoleTester
             Matrix nn_prediction = NeuralNetwork.Predict(nn_theta[0], nn_theta[1], Xtest);
 
             // Exporting
-            DataFrame df_lr_export = df_test;
-            DataFrame df_nn_export = df_test;
+            DataFrame df_lr_export = df_train;
+            DataFrame df_nn_export = df_train;
 
             DataFrameColumn col_lr_results = new DataFrameColumn(df_lr_export, lr_prediction, 0);
             DataFrameColumn col_nn_results = new DataFrameColumn(df_nn_export, nn_prediction, 0);
