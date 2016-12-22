@@ -15,9 +15,9 @@ namespace ConsoleTester
         string delimiter = ",";
         public string Delimiter { get { return delimiter; } set { delimiter = value; } }
 
-        public void Load(string path, bool hasHeaderRow, DataFrame data)
+        public void Load(string pathToTrainingData, string pathToTestData, bool hasHeaderRow, DataFrame data)
         {
-            using (TextFieldParser parser = new TextFieldParser(path))
+            using (TextFieldParser parser = new TextFieldParser(pathToTrainingData))
             {
                 parser.TextFieldType = FieldType.Delimited;
                 parser.SetDelimiters(Delimiter);
@@ -37,12 +37,12 @@ namespace ConsoleTester
                             if (hasHeaderRow)
                                 data.Columns[i].Header = fields[i];
                             else
-                                data.Columns[i].AddRow(fields[i]);
+                                data.Columns[i].AddTrainingRow(fields[i]);
                         }
                         else
                         {
                             if (i < data.Columns.Count)
-                                data.Columns[i].AddRow(fields[i]);
+                                data.Columns[i].AddTrainingRow(fields[i]);
                         }
                         currentColumn = i;
                     }
@@ -52,7 +52,7 @@ namespace ConsoleTester
                     {
                         for (int i = currentColumn; i < data.Columns.Count; i++)
                         {
-                            data.Columns[i].AddRow(data.Columns[i].EmptyElement);
+                            data.Columns[i].AddTrainingRow(data.Columns[i].EmptyElement);
                         }
                     }
 

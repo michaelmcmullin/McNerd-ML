@@ -16,7 +16,7 @@ namespace ConsoleTester
         int columnCount = 0;
         int rowCount = 0;
 
-        public void Load(string path, bool hasHeaderRow, DataFrame data)
+        public void Load(string pathToTrainingData, string pathToTestData, bool hasHeaderRow, DataFrame data)
         {
             hasHeaders = hasHeaderRow;
             columnCount = 5;
@@ -44,7 +44,7 @@ namespace ConsoleTester
             {
                 for (int i = 0; i < columnCount; i++)
                 {
-                    columns[i].AddRow((i * rowCount).ToString());
+                    columns[i].AddTrainingRow((i * rowCount).ToString());
                 }
                 return true;
             }

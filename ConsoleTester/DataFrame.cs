@@ -30,26 +30,28 @@ namespace ConsoleTester
         /// <summary>
         /// Load data from a given file into this DataFrame
         /// </summary>
-        /// <param name="path">The path of the file to load.</param>
+        /// <param name="pathToTrainingData">The path of the training data file to load.</param>
+        /// <param name="pathToTestData">The path of the test data file to load.</param>
         /// <param name="hasHeader">Indicates whether or not the data has a
         /// header row.</param>
         /// <param name="resultColumn">The name of the column to set as the result
         /// column.</param>
-        public void Load(string path, bool hasHeader, string resultColumn)
+        public void Load(string pathToTrainingData, string pathToTestData, bool hasHeader, string resultColumn)
         {
-            importer.Load(path, hasHeader, this);
+            importer.Load(pathToTrainingData, pathToTestData, hasHeader, this);
             SetResultColumn(resultColumn);
         }
 
         /// <summary>
         /// Load data from a given file into this DataFrame
         /// </summary>
-        /// <param name="path">The path of the file to load.</param>
+        /// <param name="pathToTrainingData">The path of the training data file to load.</param>
+        /// <param name="pathToTestData">The path of the test data file to load.</param>
         /// <param name="hasHeader">Indicates whether or not the data has a
         /// header row.</param>
-        public void Load(string path, bool hasHeader)
+        public void Load(string pathToTrainingData, string pathToTestData, bool hasHeader)
         {
-            importer.Load(path, hasHeader, this);
+            importer.Load(pathToTrainingData, pathToTestData, hasHeader, this);
         }
 
         /// <summary>
@@ -151,7 +153,7 @@ namespace ConsoleTester
                 int maxRows = 0;
                 foreach(DataFrameColumn column in columns)
                 {
-                    if (column.RowCount > maxRows) maxRows = column.RowCount;
+                    if (column.TrainingRowCount > maxRows) maxRows = column.TrainingRowCount;
                 }
                 return maxRows;
             }
@@ -405,7 +407,7 @@ namespace ConsoleTester
                 DataFrameColumn col = this[header];
                 for (int i = 0; i < this.MaxRows; i++)
                 {
-                    col.AddRow(op(this, i));
+                    col.AddTrainingRow(op(this, i));
                 }
             }
         }

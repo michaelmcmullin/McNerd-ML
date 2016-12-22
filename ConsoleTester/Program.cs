@@ -491,8 +491,8 @@ namespace ConsoleTester
             DataFrame df_train = new DataFrame(di_csv, de_csv);
             DataFrame df_test = new DataFrame(di_csv, de_csv);
 
-            df_train.Load(@"c:\temp\titanic.csv", true, "Survived");
-            df_test.Load(@"c:\temp\titanic_test.csv", true);
+            df_train.Load(@"c:\temp\titanic.csv", @"c:\temp\titanic_test.csv", true, "Survived");
+            df_test.Load(@"c:\temp\titanic_test.csv", "", true);
 
             Console.WriteLine($"Total Columns (training data): {df_train.TotalColumns}");
             Console.WriteLine($"Total Columns (testing data):  {df_test.TotalColumns}");

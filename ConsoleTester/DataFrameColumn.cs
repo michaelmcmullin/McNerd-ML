@@ -16,7 +16,8 @@ namespace ConsoleTester
     {
         DataFrame parent;
         DataFrameColumnType columnType = DataFrameColumnType.Ignore;
-        List<string> rows;
+        List<string> trainingRows;
+        List<string> testRows;
         List<string> factors;
         Bins bins;
 
@@ -27,7 +28,6 @@ namespace ConsoleTester
         bool isResult = false;
         bool refresh = true;
         bool updateFactors = true;
-        bool updateBins = true;
 
         #region Constructors
         public DataFrameColumn(DataFrame parent)
@@ -44,7 +44,7 @@ namespace ConsoleTester
 
             for (int i = 0; i < m.Rows; i++)
             {
-                AddRow(m[i, columnIndex].ToString());
+                AddTrainingRow(m[i, columnIndex].ToString());
             }
         }
 
@@ -57,8 +57,8 @@ namespace ConsoleTester
         /// <returns>The string value contained in the given row.</returns>
         public string this[int row]
         {
-            get { return row < rows.Count ? rows[row] : String.Empty; }
-            set { if (row < rows.Count) rows[row] = value; }
+            get { return row < trainingRows.Count ? trainingRows[row] : String.Empty; }
+            set { if (row < trainingRows.Count) trainingRows[row] = value; }
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace ConsoleTester
             double[] output = new double[ColumnCount];
             double elementValue = 0;
 
-            if (row >= RowCount)
+            if (row >= TrainingRowCount)
             {
                 for (int i = 0; i < columnCount; i++)
                 {
@@ -94,7 +94,7 @@ namespace ConsoleTester
                 switch (columnType)
                 {
                     case DataFrameColumnType.Double:
-                        if (!double.TryParse(rows[row], out elementValue))
+                        if (!double.TryParse(trainingRows[row], out elementValue))
                             elementValue = EmptyValue;
                         output[0] = elementValue;
                         break;
@@ -103,7 +103,7 @@ namespace ConsoleTester
                         {
                             for (int i = 0; i < columnCount; i++)
                             {
-                                if (rows[row] == factors[i])
+                                if (trainingRows[row] == factors[i])
                                     output[i] = 1.0;
                                 else
                                     output[i] = 0.0;
@@ -114,10 +114,10 @@ namespace ConsoleTester
                         if (bins != null)
                         {
                             int binIndex = -1;
-                            string cmpValue = rows[row] == String.Empty ? EmptyElement : rows[row];
+                            string cmpValue = trainingRows[row] == String.Empty ? EmptyElement : trainingRows[row];
                             double binValue = 0;
 
-                            if (Double.TryParse(rows[row], out binValue))
+                            if (Double.TryParse(trainingRows[row], out binValue))
                             {
                                 binIndex = bins.binIndex(binValue);
                             }
@@ -176,13 +176,24 @@ namespace ConsoleTester
         }
 
         /// <summary>
-        /// Add a row to the end of the list.
+        /// Add a row to the end of the training data list.
         /// </summary>
         /// <param name="s">A string representation of the row to add.</param>
-        public void AddRow(string s)
+        public void AddTrainingRow(string s)
         {
-            if (rows == null) rows = new List<string>();
-            rows.Add(s);
+            if (trainingRows == null) trainingRows = new List<string>();
+            trainingRows.Add(s);
+            refresh = true;
+        }
+
+        /// <summary>
+        /// Add a row to the end of the test data list.
+        /// </summary>
+        /// <param name="s">A string representation of the row to add.</param>
+        public void AddTestRow(string s)
+        {
+            if (testRows == null) testRows = new List<string>();
+            testRows.Add(s);
             refresh = true;
         }
 
@@ -196,13 +207,24 @@ namespace ConsoleTester
         }
 
         /// <summary>
-        /// Get the number of rows in this column
+        /// Get the number of training rows in this column
         /// </summary>
-        public int RowCount
+        public int TrainingRowCount
         {
             get
             {
-                return rows == null ? 0 : rows.Count;
+                return trainingRows == null ? 0 : trainingRows.Count;
+            }
+        }
+
+        /// <summary>
+        /// Get the number of test rows in this column
+        /// </summary>
+        public int TestRowCount
+        {
+            get
+            {
+                return testRows == null ? 0 : testRows.Count;
             }
         }
 
@@ -231,10 +253,10 @@ namespace ConsoleTester
             switch (ColumnType)
             {
                 case DataFrameColumnType.Factors:
-                    if (rows != null)
+                    if (trainingRows != null)
                     {
                         if (updateFactors || factors == null)
-                            factors = rows.Distinct().ToList();
+                            factors = trainingRows.Distinct().ToList();
                         columnCount = factors.Count;
                     }
                     break;
@@ -276,10 +298,10 @@ namespace ConsoleTester
             StringBuilder sb = new StringBuilder();
 
             sb.AppendLine($"Total Columns: {ColumnCount}");
-            sb.AppendLine($"Total Rows: {RowCount}");
+            sb.AppendLine($"Total Rows: {TrainingRowCount}");
             sb.AppendLine($"Column Type: {ColumnType}");
 
-            int maxRows = Math.Min(10, RowCount);
+            int maxRows = Math.Min(10, TrainingRowCount);
             List<string> headers = GetHeaders();
 
             foreach(string header in headers)
@@ -295,7 +317,7 @@ namespace ConsoleTester
                     case DataFrameColumnType.Factors:
                         for (int j = 0; j < headers.Count; j++)
                         {
-                            if (rows[i] == headers[j])
+                            if (trainingRows[i] == headers[j])
                                 sb.Append($"Y\t");
                             //sb.Append($"{rows[i]}\t");
                             else
@@ -308,7 +330,7 @@ namespace ConsoleTester
                         if (bins != null)
                         {
                             double val = 0;
-                            if (Double.TryParse(rows[i], out val))
+                            if (Double.TryParse(trainingRows[i], out val))
                             {
                                 binIndex = bins.binIndex(val);
                             }
@@ -324,7 +346,7 @@ namespace ConsoleTester
                         sb.Append("\n");
                         break;
                     default:
-                        sb.AppendLine(rows[i]);
+                        sb.AppendLine(trainingRows[i]);
                         break;
                 }
             }
@@ -369,7 +391,6 @@ namespace ConsoleTester
         public void CopyBins(DataFrameColumn other)
         {
             this.bins = other.bins;
-            updateBins = false;
             refresh = true;
             SetColumnCount();
         }
