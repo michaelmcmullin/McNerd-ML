@@ -45,6 +45,7 @@ namespace ConsoleTester
                 for (int i = 0; i < columnCount; i++)
                 {
                     columns[i].AddTrainingRow((i * rowCount).ToString());
+                    columns[i].AddTestRow(((i * rowCount) + 1).ToString());
                 }
                 return true;
             }
