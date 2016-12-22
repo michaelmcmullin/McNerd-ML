@@ -518,10 +518,6 @@ namespace ConsoleTester
             // Try and match the types in the testing set
             df_test.MatchColumns(df_train);
 
-            int a1 = df_train.ExpandedHeaders.Count;
-            int a2 = df_test.ExpandedHeaders.Count;
-
-
             Console.WriteLine($"df_train hasResults? {df_train.HasResults}. df_test hasResults? {df_test.HasResults}");
 
             // Start calculations

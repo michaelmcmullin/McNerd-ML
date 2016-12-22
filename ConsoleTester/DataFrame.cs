@@ -306,6 +306,7 @@ namespace ConsoleTester
                 if (other != null)
                 {
                     column.ColumnType = other.ColumnType;
+                    column.CopyFactors(other);
                     column.CopyBins(other);
                 }
             }

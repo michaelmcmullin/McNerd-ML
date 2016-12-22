@@ -26,6 +26,8 @@ namespace ConsoleTester
         double missingElementValue = 0;
         bool isResult = false;
         bool refresh = true;
+        bool updateFactors = true;
+        bool updateBins = true;
 
         #region Constructors
         public DataFrameColumn(DataFrame parent)
@@ -231,7 +233,8 @@ namespace ConsoleTester
                 case DataFrameColumnType.Factors:
                     if (rows != null)
                     {
-                        factors = rows.Distinct().ToList();
+                        if (updateFactors || factors == null)
+                            factors = rows.Distinct().ToList();
                         columnCount = factors.Count;
                     }
                     break;
@@ -348,12 +351,27 @@ namespace ConsoleTester
         }
 
         /// <summary>
-        /// Copy the bins from this DataFrameColumn to another.
+        /// Copy the factors from another DataFrameColumn to this one
         /// </summary>
-        /// <param name="other">The DataFrameColumn to copy the bins to.</param>
+        /// <param name="other">The DataFrameColumn to copy factors from.</param>
+        public void CopyFactors(DataFrameColumn other)
+        {
+            updateFactors = false;
+            this.factors = other.factors;
+            refresh = true;
+            SetColumnCount();
+        }
+
+        /// <summary>
+        /// Copy the bins from another DataFrameColumn to this one.
+        /// </summary>
+        /// <param name="other">The DataFrameColumn to copy the bins from.</param>
         public void CopyBins(DataFrameColumn other)
         {
-            other.bins = this.bins;
+            this.bins = other.bins;
+            updateBins = false;
+            refresh = true;
+            SetColumnCount();
         }
     }
 }
