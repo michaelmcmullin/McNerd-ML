@@ -445,7 +445,7 @@ namespace ConsoleTester
         /// aquiring values from other columns)</param>
         /// <param name="row">The zero-based index of the row to operate on.</param>
         /// <returns>A processed string that can be used as a column value.</returns>
-        public delegate string ColumnRowOperation(DataFrame df, int row);
+        public delegate string ColumnRowOperation(DataFrame df, int row, int set);
 
         /// <summary>
         /// Create a new DataFrameColumn in this DataFrame, using a custom
@@ -461,7 +461,11 @@ namespace ConsoleTester
                 DataFrameColumn col = this[header];
                 for (int i = 0; i < this.MaxTrainingRows; i++)
                 {
-                    col.AddTrainingRow(op(this, i));
+                    col.AddRow(op(this, i, 0), 0);
+                }
+                for (int i = 0; i < this.MaxTestRows; i++)
+                {
+                    col.AddRow(op(this, i, 1), 1);
                 }
             }
         }

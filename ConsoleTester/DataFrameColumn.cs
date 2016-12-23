@@ -16,8 +16,8 @@ namespace ConsoleTester
     {
         DataFrame parent;
         DataFrameColumnType columnType = DataFrameColumnType.Ignore;
-        List<string> trainingRows;
-        List<string> testRows;
+        List<string> trainingRows = new List<string>();
+        List<string> testRows = new List<string>();
         List<string> factors;
         Bins bins;
 
@@ -30,12 +30,23 @@ namespace ConsoleTester
         bool updateFactors = true;
 
         #region Constructors
+        /// <summary>
+        /// Create a new DataFrameColumn within an existing DataFrame.
+        /// </summary>
+        /// <param name="parent">A reference to the containing DataFrame.</param>
         public DataFrameColumn(DataFrame parent)
         {
             Parent = parent;
         }
 
-        public DataFrameColumn(DataFrame parent, Matrix m, int columnIndex)
+        /// <summary>
+        /// Create a new DataFrameColumn based on a column from a Matrix.
+        /// </summary>
+        /// <param name="parent">A reference to the containing DataFrame.</param>
+        /// <param name="m">The Matrix to extract the information from.</param>
+        /// <param name="columnIndex">The zero-based index of the Matrix
+        /// column to import.</param>
+        public DataFrameColumn(DataFrame parent, Matrix m, int columnIndex, int set = 0)
         {
             Parent = parent;
             // Check if this column is already in the parent DataFrame. If not, add it.
@@ -44,7 +55,7 @@ namespace ConsoleTester
 
             for (int i = 0; i < m.Rows; i++)
             {
-                AddTrainingRow(m[i, columnIndex].ToString());
+                AddRow(m[i, columnIndex].ToString(), set);
             }
         }
 
@@ -55,10 +66,18 @@ namespace ConsoleTester
         /// </summary>
         /// <param name="row">The row to get/set the value of.</param>
         /// <returns>The string value contained in the given row.</returns>
-        public string this[int row]
+        public string this[int row, int set = 0]
         {
-            get { return row < trainingRows.Count ? trainingRows[row] : String.Empty; }
-            set { if (row < trainingRows.Count) trainingRows[row] = value; }
+            get
+            {
+                List<string> IndexedRows = set == 0 ? trainingRows : testRows;
+                return row < IndexedRows.Count ? IndexedRows[row] : String.Empty;
+            }
+            set
+            {
+                List<string> IndexedRows = set == 0 ? trainingRows : testRows;
+                if (row < IndexedRows.Count) IndexedRows[row] = value;
+            }
         }
 
         /// <summary>
@@ -179,14 +198,32 @@ namespace ConsoleTester
         }
 
         /// <summary>
+        /// Add a row to the indicated row set.
+        /// </summary>
+        /// <param name="s">A string representation of the row to add.</param>
+        /// <param name="set">The set of rows to add this row to.</param>
+        public void AddRow(string s, int set = 0)
+        {
+            List<string> IndexedRows = set == 0 ? trainingRows : testRows;
+            //if (IndexedRows == null)
+            //{
+            //    if (set == 0) { trainingRows = new List<string>(); IndexedRows = trainingRows; }
+            //    else { testRows = new List<string>(); IndexedRows = testRows; }
+            //}
+            IndexedRows.Add(s);
+            refresh = true;
+        }
+
+        /// <summary>
         /// Add a row to the end of the training data list.
         /// </summary>
         /// <param name="s">A string representation of the row to add.</param>
         public void AddTrainingRow(string s)
         {
-            if (trainingRows == null) trainingRows = new List<string>();
-            trainingRows.Add(s);
-            refresh = true;
+            //if (trainingRows == null) trainingRows = new List<string>();
+            //trainingRows.Add(s);
+            //refresh = true;
+            AddRow(s, 0);
         }
 
         /// <summary>
@@ -195,9 +232,10 @@ namespace ConsoleTester
         /// <param name="s">A string representation of the row to add.</param>
         public void AddTestRow(string s)
         {
-            if (testRows == null) testRows = new List<string>();
-            testRows.Add(s);
-            refresh = true;
+            //if (testRows == null) testRows = new List<string>();
+            //testRows.Add(s);
+            //refresh = true;
+            AddRow(s, 1);
         }
 
         /// <summary>

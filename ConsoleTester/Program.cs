@@ -504,8 +504,17 @@ namespace ConsoleTester
             df_train.SetColumnType("fare", DataFrameColumnType.Double);
             df_train.SetColumnType("sibsp", DataFrameColumnType.Double);
             df_train.SetColumnType("parch", DataFrameColumnType.Double);
-            df_train.CreateDataColumn("CabinLetter", GetCabinLetter);
-            df_train.SetColumnType("CabinLetter", DataFrameColumnType.Factors);
+
+            // Tried to extract the deck number to see if that would have an impact.
+            // It did, but not a positive one! Comment it out.
+            //df_train.CreateDataColumn("CabinLetter", GetCabinLetter);
+            //df_train.SetColumnType("CabinLetter", DataFrameColumnType.Factors);
+
+            // Try 'TravellingAlone'. This actually improves the results for Logistic
+            // Regression, but works against Neural Networks.
+            //df_train.CreateDataColumn("TravellingAlone", GetTravellingAlone);
+            //df_train.SetColumnType("TravellingAlone", DataFrameColumnType.Factors);
+
             df_train.SetColumnType("survived", DataFrameColumnType.Double);
 
             Console.WriteLine($"df_train hasResults? {df_train.HasResults}.");
@@ -523,7 +532,7 @@ namespace ConsoleTester
 
             int input_layer_size = Xtrain.Columns;
             int output_layer_size = labels.Length;
-            int hidden_layer_size = (input_layer_size + output_layer_size) / 2;
+            int hidden_layer_size = input_layer_size; // (input_layer_size + output_layer_size) / 2;
             Matrix[] nn_theta = NeuralNetwork.Train(Xtrain, ytrain, input_layer_size, hidden_layer_size, labels, 0.1, 1000);
             Matrix nn_prediction = NeuralNetwork.Predict(nn_theta[0], nn_theta[1], Xtest);
 
@@ -531,8 +540,8 @@ namespace ConsoleTester
             DataFrame df_lr_export = df_train;
             DataFrame df_nn_export = df_train;
 
-            DataFrameColumn col_lr_results = new DataFrameColumn(df_lr_export, lr_prediction, 0);
-            DataFrameColumn col_nn_results = new DataFrameColumn(df_nn_export, nn_prediction, 0);
+            DataFrameColumn col_lr_results = new DataFrameColumn(df_lr_export, lr_prediction, 0, 1);
+            DataFrameColumn col_nn_results = new DataFrameColumn(df_nn_export, nn_prediction, 0, 1);
 
             col_lr_results.Header = col_nn_results.Header = "Survived";
 
@@ -544,16 +553,34 @@ namespace ConsoleTester
         /// <summary>
         /// Extract the first letter of each cabin number.
         /// </summary>
-        static string GetCabinLetter(DataFrame df, int row)
+        static string GetCabinLetter(DataFrame df, int row, int set)
         {
             DataFrameColumn cabin = df["Cabin"];
-            string originalValue = cabin[row].Trim().ToUpper();
+            string originalValue = cabin[row, set].Trim().ToUpper();
 
             if (originalValue.Length > 0)
                 return originalValue.Substring(0, 1);
 
             return "None";
-        } 
+        }
+
+        /// <summary>
+        /// Determine if there is a record of a passenger travelling alone.
+        /// </summary>
+        static string GetTravellingAlone(DataFrame df, int row, int set)
+        {
+            DataFrameColumn SiblingSpouse = df["sibsp"];
+            DataFrameColumn ParentChild = df["sibsp"];
+
+            int SiblingSpouseCount = 0, ParentChildCount = 0;
+            Int32.TryParse(SiblingSpouse[row, set], out SiblingSpouseCount);
+            Int32.TryParse(ParentChild[row, set], out ParentChildCount);
+
+            if (SiblingSpouseCount + ParentChildCount > 0)
+                return "No";
+
+            return "Yes";
+        }
 
         static void WriteCommands()
         {

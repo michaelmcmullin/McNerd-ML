@@ -27,13 +27,13 @@ namespace ConsoleTester
                 }
                 file.WriteLine(headers);
 
-                for (int row = 0; row < df.MaxTrainingRows; row++)
+                for (int row = 0; row < df.MaxTestRows; row++)
                 {
                     StringBuilder sb = new StringBuilder();
 
                     for (int col = 0; col < df.Columns.Count; col++)
                     {
-                        sb.Append(CleanString(df.Columns[col][row]));
+                        sb.Append(CleanString(df.Columns[col][row, 1]));
                         if (col < df.Columns.Count - 1)
                             sb.Append(delimiter);
                     }
