@@ -10,7 +10,7 @@ namespace ConsoleTester
     /// <summary>
     /// The type of DataFrameColumn data
     /// </summary>
-    public enum DataFrameColumnType { Ignore, Empty, Double, Factors, Bins }
+    public enum DataFrameColumnType { Ignore, Empty, Double, Factors, Bins, Keywords }
 
     class DataFrameColumn
     {
@@ -20,6 +20,7 @@ namespace ConsoleTester
         List<string> testRows = new List<string>();
         List<string> factors;
         Bins bins;
+        //List<string> keywords;
 
         string header;
         int columnCount = 1;
@@ -220,9 +221,6 @@ namespace ConsoleTester
         /// <param name="s">A string representation of the row to add.</param>
         public void AddTrainingRow(string s)
         {
-            //if (trainingRows == null) trainingRows = new List<string>();
-            //trainingRows.Add(s);
-            //refresh = true;
             AddRow(s, 0);
         }
 
@@ -232,9 +230,6 @@ namespace ConsoleTester
         /// <param name="s">A string representation of the row to add.</param>
         public void AddTestRow(string s)
         {
-            //if (testRows == null) testRows = new List<string>();
-            //testRows.Add(s);
-            //refresh = true;
             AddRow(s, 1);
         }
 
@@ -411,29 +406,6 @@ namespace ConsoleTester
             {
                 bins.AddBin(val);
             }
-        }
-
-        /// <summary>
-        /// Copy the factors from another DataFrameColumn to this one
-        /// </summary>
-        /// <param name="other">The DataFrameColumn to copy factors from.</param>
-        public void CopyFactors(DataFrameColumn other)
-        {
-            updateFactors = false;
-            this.factors = other.factors;
-            refresh = true;
-            SetColumnCount();
-        }
-
-        /// <summary>
-        /// Copy the bins from another DataFrameColumn to this one.
-        /// </summary>
-        /// <param name="other">The DataFrameColumn to copy the bins from.</param>
-        public void CopyBins(DataFrameColumn other)
-        {
-            this.bins = other.bins;
-            refresh = true;
-            SetColumnCount();
         }
     }
 }

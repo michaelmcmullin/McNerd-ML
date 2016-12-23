@@ -532,7 +532,7 @@ namespace ConsoleTester
 
             int input_layer_size = Xtrain.Columns;
             int output_layer_size = labels.Length;
-            int hidden_layer_size = input_layer_size; // (input_layer_size + output_layer_size) / 2;
+            int hidden_layer_size = (input_layer_size + output_layer_size) / 2;
             Matrix[] nn_theta = NeuralNetwork.Train(Xtrain, ytrain, input_layer_size, hidden_layer_size, labels, 0.1, 1000);
             Matrix nn_prediction = NeuralNetwork.Predict(nn_theta[0], nn_theta[1], Xtest);
 
