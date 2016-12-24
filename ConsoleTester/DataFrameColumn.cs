@@ -16,6 +16,7 @@ namespace ConsoleTester
     {
         DataFrame parent;
         DataFrameColumnType columnType = DataFrameColumnType.Ignore;
+        Dictionary<string, string> summaries = new Dictionary<string, string>();
         List<string> trainingRows = new List<string>();
         List<string> testRows = new List<string>();
         List<string> factors;
@@ -91,6 +92,14 @@ namespace ConsoleTester
         }
 
         /// <summary>
+        /// A set of values that can summarise this column (e.g. average value)
+        /// </summary>
+        public Dictionary<string, string> Summaries
+        {
+            get { return summaries; }
+        }
+
+        /// <summary>
         /// Convert a given row into an array of values that can be exported
         /// to a Matrix later.
         /// </summary>
@@ -99,6 +108,7 @@ namespace ConsoleTester
         /// Matrix.</returns>
         public double[] ExportMatrixRow(int row, bool testRow = false)
         {
+            int set = testRow ? 1 : 0;
             List<string> rows = testRow ? testRows : trainingRows;
             int maxRows = testRow ? TestRowCount : TrainingRowCount;
 
@@ -109,7 +119,7 @@ namespace ConsoleTester
             {
                 for (int i = 0; i < columnCount; i++)
                 {
-                    output[i] = EmptyValue;
+                    output[i] = EmptyValueCalculation != null ? EmptyValueCalculation(Parent, row, set) : EmptyValue;
                 }
             }
             else
@@ -118,7 +128,7 @@ namespace ConsoleTester
                 {
                     case DataFrameColumnType.Double:
                         if (!double.TryParse(rows[row], out elementValue))
-                            elementValue = EmptyValue;
+                            elementValue = EmptyValueCalculation != null ? EmptyValueCalculation(Parent, row, set) : EmptyValue; ;
                         output[0] = elementValue;
                         break;
                     case DataFrameColumnType.Factors:
@@ -137,7 +147,7 @@ namespace ConsoleTester
                         if (bins != null)
                         {
                             int binIndex = -1;
-                            string cmpValue = rows[row] == String.Empty ? EmptyElement : rows[row];
+                            string cmpValue = rows[row] == String.Empty ? (EmptyValueCalculation != null ? EmptyValueCalculation(Parent, row, set).ToString() : EmptyElement) : rows[row];
                             double binValue = 0;
 
                             if (Double.TryParse(rows[row], out binValue))
@@ -166,7 +176,7 @@ namespace ConsoleTester
                         break;
                     default:
                         for (int i = 0; i < columnCount; i++)
-                            output[i] = EmptyValue;
+                            output[i] = EmptyValueCalculation != null ? EmptyValueCalculation(Parent, row, set) : EmptyValue;
                         break;
                 }
             }
@@ -278,6 +288,16 @@ namespace ConsoleTester
         }
 
         /// <summary>
+        /// Retrieve a row count from a specific data set.
+        /// </summary>
+        /// <param name="set">The set of data to retrieve.</param>
+        /// <returns>The number of rows in the specified data set.</returns>
+        public int RowCount(int set = 0)
+        {
+            return set == 0 ? TrainingRowCount : TestRowCount;
+        }
+
+        /// <summary>
         /// Get the number of columns that this column will be ultimately
         /// broken up into.
         /// </summary>
@@ -326,6 +346,36 @@ namespace ConsoleTester
             }
             refresh = false;
         }
+
+        /// <summary>
+        /// An operation that calculates what an empty element in a given row
+        /// should be.
+        /// </summary>
+        /// <param name="df">The DataFrame to use for calculating empty elements.</param>
+        /// <param name="row">The row containing the empty element.</param>
+        /// <param name="set">The data set containing the empty element.</param>
+        /// <returns>The new value to add to the empty element.</returns>
+        public delegate string CalculateEmptyElements(DataFrame df, int row, int set);
+
+        /// <summary>
+        /// An operation that calculates what an empty value in a given row
+        /// should be.
+        /// </summary>
+        /// <param name="df">The DataFrame to use for calculating empty elements.</param>
+        /// <param name="row">The row containing the empty element.</param>
+        /// <param name="set">The data set containing the empty element.</param>
+        /// <returns>The new value to add to the empty element.</returns>
+        public delegate double CalculateEmptyValues(DataFrame df, int row, int set);
+
+        /// <summary>
+        /// The calculation for populating empty elements.
+        /// </summary>
+        public CalculateEmptyElements EmptyElementCalculation { get; set; }
+
+        /// <summary>
+        /// The calculation for populating empty values.
+        /// </summary>
+        public CalculateEmptyValues EmptyValueCalculation { get; set; }
 
         /// <summary>
         /// The default element to use if an element is missing.

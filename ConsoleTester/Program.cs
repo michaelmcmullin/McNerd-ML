@@ -496,12 +496,18 @@ namespace ConsoleTester
 
             // Change the type of some of the training columns
             df_train.SetColumnType("pclass", DataFrameColumnType.Factors);
+
             df_train.SetColumnType("name", DataFrameColumnType.Keywords);
             df_train["name"].SetKeywords(new string[] { "Mr.", "Mrs.", "Miss.", "Master.", "Rev.", "Dr.", "Mme.", "Mlle." });
+
             df_train.SetColumnType("sex", DataFrameColumnType.Factors);
+
             df_train.SetColumnType("age", DataFrameColumnType.Bins);
             df_train["age"].SetBins(new double[] { 0.0, 15.0, 25.0, 30.0, 40.0, 50.0, 55.0, 65.0, 75.0, 100.0 });
-            df_train["age"].EmptyValue = 30.27; // Average value of known ages
+            SummariseAges(df_train, 15);
+            df_train["age"].EmptyValueCalculation = EmptyAgeCalculation;
+            //df_train["age"].EmptyValue = 30.27; // Average value of known ages
+
             df_train.SetColumnType("fare", DataFrameColumnType.Double);
             df_train.SetColumnType("sibsp", DataFrameColumnType.Double);
             df_train.SetColumnType("parch", DataFrameColumnType.Double);
@@ -581,6 +587,82 @@ namespace ConsoleTester
                 return "No";
 
             return "Yes";
+        }
+
+        /// <summary>
+        /// Summarise the various average ages.
+        /// </summary>
+        /// <param name="df">DataFrame to extract ages from.</param>
+        /// <param name="childAge">Cut-off point for defining a child.</param>
+        static void SummariseAges(DataFrame df, double childAge = 18)
+        {
+            DataFrameColumn col = df["age"];
+            if (col != null && col.TrainingRowCount > 0)
+            {
+                DataFrameColumn gender = df["sex"];
+                List<double> ages = new List<double>();
+                List<double> femaleAdultAges = new List<double>();
+                List<double> maleAdultAges = new List<double>();
+                List<double> femaleChildAges = new List<double>();
+                List<double> maleChildAges = new List<double>();
+                double age = 0;
+
+                for (int set = 0; set <= 1; set++)
+                {
+                    for (int i = 0; i < col.RowCount(set); i++)
+                    {
+                        if (col[i, set] != String.Empty)
+                        {
+                            if (double.TryParse(col[i, set], out age))
+                            {
+                                ages.Add(age);
+                                if (age > childAge)
+                                {
+                                    if (gender[i, set] == "female") femaleAdultAges.Add(age);
+                                    else if (gender[i, set] == "male") maleAdultAges.Add(age);
+                                }
+                                else
+                                {
+                                    if (gender[i, set] == "female") femaleChildAges.Add(age);
+                                    else if (gender[i, set] == "male") maleChildAges.Add(age);
+                                }
+                            }
+                        }
+                    }
+                }
+                col.Summaries["AverageAge"] = ages.Average().ToString();
+                col.Summaries["AverageFemaleAdultAge"] = femaleAdultAges.Average().ToString();
+                col.Summaries["AverageMaleAdultAge"] = maleAdultAges.Average().ToString();
+                col.Summaries["AverageFemaleChildAge"] = femaleChildAges.Average().ToString();
+                col.Summaries["AverageMaleChildAge"] = maleChildAges.Average().ToString();
+            }
+        }
+
+        /// <summary>
+        /// Method for calculating a value to use when there's no age supplied.
+        /// </summary>
+        /// <param name="df">The DataFrame to extract information from.</param>
+        /// <param name="row">The row containing the empty value.</param>
+        /// <param name="set">The data set containing the empty value.</param>
+        /// <returns>An estimated value for the age column in a given row.</returns>
+        static double EmptyAgeCalculation(DataFrame df, int row, int set)
+        {
+            double emptyValue = 0;
+            string tmpValue = df["age"].Summaries["AverageAge"];
+            string name = df["name"][row, set].ToUpper();
+            string gender = df["sex"][row, set].ToUpper().Trim();
+
+            if (gender == "FEMALE")
+            {
+                tmpValue = name.Contains("MISS.") ? df["age"].Summaries["AverageFemaleChildAge"] : df["age"].Summaries["AverageFemaleAdultAge"];
+            }
+            else if (gender == "MALE")
+            {
+                tmpValue = name.Contains("MASTER.") ? df["age"].Summaries["AverageMaleChildAge"] : df["age"].Summaries["AverageMaleAdultAge"];
+            }
+            double.TryParse(tmpValue, out emptyValue);
+
+            return emptyValue;
         }
 
         static void WriteCommands()
