@@ -20,7 +20,7 @@ namespace ConsoleTester
         List<string> testRows = new List<string>();
         List<string> factors;
         Bins bins;
-        //List<string> keywords;
+        List<string> keywords;
 
         string header;
         int columnCount = 1;
@@ -154,6 +154,16 @@ namespace ConsoleTester
                             }
                         }
                         break;
+                    case DataFrameColumnType.Keywords:
+                        if (keywords != null && keywords.Count > 0)
+                        {
+                            for (int i = 0; i < columnCount; i++)
+                            {
+                                string source = rows[row].ToUpper();
+                                output[i] = (source.Length - source.Replace(keywords[i], "").Length) / keywords[i].Length;
+                            }
+                        }
+                        break;
                     default:
                         for (int i = 0; i < columnCount; i++)
                             output[i] = EmptyValue;
@@ -189,6 +199,9 @@ namespace ConsoleTester
                     break;
                 case DataFrameColumnType.Bins:
                     headers = bins.BinLabels;
+                    break;
+                case DataFrameColumnType.Keywords:
+                    headers = keywords;
                     break;
                 default:
                     headers.Add(Header);
@@ -302,6 +315,12 @@ namespace ConsoleTester
                         columnCount = bins.BinCount;
                     }
                     break;
+                case DataFrameColumnType.Keywords:
+                    if (keywords != null && keywords.Count > 0)
+                    {
+                        columnCount = keywords.Count;
+                    }
+                    break;
                 default:
                     break;
             }
@@ -381,6 +400,15 @@ namespace ConsoleTester
                         }
                         sb.Append("\n");
                         break;
+                    case DataFrameColumnType.Keywords:
+                        for (int j = 0; j < keywords.Count; j++)
+                        {
+                            string source = trainingRows[i].ToUpper();
+                            int keywordCount = (source.Length - source.Replace(keywords[j], "").Length) / keywords[j].Length;
+                            sb.Append($"{keywordCount}\t");
+                        }
+                        sb.Append("\n");
+                        break;
                     default:
                         sb.AppendLine(trainingRows[i]);
                         break;
@@ -406,6 +434,19 @@ namespace ConsoleTester
             {
                 bins.AddBin(val);
             }
+        }
+
+        /// <summary>
+        /// Set the list of keywords to a unique set, all uppercase.
+        /// </summary>
+        /// <param name="values">An array of keywords to add to this DataFrameColumn.</param>
+        public void SetKeywords(string[] values)
+        {
+            if (keywords == null)
+                keywords = new List<string>();
+            else
+                keywords.Clear();
+            keywords.AddRange(values.Select(n=>n.ToUpper()).Distinct());
         }
     }
 }

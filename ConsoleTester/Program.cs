@@ -496,9 +496,10 @@ namespace ConsoleTester
 
             // Change the type of some of the training columns
             df_train.SetColumnType("pclass", DataFrameColumnType.Factors);
+            df_train.SetColumnType("name", DataFrameColumnType.Keywords);
+            df_train["name"].SetKeywords(new string[] { "Mr.", "Mrs.", "Miss.", "Master.", "Rev.", "Dr.", "Mme.", "Mlle." });
             df_train.SetColumnType("sex", DataFrameColumnType.Factors);
             df_train.SetColumnType("age", DataFrameColumnType.Bins);
-            //df_train["age"].SetBins(new double[] { 0.0, 18.0, 100.0 });
             df_train["age"].SetBins(new double[] { 0.0, 15.0, 25.0, 30.0, 40.0, 50.0, 55.0, 65.0, 75.0, 100.0 });
             df_train["age"].EmptyValue = 30.27; // Average value of known ages
             df_train.SetColumnType("fare", DataFrameColumnType.Double);
@@ -512,8 +513,8 @@ namespace ConsoleTester
 
             // Try 'TravellingAlone'. This actually improves the results for Logistic
             // Regression, but works against Neural Networks.
-            //df_train.CreateDataColumn("TravellingAlone", GetTravellingAlone);
-            //df_train.SetColumnType("TravellingAlone", DataFrameColumnType.Factors);
+            df_train.CreateDataColumn("TravellingAlone", GetTravellingAlone);
+            df_train.SetColumnType("TravellingAlone", DataFrameColumnType.Factors);
 
             df_train.SetColumnType("survived", DataFrameColumnType.Double);
 
