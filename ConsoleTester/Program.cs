@@ -522,6 +522,9 @@ namespace ConsoleTester
             df_train.CreateDataColumn("TravellingAlone", GetTravellingAlone);
             df_train.SetColumnType("TravellingAlone", DataFrameColumnType.Factors);
 
+            df_train.SetColumnType("embarked", DataFrameColumnType.Factors);
+
+
             df_train.SetColumnType("survived", DataFrameColumnType.Double);
 
             Console.WriteLine($"df_train hasResults? {df_train.HasResults}.");
