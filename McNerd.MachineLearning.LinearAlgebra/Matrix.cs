@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+[assembly: CLSCompliant(true)]
+[assembly: System.Runtime.InteropServices.ComVisible(false)]
 namespace McNerd.MachineLearning.LinearAlgebra
 {
     /// <summary>
