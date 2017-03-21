@@ -21,7 +21,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// </summary>
         /// <param name="a">The number to process.</param>
         /// <returns>The result of performing an operation on the number.</returns>
-        public delegate double ProcessNumber(double a);
+        protected delegate double ProcessNumber(double a);
 
         /// <summary>
         /// General purpose delegate for processing two numbers and giving
@@ -30,7 +30,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <param name="a">The first number to process.</param>
         /// <param name="b">The second number to process.</param>
         /// <returns>The result of performing an operation on both inputs.</returns>
-        public delegate double ProcessNumbers(double a, double b);
+        protected delegate double ProcessNumbers(double a, double b);
 
         /// <summary>
         /// General purpose delegate for processing a Matrix and giving
@@ -1547,7 +1547,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <param name="number">The value to use in each operation.</param>
         /// <param name="operation">The delegate method to operate with.</param>
         /// <returns>A new Matrix with the original elements operated on appropriately.</returns>
-        public static Matrix ElementOperation(Matrix m, double number, ProcessNumbers operation)
+        protected static Matrix ElementOperation(Matrix m, double number, ProcessNumbers operation)
         {
             Matrix result = new Matrix(m.Rows, m.Columns);
             for (int i = 0; i < result.data.Length; i++)
@@ -1565,7 +1565,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <param name="operation">The delegate method to operate with.</param>
         /// <returns>A new Matrix with each element from both input Matrix objects
         /// operated on appropriately.</returns>
-        public static Matrix ElementOperation(Matrix m1, Matrix m2, ProcessNumbers operation)
+        protected static Matrix ElementOperation(Matrix m1, Matrix m2, ProcessNumbers operation)
         {
             if (m1 == null || m2 == null)
                 throw new ArgumentNullException("ElementOperation cannot accept null Matrix objects");
@@ -1615,7 +1615,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <param name="m">The Matrix to operate on.</param>
         /// <param name="operation">The delegate method to operate with.</param>
         /// <returns>A new Matrix with the original elements operated on appropriately.</returns>
-        public static Matrix ElementOperation(Matrix m, ProcessNumber operation)
+        protected static Matrix ElementOperation(Matrix m, ProcessNumber operation)
         {
             Matrix result = new Matrix(m.Rows, m.Columns);
             for (int i = 0; i < result.data.Length; i++)
@@ -1785,7 +1785,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// will be returned, regardless of which dimension is chosen. If the dimension is
         /// set to 'Auto', then the first non-singleton dimension is chosen. If no singleton
         /// dimension exists, then columns are used as the default.</remarks>
-        public static Matrix ReduceDimension(Matrix m, MatrixDimensions dimension, ProcessNumbers operation)
+        protected static Matrix ReduceDimension(Matrix m, MatrixDimensions dimension, ProcessNumbers operation)
         {
             Matrix result = null;
 
