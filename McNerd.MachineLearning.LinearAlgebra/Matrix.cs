@@ -1103,7 +1103,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <param name="m2">The second Matrix to join.</param>
         /// <param name="dimension">The dimensions to join them on.</param>
         /// <returns>A new Matrix containing both the original Matrices joined together.</returns>
-        public static Matrix Join(Matrix m1, Matrix m2, MatrixDimensions dimension = MatrixDimensions.Auto)
+        public static Matrix Join(Matrix m1, Matrix m2, MatrixDimensions dimension)
         {
             Matrix result = null;
             switch (dimension)
@@ -1150,12 +1150,23 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
 
         /// <summary>
+        /// Join two Matrix objects together, side by side, or one above another.
+        /// </summary>
+        /// <param name="m1">The first Matrix to join.</param>
+        /// <param name="m2">The second Matrix to join.</param>
+        /// <returns>A new Matrix containing both the original Matrices joined together.</returns>
+        public static Matrix Join(Matrix m1, Matrix m2)
+        {
+            return Join(m1, m2, MatrixDimensions.Auto);
+        }
+
+        /// <summary>
         /// Add a column of a particular value at the start of a given Matrix.
         /// </summary>
         /// <param name="m1">The Matrix to add the identity column to.</param>
         /// <param name="identityValue">The identity value, default 1.</param>
         /// <returns>A new Matrix with an addition column at the start.</returns>
-        public static Matrix AddIdentityColumn(Matrix m1, double identityValue = 1)
+        public static Matrix AddIdentityColumn(Matrix m1, double identityValue)
         {
             Matrix m2 = new Matrix(m1.Rows, m1.Columns + 1);
 
@@ -1172,6 +1183,16 @@ namespace McNerd.MachineLearning.LinearAlgebra
             }
 
             return m2;
+        }
+
+        /// <summary>
+        /// Add a column of ones at the start of a given Matrix.
+        /// </summary>
+        /// <param name="m1">The Matrix to add the identity column to.</param>
+        /// <returns>A new Matrix with an addition column at the start.</returns>
+        public static Matrix AddIdentityColumn(Matrix m1)
+        {
+            return AddIdentityColumn(m1, 1);
         }
 
         /// <summary>
@@ -1238,7 +1259,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <param name="column">The zero-based index of the column to remove.</param>
         /// <returns>A new Matrix containing the contents of the original Matrix
         /// without the specified column.</returns>
-        public Matrix RemoveColumn(int column = 0)
+        public Matrix RemoveColumn(int column)
         {
             if (column >= this.Columns)
                 throw new IndexOutOfRangeException("The requested column is out of range");
@@ -1263,6 +1284,16 @@ namespace McNerd.MachineLearning.LinearAlgebra
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Remove the first column from a Matrix.
+        /// </summary>
+        /// <returns>A new Matrix containing the contents of the original Matrix
+        /// without the first column.</returns>
+        public Matrix RemoveColumn()
+        {
+            return RemoveColumn(0);
         }
 
         /// <summary>
@@ -1836,9 +1867,20 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <param name="dimension">The dimension (row or column) to process.</param>
         /// <returns>A 1*n or n*1 Matrix containing the sum of each element along the
         /// processed dimension.</returns>
-        public static Matrix Sum(Matrix m, MatrixDimensions dimension = MatrixDimensions.Auto)
+        public static Matrix Sum(Matrix m, MatrixDimensions dimension)
         {
             return ReduceDimension(m, dimension, (x, y) => x + y);
+        }
+
+        /// <summary>
+        /// Sum all elements along a dimension determined automatically.
+        /// </summary>
+        /// <param name="m">The Matrix whose elements need to be added together.</param>
+        /// <returns>A 1*n or n*1 Matrix containing the sum of each element along the
+        /// processed dimension.</returns>
+        public static Matrix Sum(Matrix m)
+        {
+            return Sum(m, MatrixDimensions.Auto);
         }
         #endregion
 
@@ -1902,9 +1944,21 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <param name="dimension">The dimension (row or column) to process.</param>
         /// <returns>A 1*n or n*1 Matrix containing the mean of each element along the
         /// processed dimension.</returns>
-        public static Matrix Mean(Matrix m, MatrixDimensions dimension = MatrixDimensions.Auto)
+        public static Matrix Mean(Matrix m, MatrixDimensions dimension)
         {
             return StatisticalReduce(m, dimension, (x) => x.data.Average());
+        }
+
+        /// <summary>
+        /// Get the mean value of all elements in an automatically determined dimension
+        /// of a given Matrix.
+        /// </summary>
+        /// <param name="m">The Matrix whose elements need to be averaged.</param>
+        /// <returns>A 1*n or n*1 Matrix containing the mean of each element along the
+        /// processed dimension.</returns>
+        public static Matrix Mean(Matrix m)
+        {
+            return Mean(m, MatrixDimensions.Auto);
         }
 
         /// <summary>
@@ -1917,6 +1971,19 @@ namespace McNerd.MachineLearning.LinearAlgebra
         public static Matrix MeanSquare(Matrix m, MatrixDimensions dimension = MatrixDimensions.Auto)
         {
             return StatisticalReduce(m, dimension, GetMeanSquare);
+        }
+
+
+        /// <summary>
+        /// Get the mean value of all elements squared in an automatically determined
+        /// dimension of a given Matrix.
+        /// </summary>
+        /// <param name="m">The Matrix whose squared elements need to be averaged.</param>
+        /// <returns>A 1*n or n*1 Matrix containing the mean square of each element along the
+        /// processed dimension.</returns>
+        public static Matrix MeanSquare(Matrix m)
+        {
+            return MeanSquare(m, MatrixDimensions.Auto);
         }
         private static double GetMeanSquare(Matrix m)
         {
@@ -1936,9 +2003,21 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <param name="dimension">The dimension (row or column) to process.</param>
         /// <returns>A 1*n or n*1 Matrix containing the maximum of each element along the
         /// processed dimension.</returns>
-        public static Matrix Max(Matrix m, MatrixDimensions dimension = MatrixDimensions.Auto)
+        public static Matrix Max(Matrix m, MatrixDimensions dimension)
         {
             return StatisticalReduce(m, dimension, (x) => x.data.Max());
+        }
+
+        /// <summary>
+        /// Get the maximum value of all elements in an automatically determined dimension
+        /// of a given Matrix.
+        /// </summary>
+        /// <param name="m">The Matrix to find the maximum value from.</param>
+        /// <returns>A 1*n or n*1 Matrix containing the maximum of each element along the
+        /// processed dimension.</returns>
+        public static Matrix Max(Matrix m)
+        {
+            return Max(m, MatrixDimensions.Auto);
         }
 
         /// <summary>
@@ -1948,9 +2027,22 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <param name="dimension">The dimension (row or column) to process.</param>
         /// <returns>A 1*n or n*1 Matrix containing the minimum of each element along the
         /// processed dimension.</returns>
-        public static Matrix Min(Matrix m, MatrixDimensions dimension = MatrixDimensions.Auto)
+        public static Matrix Min(Matrix m, MatrixDimensions dimension)
         {
             return StatisticalReduce(m, dimension, (x) => x.data.Min());
+        }
+
+        /// <summary>
+        /// Get the minimum value of all elements in an automatically determined dimension
+        /// of a given Matrix.
+        /// </summary>
+        /// <param name="m">The Matrix to find the minimum value from.</param>
+        /// <param name="dimension">The dimension (row or column) to process.</param>
+        /// <returns>A 1*n or n*1 Matrix containing the minimum of each element along the
+        /// processed dimension.</returns>
+        public static Matrix Min(Matrix m)
+        {
+            return Min(m, MatrixDimensions.Auto);
         }
 
         /// <summary>
