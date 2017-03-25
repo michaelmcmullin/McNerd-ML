@@ -100,7 +100,7 @@ namespace ConsoleTester
         {
             int m = X.Rows;
             int n = X.Columns;
-            X = Matrix.Join(Matrix.Ones(m, 1), X, MatrixDimensions.Columns);
+            X = Matrix.Join(Matrix.Ones(m, 1), X, MatrixDimension.Columns);
             int numberOfLabels = labels.Length;
 
             Matrix all_theta = new Matrix(numberOfLabels, n + 1);

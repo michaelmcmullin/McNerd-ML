@@ -129,8 +129,8 @@ namespace ConsoleTester
             Matrix Delta1 = d2.Transpose * a1;
             Matrix Delta2 = d3.Transpose * a2;
 
-            Theta1 = Matrix.Join(new Matrix(t0.Rows, 1), t0, MatrixDimensions.Columns);
-            Theta2 = Matrix.Join(new Matrix(t1.Rows, 1), t1, MatrixDimensions.Columns);
+            Theta1 = Matrix.Join(new Matrix(t0.Rows, 1), t0, MatrixDimension.Columns);
+            Theta2 = Matrix.Join(new Matrix(t1.Rows, 1), t1, MatrixDimension.Columns);
 
             double scale_value = lambda / X.Rows;
             Matrix Theta1_scaled = Theta1 * scale_value;
@@ -139,7 +139,7 @@ namespace ConsoleTester
             Matrix Theta1_grad = ( (Delta1 / X.Rows) + Theta1_scaled ).Unrolled;
             Matrix Theta2_grad = ( (Delta2 / X.Rows) + Theta2_scaled ).Unrolled;
 
-            return new Tuple<double, Matrix>(costFunction, Matrix.Join(Theta1_grad, Theta2_grad, MatrixDimensions.Rows));
+            return new Tuple<double, Matrix>(costFunction, Matrix.Join(Theta1_grad, Theta2_grad, MatrixDimension.Rows));
         }
 
         /// <summary>
@@ -201,7 +201,7 @@ namespace ConsoleTester
             Matrix initial_Theta1 = RandInitializeWeights(input_layer_size, hidden_layer_size);
             Matrix initial_Theta2 = RandInitializeWeights(hidden_layer_size, num_labels);
 
-            Matrix initial_nn_params = Matrix.Join(initial_Theta1.Unrolled, initial_Theta2.Unrolled, MatrixDimensions.Rows);
+            Matrix initial_nn_params = Matrix.Join(initial_Theta1.Unrolled, initial_Theta2.Unrolled, MatrixDimension.Rows);
 
             MinimizeOptions options = new MinimizeOptions();
             options.InputLayerSize = input_layer_size;

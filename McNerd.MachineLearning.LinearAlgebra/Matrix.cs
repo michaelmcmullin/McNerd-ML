@@ -12,7 +12,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
     /// <summary>
     /// Describe which dimension of a Matrix to work with.
     /// </summary>
-    public enum MatrixDimensions { Auto, Rows, Columns }
+    public enum MatrixDimension { Auto, Rows, Columns }
 
     public class Matrix : IEnumerable
     {
@@ -21,26 +21,26 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// General purpose delegate for processing a number and giving
         /// a result.
         /// </summary>
-        /// <param name="a">The number to process.</param>
+        /// <param name="number">The number to process.</param>
         /// <returns>The result of performing an operation on the number.</returns>
-        protected delegate double ProcessNumber(double a);
+        protected delegate double ProcessNumber(double number);
 
         /// <summary>
         /// General purpose delegate for processing two numbers and giving
         /// a result.
         /// </summary>
-        /// <param name="a">The first number to process.</param>
-        /// <param name="b">The second number to process.</param>
+        /// <param name="number1">The first number to process.</param>
+        /// <param name="number2">The second number to process.</param>
         /// <returns>The result of performing an operation on both inputs.</returns>
-        protected delegate double ProcessNumbers(double a, double b);
+        protected delegate double ProcessNumbers(double number1, double number2);
 
         /// <summary>
         /// General purpose delegate for processing a Matrix and giving
         /// a result.
         /// </summary>
-        /// <param name="a">The Matrix to process.</param>
+        /// <param name="matrix">The Matrix to process.</param>
         /// <returns>The result of performing an operation on the Matrix.</returns>
-        protected delegate double ProcessMatrix(Matrix a);
+        protected delegate double ProcessMatrix(Matrix matrix);
 
         #endregion
 
@@ -95,17 +95,30 @@ namespace McNerd.MachineLearning.LinearAlgebra
             }
         }
 
-        public Matrix(Matrix matrix) : this(matrix.Rows, matrix.Columns)
+        /// <summary>
+        /// Constructor to create a Matrix from another Matrix. Effectively, make a copy
+        /// of a Matrix.
+        /// </summary>
+        /// <param name="matrix">The Matrix to copy.</param>
+        public Matrix(Matrix matrix)
         {
+            if (matrix == null) throw new ArgumentNullException("matrix", "Cannot create a Matrix from a null Matrix");
+
+            InitializeMatrix(matrix.Rows, matrix.Columns);
             for (int i = 0; i < data.Length; i++)
                 data[i] = matrix.data[i];
         }
 
-        protected void InitializeMatrix(int rows, int columns)
+        /// <summary>
+        /// Given the dimensions of a Matrix, initialize the data array.
+        /// </summary>
+        /// <param name="rowCount">The number of rows required in this Matrix.</param>
+        /// <param name="columnCount">The number of columns required in this Matrix.</param>
+        protected void InitializeMatrix(int rowCount, int columnCount)
         {
-            this.rows = rows;
-            this.columns = columns;
-            data = new double[rows * columns];
+            this.rows = rowCount;
+            this.columns = columnCount;
+            data = new double[rowCount * columnCount];
         }
         #endregion
 
@@ -333,8 +346,13 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <returns>The result of adding the two matrices together.</returns>
         /// <exception cref="InvalidMatrixDimensionsException">Thrown when both matrices have
         /// different dimensions.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when one or more of the matrices
+        /// are null.</exception>
         public static Matrix operator +(Matrix matrix1, Matrix matrix2)
         {
+            if (matrix1 == null) throw new ArgumentNullException("matrix1", "Cannot add if matrix1 is null.");
+            if (matrix2 == null) throw new ArgumentNullException("matrix2", "Cannot add if matrix2 is null.");
+
             if (matrix1.HasSameDimensions(matrix2))
             {
                 Matrix output = new Matrix(matrix1.rows, matrix1.columns);
@@ -351,17 +369,36 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
 
         /// <summary>
+        /// Add two matrices together.
+        /// </summary>
+        /// <param name="matrix1">The first Matrix to add.</param>
+        /// <param name="matrix2">The second Matrix to add.</param>
+        /// <returns>The result of adding the two matrices together.</returns>
+        /// <exception cref="InvalidMatrixDimensionsException">Thrown when both matrices have
+        /// different dimensions.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when one or more of the matrices
+        /// are null.</exception>
+        public static Matrix Add(Matrix matrix1, Matrix matrix2)
+        {
+            return matrix1 + matrix2;
+        }
+
+        /// <summary>
         /// Add a number to each element in a Matrix.
         /// </summary>
         /// <param name="number">The number to add to each element in a Matrix.</param>
-        /// <param name="m">The Matrix to add numbers to.</param>
+        /// <param name="matrix">The Matrix to add numbers to.</param>
         /// <returns>The result of adding the number to each element in a Matrix.</returns>
-        public static Matrix operator +(double scalar, Matrix m)
+        /// <exception cref="ArgumentNullException">Thrown when the matrix is null.</exception>
+
+        public static Matrix operator +(double scalar, Matrix matrix)
         {
-            Matrix output = new Matrix(m.rows, m.columns);
-            for (int i = 0; i < m.data.Length; i++)
+            if (matrix == null) throw new ArgumentNullException("matrix", "Cannot add if matrix is null.");
+
+            Matrix output = new Matrix(matrix.rows, matrix.columns);
+            for (int i = 0; i < matrix.data.Length; i++)
             {
-                output.data[i] = scalar + m.data[i];
+                output.data[i] = scalar + matrix.data[i];
             }
             return output;
         }
@@ -374,6 +411,8 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <returns>The result of adding the number to each element in a Matrix.</returns>
         public static Matrix operator +(Matrix matrix, double scalar)
         {
+            if (matrix == null) throw new ArgumentNullException("matrix", "Cannot add if matrix is null.");
+
             return scalar + matrix;
         }
 
@@ -384,12 +423,24 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <returns>The result of negating every element in the given Matrix.</returns>
         public static Matrix operator -(Matrix matrix)
         {
+            if (matrix == null) throw new ArgumentNullException("matrix", "Cannot negate if matrix is null.");
+
             Matrix output = new Matrix(matrix.rows, matrix.columns);
             for (int i = 0; i < matrix.data.Length; i++)
             {
                 output.data[i] = -matrix.data[i];
             }
             return output;
+        }
+
+        /// <summary>
+        /// Unary negative operator.
+        /// </summary>
+        /// <param name="matrix">The Matrix to negate.</param>
+        /// <returns>The result of negating every element in the given Matrix.</returns>
+        public static Matrix Negate(Matrix matrix)
+        {
+            return -matrix;
         }
 
         /// <summary>
@@ -400,8 +451,13 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <returns>The result of subtracting the second Matrix from the first.</returns>
         /// <exception cref="InvalidMatrixDimensionsException">Thrown when both matrices have
         /// different dimensions.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when one or more of the matrices
+        /// are null.</exception>
         public static Matrix operator -(Matrix matrix1, Matrix matrix2)
         {
+            if (matrix1 == null) throw new ArgumentNullException("matrix1", "Cannot subtract if matrix1 is null.");
+            if (matrix2 == null) throw new ArgumentNullException("matrix2", "Cannot subtract if matrix2 is null.");
+
             if (matrix1.HasSameDimensions(matrix2))
             {
                 Matrix output = new Matrix(matrix1.rows, matrix1.columns);
@@ -418,19 +474,47 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
 
         /// <summary>
+        /// Subtract one Matrix from another.
+        /// </summary>
+        /// <param name="matrix1">The first Matrix to subtract from.</param>
+        /// <param name="matrix2">The second Matrix to subtract from the first.</param>
+        /// <returns>The result of subtracting the second Matrix from the first.</returns>
+        /// <exception cref="InvalidMatrixDimensionsException">Thrown when both matrices have
+        /// different dimensions.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when one or more of the matrices
+        /// are null.</exception>
+        public static Matrix Subtract(Matrix matrix1, Matrix matrix2)
+        {
+            return matrix1 - matrix2;
+        }
+
+        /// <summary>
         /// Subtract each element in a Matrix from a number.
         /// </summary>
         /// <param name="number">The number to subtract each element in a Matrix from.</param>
-        /// <param name="m">The Matrix to subtract from the number.</param>
+        /// <param name="matrix">The Matrix to subtract from the number.</param>
         /// <returns>The result of subracting each element from a given number.</returns>
-        public static Matrix operator -(double scalar, Matrix m)
+        public static Matrix operator -(double scalar, Matrix matrix)
         {
-            Matrix output = new Matrix(m.rows, m.columns);
-            for (int i = 0; i < m.data.Length; i++)
+            if (matrix == null) throw new ArgumentNullException("matrix", "Cannot subtract if matrix is null.");
+
+            Matrix output = new Matrix(matrix.rows, matrix.columns);
+            for (int i = 0; i < matrix.data.Length; i++)
             {
-                output.data[i] = scalar - m.data[i];
+                output.data[i] = scalar - matrix.data[i];
             }
             return output;
+        }
+
+        /// <summary>
+        /// Subtract each element in a Matrix from a number.
+        /// </summary>
+        /// <param name="number">The number to subtract each element in a Matrix from.</param>
+        /// <param name="matrix">The Matrix to subtract from the number.</param>
+        /// <returns>The result of subracting each element from a given number.</returns>
+        public static Matrix Subtract(double scalar, Matrix matrix)
+        {
+            return scalar - matrix;
         }
 
         /// <summary>
@@ -441,6 +525,8 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <returns>The result of subracting a number from each element in a given Matrix.</returns>
         public static Matrix operator -(Matrix matrix, double scalar)
         {
+            if (matrix == null) throw new ArgumentNullException("matrix", "Cannot subtract if matrix is null.");
+
             Matrix output = new Matrix(matrix.rows, matrix.columns);
             for (int i = 0; i < matrix.data.Length; i++)
             {
@@ -449,6 +535,16 @@ namespace McNerd.MachineLearning.LinearAlgebra
             return output;
         }
 
+        /// <summary>
+        /// Subtract a number from each element in a Matrix.
+        /// </summary>
+        /// <param name="number">The number to subtract from each element in a Matrix.</param>
+        /// <param name="matrix">The Matrix to subtract the number from.</param>
+        /// <returns>The result of subracting a number from each element in a given Matrix.</returns>
+        public static Matrix Subtract(Matrix matrix, double scalar)
+        {
+            return matrix - scalar;
+        }
 
         /// <summary>
         /// Multiply two matrices together.
@@ -460,6 +556,9 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// first Matrix don't match the number of rows in the second Matrix.</exception>
         public static Matrix operator *(Matrix matrix1, Matrix matrix2)
         {
+            if (matrix1 == null) throw new ArgumentNullException("matrix1", "Cannot multiply if matrix1 is null.");
+            if (matrix2 == null) throw new ArgumentNullException("matrix2", "Cannot multiply if matrix2 is null.");
+
             if (matrix1.columns == matrix2.rows)
             {
                 Matrix output = new Matrix(matrix1.rows, matrix2.columns);
@@ -473,19 +572,45 @@ namespace McNerd.MachineLearning.LinearAlgebra
         }
 
         /// <summary>
+        /// Multiply two matrices together.
+        /// </summary>
+        /// <param name="matrix1">An nxm dimension Matrix.</param>
+        /// <param name="matrix2">An mxp dimension Matrix.</param>
+        /// <returns>An nxp Matrix that is the product of matrix1 and matrix2.</returns>
+        /// <exception cref="InvalidMatrixDimensionsException">Thrown when the number of columns in the
+        /// first Matrix don't match the number of rows in the second Matrix.</exception>
+        public static Matrix Multiply(Matrix matrix1, Matrix matrix2)
+        {
+            return matrix1 * matrix2;
+        }
+
+        /// <summary>
         /// Scalar multiplication of a Matrix.
         /// </summary>
         /// <param name="scalar">The scalar value to multiply each element of the Matrix by.</param>
-        /// <param name="m">The Matrix to apply multiplication to.</param>
+        /// <param name="matrix">The Matrix to apply multiplication to.</param>
         /// <returns>A Matrix representing the scalar multiplication of scalar * m.</returns>
-        public static Matrix operator *(double scalar, Matrix m)
+        public static Matrix operator *(double scalar, Matrix matrix)
         {
-            Matrix output = new Matrix(m.rows, m.columns);
+            if (matrix == null) throw new ArgumentNullException("matrix", "Cannot multiply if matrix is null.");
+
+            Matrix output = new Matrix(matrix.rows, matrix.columns);
             //for (int i = 0; i < m.data.Length; i++)
             //    output.data[i] = m.data[i] * scalar;
             //Parallel.For(0, m.data.Length, i => { output.data[i] = scalar * m.data[i]; });
-            Parallel.For(0, m.rows, i => MultiplyRow(i, m, scalar, ref output));
+            Parallel.For(0, matrix.rows, i => MultiplyRow(i, matrix, scalar, ref output));
             return output;
+        }
+
+        /// <summary>
+        /// Scalar multiplication of a Matrix.
+        /// </summary>
+        /// <param name="scalar">The scalar value to multiply each element of the Matrix by.</param>
+        /// <param name="matrix">The Matrix to apply multiplication to.</param>
+        /// <returns>A Matrix representing the scalar multiplication of scalar * m.</returns>
+        public static Matrix Multiply(double scalar, Matrix matrix)
+        {
+            return scalar * matrix;
         }
 
         /// <summary>
@@ -496,8 +621,21 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <returns>A Matrix representing the scalar multiplication of m * scalar.</returns>
         public static Matrix operator *(Matrix matrix, double scalar)
         {
+            if (matrix == null) throw new ArgumentNullException("matrix", "Cannot multiply if matrix is null.");
+
             // Same as above, but ensuring commutativity - i.e. (s * m) == (m * s).
             return scalar * matrix;
+        }
+
+        /// <summary>
+        /// Scalar multiplication of a Matrix.
+        /// </summary>
+        /// <param name="matrix">The Matrix to apply multiplication to.</param>
+        /// <param name="scalar">The scalar value to multiply each element of the Matrix by.</param>
+        /// <returns>A Matrix representing the scalar multiplication of m * scalar.</returns>
+        public static Matrix Multiply(Matrix matrix, double scalar)
+        {
+            return matrix * scalar;
         }
 
         /// <summary>
@@ -508,9 +646,22 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <returns>A Matrix representing the scalar division of scalar / m.</returns>
         public static Matrix operator /(double scalar, Matrix matrix)
         {
+            if (matrix == null) throw new ArgumentNullException("matrix", "Cannot divide if matrix is null.");
+
             Matrix output = new Matrix(matrix.rows, matrix.columns);
             Parallel.For(0, matrix.rows, i => DivideScalarByRow(i, matrix, scalar, ref output));
             return output;
+        }
+
+        /// <summary>
+        /// Scalar division of a Matrix.
+        /// </summary>
+        /// <param name="scalar">The scalar value to divide each element of the Matrix by.</param>
+        /// <param name="matrix">The Matrix to apply division to.</param>
+        /// <returns>A Matrix representing the scalar division of scalar / m.</returns>
+        public static Matrix Divide(double scalar, Matrix matrix)
+        {
+            return scalar / matrix;
         }
 
         /// <summary>
@@ -521,9 +672,22 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <returns>A Matrix representing the scalar division of m / scalar.</returns>
         public static Matrix operator /(Matrix matrix, double scalar)
         {
+            if (matrix == null) throw new ArgumentNullException("matrix", "Cannot divide if matrix is null.");
+
             Matrix output = new Matrix(matrix.rows, matrix.columns);
             Parallel.For(0, matrix.rows, i => DivideRow(i, matrix, scalar, ref output));
             return output;
+        }
+
+        /// <summary>
+        /// Scalar division of a Matrix.
+        /// </summary>
+        /// <param name="matrix">The Matrix to apply division to.</param>
+        /// <param name="scalar">The scalar value to division each element of the Matrix by.</param>
+        /// <returns>A Matrix representing the scalar division of m / scalar.</returns>
+        public static Matrix Divide(Matrix matrix, double scalar)
+        {
+            return matrix / scalar;
         }
 
         /// <summary>
@@ -534,6 +698,11 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <returns>True if the values of both matrices match.</returns>
         public static bool operator ==(Matrix matrix1, Matrix matrix2)
         {
+            if (matrix1 == null)
+            {
+                return matrix2 == null;
+            }
+
             return matrix1.Equals(matrix2);
         }
 
@@ -558,6 +727,8 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// comparison.</returns>
         public static Matrix operator ==(Matrix matrix, double scalar)
         {
+            if (matrix == null) return null;
+
             Matrix output = new Matrix(matrix.rows, matrix.columns);
             Parallel.For(0, matrix.rows, i => EqualToRow(i, matrix, scalar, ref output));
             return output;
@@ -574,6 +745,8 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// comparison.</returns>
         public static Matrix operator !=(Matrix matrix, double scalar)
         {
+            if (matrix == null) return null;
+
             Matrix output = new Matrix(matrix.rows, matrix.columns);
             Parallel.For(0, matrix.rows, i => NotEqualToRow(i, matrix, scalar, ref output));
             return output;
@@ -589,6 +762,8 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// comparison.</returns>
         public static Matrix operator <(Matrix matrix, double scalar)
         {
+            if (matrix == null) return null;
+
             Matrix output = new Matrix(matrix.rows, matrix.columns);
             Parallel.For(0, matrix.rows, i => LessThanRow(i, matrix, scalar, ref output));
             return output;
@@ -604,6 +779,8 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// comparison.</returns>
         public static Matrix operator >(Matrix matrix, double scalar)
         {
+            if (matrix == null) return null;
+
             Matrix output = new Matrix(matrix.rows, matrix.columns);
             Parallel.For(0, matrix.rows, i => GreaterThanRow(i, matrix, scalar, ref output));
             return output;
@@ -619,6 +796,8 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// comparison.</returns>
         public static Matrix operator <=(Matrix matrix, double scalar)
         {
+            if (matrix == null) return null;
+
             Matrix output = new Matrix(matrix.rows, matrix.columns);
             Parallel.For(0, matrix.rows, i => LessThanOrEqualToRow(i, matrix, scalar, ref output));
             return output;
@@ -634,6 +813,8 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// comparison.</returns>
         public static Matrix operator >=(Matrix matrix, double scalar)
         {
+            if (matrix == null) return null;
+
             Matrix output = new Matrix(matrix.rows, matrix.columns);
             Parallel.For(0, matrix.rows, i => GreaterThanOrEqualToRow(i, matrix, scalar, ref output));
             return output;
@@ -1114,12 +1295,12 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <param name="matrix2">The second Matrix to join.</param>
         /// <param name="dimension">The dimensions to join them on.</param>
         /// <returns>A new Matrix containing both the original Matrices joined together.</returns>
-        public static Matrix Join(Matrix matrix1, Matrix matrix2, MatrixDimensions dimension)
+        public static Matrix Join(Matrix matrix1, Matrix matrix2, MatrixDimension dimension)
         {
             Matrix result = null;
             switch (dimension)
             {
-                case MatrixDimensions.Columns:
+                case MatrixDimension.Columns:
                     if (matrix1.Rows != matrix2.Rows)
                         throw new InvalidMatrixDimensionsException("Matrices cannot be joined as they don't have the same number of rows.");
                     result = new Matrix(matrix1.Rows, matrix1.Columns + matrix2.Columns);
@@ -1136,7 +1317,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
                         }
                     }
                     break;
-                case MatrixDimensions.Rows:
+                case MatrixDimension.Rows:
                     if (matrix1.Columns != matrix2.Columns)
                         throw new InvalidMatrixDimensionsException("Matrices cannot be joined as they don't have the same number of columns.");
                     result = new Matrix(matrix1.Rows + matrix2.Rows, matrix1.Columns);
@@ -1149,11 +1330,11 @@ namespace McNerd.MachineLearning.LinearAlgebra
                         result.data[i + matrix1.data.Length] = matrix2.data[i];
                     }
                     break;
-                case MatrixDimensions.Auto:
+                case MatrixDimension.Auto:
                     if (matrix1.Rows == matrix2.Rows)
-                        goto case MatrixDimensions.Columns;
+                        goto case MatrixDimension.Columns;
                     else
-                        goto case MatrixDimensions.Rows;
+                        goto case MatrixDimension.Rows;
                 default:
                     break;
             }
@@ -1168,7 +1349,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <returns>A new Matrix containing both the original Matrices joined together.</returns>
         public static Matrix Join(Matrix matrix1, Matrix matrix2)
         {
-            return Join(matrix1, matrix2, MatrixDimensions.Auto);
+            return Join(matrix1, matrix2, MatrixDimension.Auto);
         }
 
         /// <summary>
@@ -1543,10 +1724,10 @@ namespace McNerd.MachineLearning.LinearAlgebra
             swap = D[middle, middle]; D[middle, middle] = A[middle, middle]; A[middle, middle] = swap;
 
 
-            Matrix row1 = Matrix.Join(A, C, MatrixDimensions.Columns);
-            Matrix row2 = Matrix.Join(D, B, MatrixDimensions.Columns);
+            Matrix row1 = Matrix.Join(A, C, MatrixDimension.Columns);
+            Matrix row2 = Matrix.Join(D, B, MatrixDimension.Columns);
 
-            Matrix output = Matrix.Join(row1, row2, MatrixDimensions.Rows);
+            Matrix output = Matrix.Join(row1, row2, MatrixDimension.Rows);
 
 
             return output;
@@ -1829,14 +2010,14 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// will be returned, regardless of which dimension is chosen. If the dimension is
         /// set to 'Auto', then the first non-singleton dimension is chosen. If no singleton
         /// dimension exists, then columns are used as the default.</remarks>
-        protected static Matrix ReduceDimension(Matrix matrix, MatrixDimensions dimension, ProcessNumbers operation)
+        protected static Matrix ReduceDimension(Matrix matrix, MatrixDimension dimension, ProcessNumbers operation)
         {
             Matrix result = null;
 
             // Process calculations
             switch (dimension)
             {
-                case MatrixDimensions.Auto:
+                case MatrixDimension.Auto:
                     // Inspired by Octave, 'Auto' will process the first non-singleton dimension.
                     if (matrix.Rows == 1 || matrix.Columns == 1)
                     {
@@ -1848,15 +2029,15 @@ namespace McNerd.MachineLearning.LinearAlgebra
                     else
                     {
                         // No singleton case? Let's go with columns.
-                        goto case MatrixDimensions.Columns; // goto?? Haven't used one in years, and it feels good!!!!
+                        goto case MatrixDimension.Columns; // goto?? Haven't used one in years, and it feels good!!!!
                     }
-                case MatrixDimensions.Columns:
+                case MatrixDimension.Columns:
                     result = new Matrix(1, matrix.Columns);
                     for (int i = 0; i < matrix.data.Length; i += matrix.Columns)
                         for (int j = 0; j < matrix.Columns; j++)
                             result.data[j] = operation(result.data[j], matrix.data[i + j]);
                     break;
-                case MatrixDimensions.Rows:
+                case MatrixDimension.Rows:
                     result = new Matrix(matrix.Rows, 1);
                     int index = 0;
                     for (int i = 0; i < matrix.Rows; i++)
@@ -1878,7 +2059,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <param name="dimension">The dimension (row or column) to process.</param>
         /// <returns>A 1*n or n*1 Matrix containing the sum of each element along the
         /// processed dimension.</returns>
-        public static Matrix Sum(Matrix matrix, MatrixDimensions dimension)
+        public static Matrix Sum(Matrix matrix, MatrixDimension dimension)
         {
             return ReduceDimension(matrix, dimension, (x, y) => x + y);
         }
@@ -1891,7 +2072,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// processed dimension.</returns>
         public static Matrix Sum(Matrix matrix)
         {
-            return Sum(matrix, MatrixDimensions.Auto);
+            return Sum(matrix, MatrixDimension.Auto);
         }
         #endregion
 
@@ -1906,13 +2087,13 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// will be returned, regardless of which dimension is chosen. If the dimension is
         /// set to 'Auto', then the first non-singleton dimension is chosen. If no singleton
         /// dimension exists, then columns are used as the default.</remarks>
-        protected static Matrix StatisticalReduce(Matrix matrix, MatrixDimensions dimension, ProcessMatrix operation)
+        protected static Matrix StatisticalReduce(Matrix matrix, MatrixDimension dimension, ProcessMatrix operation)
         {
             Matrix result = null;
 
             switch (dimension)
             {
-                case MatrixDimensions.Auto:
+                case MatrixDimension.Auto:
                     if (matrix.Rows == 1)
                     {
                         result = new Matrix(1, 1);
@@ -1928,14 +2109,14 @@ namespace McNerd.MachineLearning.LinearAlgebra
                     else
                     {
                         // No singleton case? Let's go with columns.
-                        goto case MatrixDimensions.Columns;
+                        goto case MatrixDimension.Columns;
                     }
-                case MatrixDimensions.Columns:
+                case MatrixDimension.Columns:
                     result = new Matrix(1, matrix.Columns);
                     for (int i = 0; i < matrix.Columns; i++)
                         result.data[i] = operation(matrix.GetColumn(i));
                     break;
-                case MatrixDimensions.Rows:
+                case MatrixDimension.Rows:
                     result = new Matrix(matrix.Rows, 1);
                     for (int i = 0; i < matrix.Rows; i++)
                         result.data[i] = operation(matrix.GetRow(i));
@@ -1955,7 +2136,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <param name="dimension">The dimension (row or column) to process.</param>
         /// <returns>A 1*n or n*1 Matrix containing the mean of each element along the
         /// processed dimension.</returns>
-        public static Matrix Mean(Matrix matrix, MatrixDimensions dimension)
+        public static Matrix Mean(Matrix matrix, MatrixDimension dimension)
         {
             return StatisticalReduce(matrix, dimension, (x) => x.data.Average());
         }
@@ -1969,7 +2150,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// processed dimension.</returns>
         public static Matrix Mean(Matrix matrix)
         {
-            return Mean(matrix, MatrixDimensions.Auto);
+            return Mean(matrix, MatrixDimension.Auto);
         }
 
         /// <summary>
@@ -1979,7 +2160,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <param name="dimension">The dimension (row or column) to process.</param>
         /// <returns>A 1*n or n*1 Matrix containing the mean square of each element along the
         /// processed dimension.</returns>
-        public static Matrix MeanSquare(Matrix matrix, MatrixDimensions dimension)
+        public static Matrix MeanSquare(Matrix matrix, MatrixDimension dimension)
         {
             return StatisticalReduce(matrix, dimension, GetMeanSquare);
         }
@@ -1993,7 +2174,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// processed dimension.</returns>
         public static Matrix MeanSquare(Matrix matrix)
         {
-            return MeanSquare(matrix, MatrixDimensions.Auto);
+            return MeanSquare(matrix, MatrixDimension.Auto);
         }
         private static double GetMeanSquare(Matrix matrix)
         {
@@ -2013,7 +2194,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <param name="dimension">The dimension (row or column) to process.</param>
         /// <returns>A 1*n or n*1 Matrix containing the maximum of each element along the
         /// processed dimension.</returns>
-        public static Matrix Max(Matrix matrix, MatrixDimensions dimension)
+        public static Matrix Max(Matrix matrix, MatrixDimension dimension)
         {
             return StatisticalReduce(matrix, dimension, (x) => x.data.Max());
         }
@@ -2027,7 +2208,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// processed dimension.</returns>
         public static Matrix Max(Matrix matrix)
         {
-            return Max(matrix, MatrixDimensions.Auto);
+            return Max(matrix, MatrixDimension.Auto);
         }
 
         /// <summary>
@@ -2037,7 +2218,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <param name="dimension">The dimension (row or column) to process.</param>
         /// <returns>A 1*n or n*1 Matrix containing the minimum of each element along the
         /// processed dimension.</returns>
-        public static Matrix Min(Matrix matrix, MatrixDimensions dimension)
+        public static Matrix Min(Matrix matrix, MatrixDimension dimension)
         {
             return StatisticalReduce(matrix, dimension, (x) => x.data.Min());
         }
@@ -2052,7 +2233,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// processed dimension.</returns>
         public static Matrix Min(Matrix matrix)
         {
-            return Min(matrix, MatrixDimensions.Auto);
+            return Min(matrix, MatrixDimension.Auto);
         }
 
         /// <summary>
@@ -2062,7 +2243,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <param name="dimension">The dimension (row or column) to process.</param>
         /// <returns>A 1*n or n*1 Matrix containing the maximum index of each element along the
         /// processed dimension.</returns>
-        public static Matrix MaxIndex(Matrix matrix, MatrixDimensions dimension)
+        public static Matrix MaxIndex(Matrix matrix, MatrixDimension dimension)
         {
             return StatisticalReduce(matrix, dimension, (x) => GetMaxIndex(x));
         }
@@ -2075,7 +2256,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// processed dimension.</returns>
         public static Matrix MaxIndex(Matrix matrix)
         {
-            return MaxIndex(matrix, MatrixDimensions.Auto);
+            return MaxIndex(matrix, MatrixDimension.Auto);
         }
         private static int GetMaxIndex(Matrix matrix)
         {
@@ -2099,7 +2280,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <param name="dimension">The dimension (row or column) to process.</param>
         /// <returns>A 1*n or n*1 Matrix containing the minimum index of each element along the
         /// processed dimension.</returns>
-        public static Matrix MinIndex(Matrix matrix, MatrixDimensions dimension)
+        public static Matrix MinIndex(Matrix matrix, MatrixDimension dimension)
         {
             return StatisticalReduce(matrix, dimension, (x) => GetMinIndex(x));
         }
@@ -2112,7 +2293,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// processed dimension.</returns>
         public static Matrix MinIndex(Matrix matrix)
         {
-            return MinIndex(matrix, MatrixDimensions.Auto);
+            return MinIndex(matrix, MatrixDimension.Auto);
         }
         private static int GetMinIndex(Matrix matrix)
         {
@@ -2136,7 +2317,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <param name="dimension">The dimension (row or column) to process.</param>
         /// <returns>A 1*n or n*1 Matrix containing the range of each element along the
         /// processed dimension.</returns>
-        public static Matrix Range(Matrix matrix, MatrixDimensions dimension)
+        public static Matrix Range(Matrix matrix, MatrixDimension dimension)
         {
             return StatisticalReduce(matrix, dimension, (x) => x.data.Max() - x.data.Min());
         }
@@ -2150,7 +2331,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// processed dimension.</returns>
         public static Matrix Range(Matrix matrix)
         {
-            return Range(matrix, MatrixDimensions.Auto);
+            return Range(matrix, MatrixDimension.Auto);
         }
 
         /// <summary>
@@ -2160,7 +2341,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <param name="dimension">The dimension (row or column) to process.</param>
         /// <returns>A 1*n or n*1 Matrix containing the interquartile range of each element along the
         /// processed dimension.</returns>
-        public static Matrix IQR(Matrix matrix, MatrixDimensions dimension)
+        public static Matrix IQR(Matrix matrix, MatrixDimension dimension)
         {
             return StatisticalReduce(matrix, dimension, (x) => GetQuartile3(x) - GetQuartile1(x) );
         }
@@ -2174,7 +2355,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// processed dimension.</returns>
         public static Matrix IQR(Matrix matrix)
         {
-            return IQR(matrix, MatrixDimensions.Auto);
+            return IQR(matrix, MatrixDimension.Auto);
         }
 
         /// <summary>
@@ -2184,7 +2365,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <param name="dimension">The dimension (row or column) to process.</param>
         /// <returns>A 1*n or n*1 Matrix containing the median of each element along the
         /// processed dimension.</returns>
-        public static Matrix Median(Matrix matrix, MatrixDimensions dimension)
+        public static Matrix Median(Matrix matrix, MatrixDimension dimension)
         {
             return StatisticalReduce(matrix, dimension, GetMedian);
         }
@@ -2198,7 +2379,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// processed dimension.</returns>
         public static Matrix Median(Matrix matrix)
         {
-            return Median(matrix, MatrixDimensions.Auto);
+            return Median(matrix, MatrixDimension.Auto);
         }
         private static double GetMedian(Matrix vector)
         {
@@ -2222,7 +2403,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <param name="dimension">The dimension (row or column) to process.</param>
         /// <returns>A 1*n or n*1 Matrix containing the first quartile of each element along the
         /// processed dimension.</returns>
-        public static Matrix Quartile1(Matrix matrix, MatrixDimensions dimension)
+        public static Matrix Quartile1(Matrix matrix, MatrixDimension dimension)
         {
             return StatisticalReduce(matrix, dimension, GetQuartile1);
         }
@@ -2236,7 +2417,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// processed dimension.</returns>
         public static Matrix Quartile1(Matrix matrix)
         {
-            return Quartile1(matrix, MatrixDimensions.Auto);
+            return Quartile1(matrix, MatrixDimension.Auto);
         }
         private static double GetQuartile1(Matrix vector)
         {
@@ -2277,7 +2458,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <param name="dimension">The dimension (row or column) to process.</param>
         /// <returns>A 1*n or n*1 Matrix containing the third quartile of each element along the
         /// processed dimension.</returns>
-        public static Matrix Quartile3(Matrix matrix, MatrixDimensions dimension)
+        public static Matrix Quartile3(Matrix matrix, MatrixDimension dimension)
         {
             return StatisticalReduce(matrix, dimension, GetQuartile3);
         }
@@ -2291,7 +2472,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// processed dimension.</returns>
         public static Matrix Quartile3(Matrix matrix)
         {
-            return Quartile3(matrix, MatrixDimensions.Auto);
+            return Quartile3(matrix, MatrixDimension.Auto);
         }
         private static double GetQuartile3(Matrix vector)
         {
@@ -2334,7 +2515,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <param name="dimension">The dimension (row or column) to process.</param>
         /// <returns>A 1*n or n*1 Matrix containing the mode of each element along the
         /// processed dimension.</returns>
-        public static Matrix Mode(Matrix matrix, MatrixDimensions dimension)
+        public static Matrix Mode(Matrix matrix, MatrixDimension dimension)
         {
             return StatisticalReduce(matrix, dimension, GetMode);
         }
@@ -2348,7 +2529,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// processed dimension.</returns>
         public static Matrix Mode(Matrix matrix)
         {
-            return Mode(matrix, MatrixDimensions.Auto);
+            return Mode(matrix, MatrixDimension.Auto);
         }
         private static double GetMode(Matrix vector)
         {
@@ -2383,7 +2564,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <param name="dimension">The dimension (row or column) to process.</param>
         /// <returns>A 1*n or n*1 Matrix containing the variance of each element along the
         /// processed dimension.</returns>
-        public static Matrix Variance(Matrix matrix, MatrixDimensions dimension)
+        public static Matrix Variance(Matrix matrix, MatrixDimension dimension)
         {
             return StatisticalReduce(matrix, dimension, GetVariance);
         }
@@ -2396,7 +2577,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// processed dimension.</returns>
         public static Matrix Variance(Matrix matrix)
         {
-            return Variance(matrix, MatrixDimensions.Auto);
+            return Variance(matrix, MatrixDimension.Auto);
         }
         private static double GetVariance(Matrix vector)
         {
@@ -2419,7 +2600,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <param name="dimension">The dimension (row or column) to process.</param>
         /// <returns>A 1*n or n*1 Matrix containing the standard deviation of each element along the
         /// processed dimension.</returns>
-        public static Matrix StandardDeviation(Matrix matrix, MatrixDimensions dimension)
+        public static Matrix StandardDeviation(Matrix matrix, MatrixDimension dimension)
         {
             return StatisticalReduce(matrix, dimension, (x) => Math.Sqrt(GetVariance(x)));
         }
@@ -2433,7 +2614,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// processed dimension.</returns>
         public static Matrix StandardDeviation(Matrix matrix)
         {
-            return StandardDeviation(matrix, MatrixDimensions.Auto);
+            return StandardDeviation(matrix, MatrixDimension.Auto);
         }
 
         #endregion

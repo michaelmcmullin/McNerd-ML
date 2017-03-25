@@ -1686,7 +1686,7 @@ namespace MLTests.LinearAlgebra
                 { 15.0 }
             });
 
-            Matrix m2 = Matrix.Sum(m1, MatrixDimensions.Rows);
+            Matrix m2 = Matrix.Sum(m1, MatrixDimension.Rows);
             Assert.AreEqual(expectedResult, m2);
         }
 
@@ -1701,7 +1701,7 @@ namespace MLTests.LinearAlgebra
                 { 1.0, 2.0, 3.0 },
                 { 4.0, 5.0, 6.0 }
             });
-            Matrix m2 = Matrix.Mean(m1, MatrixDimensions.Columns);
+            Matrix m2 = Matrix.Mean(m1, MatrixDimension.Columns);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 2.5, 3.5, 4.5 }
             });
@@ -1715,7 +1715,7 @@ namespace MLTests.LinearAlgebra
                 { 1.0, 2.0, 3.0 },
                 { 4.0, 5.0, 6.0 }
             });
-            Matrix m2 = Matrix.Mean(m1, MatrixDimensions.Rows);
+            Matrix m2 = Matrix.Mean(m1, MatrixDimension.Rows);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 2.0 },
                 { 5.0 }
@@ -1760,7 +1760,7 @@ namespace MLTests.LinearAlgebra
                 { 1.0, 2.0, 3.0 },
                 { 4.0, 5.0, 6.0 }
             });
-            Matrix m2 = Matrix.MeanSquare(m1, MatrixDimensions.Columns);
+            Matrix m2 = Matrix.MeanSquare(m1, MatrixDimension.Columns);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 8.5, 14.5, 22.5 }
             });
@@ -1774,7 +1774,7 @@ namespace MLTests.LinearAlgebra
                 { 1.0, 2.0, 3.0, 4.0 },
                 { 4.0, 5.0, 6.0, 7.0 }
             });
-            Matrix m2 = Matrix.MeanSquare(m1, MatrixDimensions.Rows);
+            Matrix m2 = Matrix.MeanSquare(m1, MatrixDimension.Rows);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 7.5 },
                 { 31.5 }
@@ -1820,7 +1820,7 @@ namespace MLTests.LinearAlgebra
                 { 1.0, 5.0, 3.0 },
                 { 4.0, 2.0, 6.0 }
             });
-            Matrix m2 = Matrix.Max(m1, MatrixDimensions.Columns);
+            Matrix m2 = Matrix.Max(m1, MatrixDimension.Columns);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 4.0, 5.0, 6.0 }
             });
@@ -1834,7 +1834,7 @@ namespace MLTests.LinearAlgebra
                 { 1.0, 2.0, 3.0 },
                 { 4.0, 5.0, 6.0 }
             });
-            Matrix m2 = Matrix.Max(m1, MatrixDimensions.Rows);
+            Matrix m2 = Matrix.Max(m1, MatrixDimension.Rows);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 3.0 },
                 { 6.0 }
@@ -1879,7 +1879,7 @@ namespace MLTests.LinearAlgebra
                 { 1.0, 5.0, 3.0 },
                 { 4.0, 2.0, 6.0 }
             });
-            Matrix m2 = Matrix.Min(m1, MatrixDimensions.Columns);
+            Matrix m2 = Matrix.Min(m1, MatrixDimension.Columns);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 1.0, 2.0, 3.0 }
             });
@@ -1893,7 +1893,7 @@ namespace MLTests.LinearAlgebra
                 { 1.0, 2.0, 3.0 },
                 { 4.0, 5.0, 6.0 }
             });
-            Matrix m2 = Matrix.Min(m1, MatrixDimensions.Rows);
+            Matrix m2 = Matrix.Min(m1, MatrixDimension.Rows);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 1.0 },
                 { 4.0 }
@@ -1938,7 +1938,7 @@ namespace MLTests.LinearAlgebra
                 { 1.0, 5.0, 3.0 },
                 { 4.0, 2.0, 6.0 }
             });
-            Matrix m2 = Matrix.MaxIndex(m1, MatrixDimensions.Columns);
+            Matrix m2 = Matrix.MaxIndex(m1, MatrixDimension.Columns);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 1.0, 0.0, 1.0 }
             });
@@ -1952,7 +1952,7 @@ namespace MLTests.LinearAlgebra
                 { 1.0, 2.0, 3.0 },
                 { 4.0, 5.0, 6.0 }
             });
-            Matrix m2 = Matrix.MaxIndex(m1, MatrixDimensions.Rows);
+            Matrix m2 = Matrix.MaxIndex(m1, MatrixDimension.Rows);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 2.0 },
                 { 2.0 }
@@ -1997,7 +1997,7 @@ namespace MLTests.LinearAlgebra
                 { 1.0, 5.0, 3.0 },
                 { 4.0, 2.0, 6.0 }
             });
-            Matrix m2 = Matrix.MinIndex(m1, MatrixDimensions.Columns);
+            Matrix m2 = Matrix.MinIndex(m1, MatrixDimension.Columns);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 0.0, 1.0, 0.0 }
             });
@@ -2011,7 +2011,7 @@ namespace MLTests.LinearAlgebra
                 { 1.0, 2.0, 3.0 },
                 { 4.0, 5.0, 6.0 }
             });
-            Matrix m2 = Matrix.MinIndex(m1, MatrixDimensions.Rows);
+            Matrix m2 = Matrix.MinIndex(m1, MatrixDimension.Rows);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 0.0 },
                 { 0.0 }
@@ -2057,7 +2057,7 @@ namespace MLTests.LinearAlgebra
                 { 1.0, 5.0, 3.0 },
                 { 4.0, 2.0, 6.0 }
             });
-            Matrix m2 = Matrix.Range(m1, MatrixDimensions.Columns);
+            Matrix m2 = Matrix.Range(m1, MatrixDimension.Columns);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 3.0, 3.0, 3.0 }
             });
@@ -2071,7 +2071,7 @@ namespace MLTests.LinearAlgebra
                 { 1.0, 2.0, 3.0 },
                 { 4.0, 5.0, 6.0 }
             });
-            Matrix m2 = Matrix.Range(m1, MatrixDimensions.Rows);
+            Matrix m2 = Matrix.Range(m1, MatrixDimension.Rows);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 2.0 },
                 { 2.0 }
@@ -2116,7 +2116,7 @@ namespace MLTests.LinearAlgebra
                 { 1.0, 5.0, 3.0 },
                 { 4.0, 2.0, 6.0 }
             });
-            Matrix m2 = Matrix.Median(m1, MatrixDimensions.Columns);
+            Matrix m2 = Matrix.Median(m1, MatrixDimension.Columns);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 2.5, 3.5, 4.5 }
             });
@@ -2130,7 +2130,7 @@ namespace MLTests.LinearAlgebra
                 { 1.0, 2.0, 3.0 },
                 { 4.0, 5.0, 6.0 }
             });
-            Matrix m2 = Matrix.Median(m1, MatrixDimensions.Rows);
+            Matrix m2 = Matrix.Median(m1, MatrixDimension.Rows);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 2.0 },
                 { 5.0 }
@@ -2177,7 +2177,7 @@ namespace MLTests.LinearAlgebra
                 { 7.0, 8.0, 9.0 },
                 { 10.0, 11.0, 12.0 }
             });
-            Matrix m2 = Matrix.Quartile1(m1, MatrixDimensions.Columns);
+            Matrix m2 = Matrix.Quartile1(m1, MatrixDimension.Columns);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 2.5, 3.5, 4.5 }
             });
@@ -2195,7 +2195,7 @@ namespace MLTests.LinearAlgebra
                 { 13.0, 14.0, 15.0 },
                 { 16.0, 17.0, 18.0 }
             });
-            Matrix m2 = Matrix.Quartile1(m1, MatrixDimensions.Columns);
+            Matrix m2 = Matrix.Quartile1(m1, MatrixDimension.Columns);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 4, 5, 6 }
             });
@@ -2212,7 +2212,7 @@ namespace MLTests.LinearAlgebra
                 { 10.0, 11.0, 12.0 },
                 { 14.0, 15.0, 16.0 }
             });
-            Matrix m2 = Matrix.Quartile1(m1, MatrixDimensions.Columns);
+            Matrix m2 = Matrix.Quartile1(m1, MatrixDimension.Columns);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 3.25, 4.25, 5.25 }
             });
@@ -2225,7 +2225,7 @@ namespace MLTests.LinearAlgebra
             Matrix m1 = new Matrix(new double[,] {
                 { 1.0, 5.0, 3.0 }
             });
-            Matrix m2 = Matrix.Quartile1(m1, MatrixDimensions.Auto);
+            Matrix m2 = Matrix.Quartile1(m1, MatrixDimension.Auto);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 1.5 }
             });
@@ -2239,7 +2239,7 @@ namespace MLTests.LinearAlgebra
                 { 1.0, 5.0, 3.0 },
                 { 4.0, 2.0, 6.0 }
             });
-            Matrix m2 = Matrix.Quartile1(m1, MatrixDimensions.Columns);
+            Matrix m2 = Matrix.Quartile1(m1, MatrixDimension.Columns);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 1.0, 2.0, 3.0 }
             });
@@ -2258,7 +2258,7 @@ namespace MLTests.LinearAlgebra
                 { 7.0, 8.0, 9.0 },
                 { 10.0, 11.0, 12.0 }
             });
-            Matrix m2 = Matrix.Quartile3(m1, MatrixDimensions.Columns);
+            Matrix m2 = Matrix.Quartile3(m1, MatrixDimension.Columns);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 8.5, 9.5, 10.5 }
             });
@@ -2276,7 +2276,7 @@ namespace MLTests.LinearAlgebra
                 { 13.0, 14.0, 15.0 },
                 { 16.0, 17.0, 18.0 }
             });
-            Matrix m2 = Matrix.Quartile3(m1, MatrixDimensions.Columns);
+            Matrix m2 = Matrix.Quartile3(m1, MatrixDimension.Columns);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 13, 14, 15 }
             });
@@ -2293,7 +2293,7 @@ namespace MLTests.LinearAlgebra
                 { 10.0, 11.0, 12.0 },
                 { 14.0, 15.0, 16.0 }
             });
-            Matrix m2 = Matrix.Quartile3(m1, MatrixDimensions.Columns);
+            Matrix m2 = Matrix.Quartile3(m1, MatrixDimension.Columns);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 11, 12, 13 }
             });
@@ -2306,7 +2306,7 @@ namespace MLTests.LinearAlgebra
             Matrix m1 = new Matrix(new double[,] {
                 { 1.0, 5.0, 3.0 }
             });
-            Matrix m2 = Matrix.Quartile3(m1, MatrixDimensions.Auto);
+            Matrix m2 = Matrix.Quartile3(m1, MatrixDimension.Auto);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 4.5 }
             });
@@ -2320,7 +2320,7 @@ namespace MLTests.LinearAlgebra
                 { 1.0, 5.0, 3.0 },
                 { 4.0, 2.0, 6.0 }
             });
-            Matrix m2 = Matrix.Quartile3(m1, MatrixDimensions.Columns);
+            Matrix m2 = Matrix.Quartile3(m1, MatrixDimension.Columns);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 4.0, 5.0, 6.0 }
             });
@@ -2339,7 +2339,7 @@ namespace MLTests.LinearAlgebra
                 { 7.0, 8.0, 9.0 },
                 { 10.0, 11.0, 12.0 }
             });
-            Matrix m2 = Matrix.IQR(m1, MatrixDimensions.Columns);
+            Matrix m2 = Matrix.IQR(m1, MatrixDimension.Columns);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 6.0, 6.0, 6.0 }
             });
@@ -2357,7 +2357,7 @@ namespace MLTests.LinearAlgebra
                 { 13.0, 14.0, 15.0 },
                 { 16.0, 17.0, 18.0 }
             });
-            Matrix m2 = Matrix.IQR(m1, MatrixDimensions.Columns);
+            Matrix m2 = Matrix.IQR(m1, MatrixDimension.Columns);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 9.0, 9.0, 9.0 }
             });
@@ -2374,7 +2374,7 @@ namespace MLTests.LinearAlgebra
                 { 10.0, 11.0, 12.0 },
                 { 14.0, 15.0, 16.0 }
             });
-            Matrix m2 = Matrix.IQR(m1, MatrixDimensions.Columns);
+            Matrix m2 = Matrix.IQR(m1, MatrixDimension.Columns);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 6.0, 6.0, 6.0 }
             });
@@ -2387,7 +2387,7 @@ namespace MLTests.LinearAlgebra
             Matrix m1 = new Matrix(new double[,] {
                 { 1.0, 5.0, 3.0 }
             });
-            Matrix m2 = Matrix.IQR(m1, MatrixDimensions.Auto);
+            Matrix m2 = Matrix.IQR(m1, MatrixDimension.Auto);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 4.0 }
             });
@@ -2401,7 +2401,7 @@ namespace MLTests.LinearAlgebra
                 { 1.0, 5.0, 3.0 },
                 { 4.0, 2.0, 6.0 }
             });
-            Matrix m2 = Matrix.IQR(m1, MatrixDimensions.Columns);
+            Matrix m2 = Matrix.IQR(m1, MatrixDimension.Columns);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 3.0, 3.0, 3.0 }
             });
@@ -2419,7 +2419,7 @@ namespace MLTests.LinearAlgebra
                 { 1.0, 2.0, 3.0 },
                 { 4.0, 2.0, 6.0 }
             });
-            Matrix m2 = Matrix.Mode(m1, MatrixDimensions.Columns);
+            Matrix m2 = Matrix.Mode(m1, MatrixDimension.Columns);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 1.0, 2.0, 3.0 }
             });
@@ -2433,7 +2433,7 @@ namespace MLTests.LinearAlgebra
                 { 1.0, 3.0, 3.0 },
                 { 4.0, 4.0, 6.0 }
             });
-            Matrix m2 = Matrix.Mode(m1, MatrixDimensions.Rows);
+            Matrix m2 = Matrix.Mode(m1, MatrixDimension.Rows);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 3.0 },
                 { 4.0 }
@@ -2519,7 +2519,7 @@ namespace MLTests.LinearAlgebra
                 { 1.0, 2.0, 3.0 },
                 { 4.0, 5.0, 6.0 }
             });
-            Matrix m2 = Matrix.Variance(m1, MatrixDimensions.Columns);
+            Matrix m2 = Matrix.Variance(m1, MatrixDimension.Columns);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 4.5, 4.5, 4.5 }
             });
@@ -2533,7 +2533,7 @@ namespace MLTests.LinearAlgebra
                 { 1.0, 2.0, 3.0 },
                 { 4.0, 5.0, 6.0 }
             });
-            Matrix m2 = Matrix.Variance(m1, MatrixDimensions.Rows);
+            Matrix m2 = Matrix.Variance(m1, MatrixDimension.Rows);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 1.0 },
                 { 1.0 }
@@ -2579,7 +2579,7 @@ namespace MLTests.LinearAlgebra
                 { 2.0, 5.0 },
                 { 3.0, 6.0 }
             });
-            Matrix m2 = Matrix.StandardDeviation(m1, MatrixDimensions.Columns);
+            Matrix m2 = Matrix.StandardDeviation(m1, MatrixDimension.Columns);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 1.0, 1.0 }
             });
@@ -2593,7 +2593,7 @@ namespace MLTests.LinearAlgebra
                 { 1.0, 2.0, 3.0 },
                 { 4.0, 5.0, 6.0 }
             });
-            Matrix m2 = Matrix.StandardDeviation(m1, MatrixDimensions.Rows);
+            Matrix m2 = Matrix.StandardDeviation(m1, MatrixDimension.Rows);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 1.0 },
                 { 1.0 }
@@ -2703,7 +2703,7 @@ namespace MLTests.LinearAlgebra
                 { 9.0 }
             });
 
-            Matrix m3 = Matrix.Join(m1, m2, MatrixDimensions.Columns);
+            Matrix m3 = Matrix.Join(m1, m2, MatrixDimension.Columns);
 
             Matrix expectedResult = new Matrix(new double[,]
             {
@@ -2732,7 +2732,7 @@ namespace MLTests.LinearAlgebra
                 { 9.0 }
             });
 
-            Matrix m3 = Matrix.Join(m1, m2, MatrixDimensions.Columns);
+            Matrix m3 = Matrix.Join(m1, m2, MatrixDimension.Columns);
         }
 
         [TestMethod]
@@ -2751,7 +2751,7 @@ namespace MLTests.LinearAlgebra
                 { 9.0, 10.0 }
             });
 
-            Matrix m3 = Matrix.Join(m1, m2, MatrixDimensions.Rows);
+            Matrix m3 = Matrix.Join(m1, m2, MatrixDimension.Rows);
 
             Matrix expectedResult = new Matrix(new double[,]
             {
@@ -2782,7 +2782,7 @@ namespace MLTests.LinearAlgebra
                 { 9.0 }
             });
 
-            Matrix m3 = Matrix.Join(m1, m2, MatrixDimensions.Rows);
+            Matrix m3 = Matrix.Join(m1, m2, MatrixDimension.Rows);
         }
 
         [TestMethod]
@@ -2802,7 +2802,7 @@ namespace MLTests.LinearAlgebra
                 { 9.0 }
             });
 
-            Matrix m3 = Matrix.Join(m1, m2, MatrixDimensions.Auto);
+            Matrix m3 = Matrix.Join(m1, m2, MatrixDimension.Auto);
 
             Matrix expectedResult = new Matrix(new double[,]
             {
@@ -2830,7 +2830,7 @@ namespace MLTests.LinearAlgebra
                 { 9.0, 10.0 }
             });
 
-            Matrix m3 = Matrix.Join(m1, m2, MatrixDimensions.Auto);
+            Matrix m3 = Matrix.Join(m1, m2, MatrixDimension.Auto);
 
             Matrix expectedResult = new Matrix(new double[,]
             {
@@ -2861,7 +2861,7 @@ namespace MLTests.LinearAlgebra
                 { 9.0 }
             });
 
-            Matrix m3 = Matrix.Join(m1, m2, MatrixDimensions.Auto);
+            Matrix m3 = Matrix.Join(m1, m2, MatrixDimension.Auto);
         }
 
         #endregion

@@ -235,7 +235,7 @@ namespace ConsoleTester
 
             #region Feature Normalization C
             X = Matrix.Magic(3);
-            X = Matrix.Join(Matrix.Ones(1, 3) * -1, X, MatrixDimensions.Rows);
+            X = Matrix.Join(Matrix.Ones(1, 3) * -1, X, MatrixDimension.Rows);
             result = LinearRegression.FeatureNormalization(X);
 
             Console.Write("Target: -1.21 -1.01 -1.21; 1.21 -0.56 0.67; -0.14 0.34 0.95; 0.14 1.24 -0.41;\nActual: ");
@@ -427,7 +427,7 @@ namespace ConsoleTester
 
             #region Sigmoid Gradient
             Matrix a = new Matrix ( new double[,] { { -1, -2, -3 } } );
-            X = Matrix.Join(a, Matrix.Magic(3), MatrixDimensions.Rows);
+            X = Matrix.Join(a, Matrix.Magic(3), MatrixDimension.Rows);
             Matrix sg = NeuralNetwork.SigmoidGradient(X);
 
             WriteH2("Sigmoid Gradient");
