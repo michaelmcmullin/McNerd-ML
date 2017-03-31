@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -206,7 +207,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
                             }
                         }
                         if (diagonalValue == 0)
-                            throw new NonInvertibleMatrixException("This Matrix is not invertible");
+                            throw new NoninvertibleMatrixException("This Matrix is not invertible");
                     }
 
                     int lineValueIndex = diagonal;
@@ -819,6 +820,23 @@ namespace McNerd.MachineLearning.LinearAlgebra
             Parallel.For(0, matrix.rows, i => GreaterThanOrEqualToRow(i, matrix, scalar, ref output));
             return output;
         }
+
+        /// <summary>
+        /// Create a Matrix truth table containing -1, 0 and 1 representing
+        /// values that are less than, equal to, or greater than the given scalar.
+        /// </summary>
+        /// <param name="matrix">The Matrix to compare to the scalar value.</param>
+        /// <param name="scalar">A scalar value used for comparison.</param>
+        /// <returns>A Matrix with -1s, 0s and 1s representing less than, equal to,
+        /// or greater than for the comparison.</returns>
+        public static Matrix Compare(Matrix matrix, double scalar)
+        {
+            if (matrix == null) return null;
+
+            Matrix output = new Matrix(matrix.rows, matrix.columns);
+            Parallel.For(0, matrix.rows, i => CompareToRow(i, matrix, scalar, ref output));
+            return output;
+        }
         #endregion
 
         #region Methods
@@ -829,6 +847,8 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <returns>true if both matrices have the same dimensions. Otherwise, false.</returns>
         public bool HasSameDimensions(Matrix other)
         {
+            if (other == null)
+                throw new ArgumentNullException("other", "Cannot compare dimensions if a Matrix is null");
             return (this.rows == other.rows) && (this.columns == other.columns);
         }
 
@@ -860,20 +880,20 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <summary>
         /// Compare this Matrix with a second Matrix by value.
         /// </summary>
-        /// <param name="m">The Matrix to compare to this one.</param>
+        /// <param name="matrix">The Matrix to compare to this one.</param>
         /// <returns>True if both matrices contain the same values.</returns>
-        public bool Equals(Matrix m)
+        public bool Equals(Matrix matrix)
         {
-            if (object.ReferenceEquals(null, m)) return false;
-            if (ReferenceEquals(this, m)) return true;
+            if (object.ReferenceEquals(null, matrix)) return false;
+            if (ReferenceEquals(this, matrix)) return true;
 
-            if (!this.HasSameDimensions(m)) return false;
+            if (!this.HasSameDimensions(matrix)) return false;
 
             for (int row = 0; row < rows; row++)
             {
                 for (int column = 0; column < columns; column++)
                 {
-                    if (this[row, column] != m[row, column]) return false;
+                    if (this[row, column] != matrix[row, column]) return false;
                 }
             }
             return true;
@@ -901,7 +921,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
             {
                 for (int j = 0; j < Columns; j++)
                 {
-                    sb.AppendFormat("{0:0.00} ", data[index++]);
+                    sb.AppendFormat(CultureInfo.CurrentCulture, "{0:0.00} ", data[index++]);
                 }
                 sb.Append("\n");
             }
@@ -1196,6 +1216,27 @@ namespace McNerd.MachineLearning.LinearAlgebra
             }
         }
 
+
+        /// <summary>
+        /// Calculate if each element in a row is less than, equal, or greater than the given
+        /// value, creating -1.0, 0.0, or 1.0 respectively.
+        /// </summary>
+        /// <param name="row">The zero-indexed row to calculate.</param>
+        /// <param name="matrix">The Matrix to compare to the scalar value.</param>
+        /// <param name="scalar">The scalar value to compare to the Matrix elements.</param>
+        /// <param name="output">The Matrix that contains the comparison results.</param>
+        private static void CompareToRow(int row, Matrix matrix, double scalar, ref Matrix output)
+        {
+            int m_index = row * matrix.columns;
+
+            for (int i = m_index; i < m_index + output.Columns; i++)
+            {
+                if (matrix.data[i] < scalar) output.data[i] = -1.0;
+                else if (matrix.data[i] > scalar) output.data[i] = 1.0;
+                else output.data[i] = 0.0;
+            }
+        }
+
         #endregion
 
         #region Multiplying Transpose
@@ -1207,6 +1248,11 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <returns>The result of multiplying matrix1 with matrix2.Transpose.</returns>
         public static Matrix MultiplyByTranspose(Matrix matrix1, Matrix matrix2)
         {
+            if (matrix1 == null)
+                throw new ArgumentNullException("matrix1", "Cannot multiply if Matrix is null");
+            else if (matrix2 == null)
+                throw new ArgumentNullException("matrix2", "Cannot multiply if Matrix is null");
+
             if (matrix1.Columns == matrix2.Columns)
             {
                 Matrix output = new Matrix(matrix1.Rows, matrix2.Rows);
@@ -1226,6 +1272,8 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <returns>The result of multiplying matrix1 with its transpose.</returns>
         public static Matrix MultiplyByTranspose(Matrix matrix)
         {
+            if (matrix == null)
+                throw new ArgumentNullException("matrix", "Cannot multiply if Matrix is null");
             Matrix output = new Matrix(matrix.Rows, matrix.Rows);
             Parallel.For(0, matrix.Rows, i => MultiplyByTransposedRow(i, matrix, ref output));
             return output;
@@ -1239,6 +1287,11 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <returns>The result of multiplying matrix1.Transpose with matrix2.</returns>
         public static Matrix MultiplyTransposeBy(Matrix matrix1, Matrix matrix2)
         {
+            if (matrix1 == null)
+                throw new ArgumentNullException("matrix1", "Cannot multiply if Matrix is null");
+            else if (matrix2 == null)
+                throw new ArgumentNullException("matrix2", "Cannot multiply if Matrix is null");
+
             if (matrix1.Rows == matrix2.Rows)
             {
                 Matrix output = new Matrix(matrix1.Columns, matrix2.Columns);
@@ -1258,6 +1311,9 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <returns>The result of multiplying matrix.Transpose with matrix.</returns>
         public static Matrix MultiplyTransposeBy(Matrix matrix)
         {
+            if (matrix == null)
+                throw new ArgumentNullException("matrix", "Cannot multiply if Matrix is null");
+
             Matrix output = new Matrix(matrix.Columns, matrix.Columns);
             Parallel.For(0, matrix.Columns, i => MultiplyByTransposedColumn(i, matrix, ref output));
             return output;
@@ -1277,8 +1333,10 @@ namespace McNerd.MachineLearning.LinearAlgebra
             int indexRow1 = row1 * Columns;
             int indexRow2 = row2 * Columns;
 
-            if (indexRow1 > data.Length || indexRow2 > data.Length)
-                throw new IndexOutOfRangeException("SwapRow method called with non-existent rows.");
+            if (indexRow1 > data.Length)
+                throw new MatrixIndexException("row1", "Cannot swap with non-existent rows.");
+            else if (indexRow2 > data.Length)
+                throw new MatrixIndexException("row2", "Cannot swap with non-existent rows.");
 
             for (int i = 0; i < Columns; i++)
             {
@@ -1297,6 +1355,11 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <returns>A new Matrix containing both the original Matrices joined together.</returns>
         public static Matrix Join(Matrix matrix1, Matrix matrix2, MatrixDimension dimension)
         {
+            if (matrix1 == null)
+                throw new ArgumentNullException("matrix1", "Cannot join if Matrix is null");
+            else if (matrix2 == null)
+                throw new ArgumentNullException("matrix2", "Cannot join if Matrix is null");
+
             Matrix result = null;
             switch (dimension)
             {
@@ -1360,6 +1423,9 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <returns>A new Matrix with an addition column at the start.</returns>
         public static Matrix AddIdentityColumn(Matrix matrix1, double identityValue)
         {
+            if (matrix1 == null)
+                throw new ArgumentNullException("matrix1", "Cannot add identity column if Matrix is null");
+
             Matrix matrix2 = new Matrix(matrix1.Rows, matrix1.Columns + 1);
 
             int dataIndex1 = 0;
@@ -1395,7 +1461,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         public Matrix GetRow(int row)
         {
             if (row >= this.Rows)
-                throw new IndexOutOfRangeException("The requested row is out of range");
+                throw new MatrixIndexException("row", "The requested row is out of range");
             Matrix result = new Matrix(1, this.Columns);
 
             int index = row * this.Columns;
@@ -1415,8 +1481,11 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <param name="matrix">The Matrix to get new values from.</param>
         public void SetRow(int row, Matrix matrix)
         {
+            if (matrix == null)
+                throw new ArgumentNullException("matrix", "Cannot multiply if Matrix is null");
+
             if (row >= this.Rows)
-                throw new IndexOutOfRangeException("The requested row is out of range");
+                throw new MatrixIndexException("row", "The requested row is out of range");
             int index = row * this.Columns;
             for (int i = 0; i < Math.Min(this.Columns, matrix.Columns); i++)
             {
@@ -1432,7 +1501,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         public Matrix GetColumn(int column)
         {
             if (column >= this.Columns)
-                throw new IndexOutOfRangeException("The requested column is out of range");
+                throw new MatrixIndexException("column", "The requested column is out of range");
             Matrix result = new Matrix(this.Rows, 1);
 
             int index = column;
@@ -1454,7 +1523,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         public Matrix RemoveColumn(int column)
         {
             if (column >= this.Columns)
-                throw new IndexOutOfRangeException("The requested column is out of range");
+                throw new MatrixIndexException("column", "The requested column is out of range");
             if (this.Columns == 1)
                 throw new InvalidMatrixDimensionsException("Cannot remove column as there is only one column to begin with");
 
@@ -1498,8 +1567,10 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// X2^2, X1*X2, X1*X2^2, etc</returns>
         public Matrix ExpandPolynomials(int column1, int column2, int degree)
         {
-            if (column1 >= this.Columns || column2 >= this.Columns)
-                throw new IndexOutOfRangeException("A requested column is out of range");
+            if (column1 >= this.Columns)
+                throw new MatrixIndexException("column1", "A requested column is out of range");
+            else if (column2 >= this.Columns)
+                throw new MatrixIndexException("column2", "A requested column is out of range");
 
             int outputColumns = (((degree + 1) * (degree + 2)) / 2);
             outputColumns += (this.Columns - 2);
@@ -1554,15 +1625,15 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <returns>A square Matrix with zeros everywhere, except for the main diagonal which is filled with ones.</returns>
         public static Matrix Identity(int dimensions)
         {
-            Matrix Midentity = new Matrix(dimensions, dimensions);
+            Matrix IdMatrix = new Matrix(dimensions, dimensions);
             int index = 0;
-            while (index < Midentity.data.Length)
+            while (index < IdMatrix.data.Length)
             {
-                Midentity.data[index] = 1;
+                IdMatrix.data[index] = 1;
                 index += dimensions + 1;
             }
 
-            return Midentity;
+            return IdMatrix;
         }
 
         /// <summary>
@@ -1774,6 +1845,11 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <returns>A new Matrix with the original elements operated on appropriately.</returns>
         protected static Matrix ElementOperation(Matrix matrix, double number, ProcessNumbers operation)
         {
+            if (matrix == null)
+                throw new ArgumentNullException("matrix", "Cannot perform operation if Matrix is null");
+            if (operation == null)
+                throw new ArgumentNullException("operation", "An operation method based on the ProcessNumbers delegate must be defined");
+
             Matrix result = new Matrix(matrix.Rows, matrix.Columns);
             for (int i = 0; i < result.data.Length; i++)
                 result.data[i] = operation(matrix.data[i], number);
@@ -1792,10 +1868,15 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// operated on appropriately.</returns>
         protected static Matrix ElementOperation(Matrix matrix1, Matrix matrix2, ProcessNumbers operation)
         {
-            if (matrix1 == null || matrix2 == null)
-                throw new ArgumentNullException("ElementOperation cannot accept null Matrix objects");
+            if (matrix1 == null)
+                throw new ArgumentNullException("matrix1", "ElementOperation cannot accept null Matrix objects");
+            else if (matrix2 == null)
+                throw new ArgumentNullException("matrix2", "ElementOperation cannot accept null Matrix objects");
+            if (operation == null)
+                throw new ArgumentNullException("operation", "An operation method based on the ProcessNumbers delegate must be defined");
+
             if (matrix1.Columns != matrix2.Columns && matrix1.Rows != matrix2.Rows)
-                throw new InvalidMatrixDimensionsException("ElementOperation requires both Matrix objects to have the same dimensions");
+                throw new InvalidMatrixDimensionsException("Both Matrix objects to have the same dimensions");
 
             Matrix result = new LinearAlgebra.Matrix(matrix1.Rows, matrix1.Columns);
 
@@ -1842,6 +1923,11 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <returns>A new Matrix with the original elements operated on appropriately.</returns>
         protected static Matrix ElementOperation(Matrix matrix, ProcessNumber operation)
         {
+            if (matrix == null)
+                throw new ArgumentNullException("matrix", "Cannot perform operation if Matrix is null");
+            if (operation == null)
+                throw new ArgumentNullException("operation", "An operation method based on the ProcessNumbers delegate must be defined");
+
             Matrix result = new Matrix(matrix.Rows, matrix.Columns);
             for (int i = 0; i < result.data.Length; i++)
                 result.data[i] = operation(matrix.data[i]);
@@ -1908,44 +1994,44 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <summary>
         /// Get the square root of each element in a given Matrix.
         /// </summary>
-        /// <param name="m">The Matrix to process.</param>
+        /// <param name="matrix">The Matrix to process.</param>
         /// <returns>A new Matrix containing elements that are the square roots of the
         /// original Matrix elements.</returns>
-        public static Matrix ElementSqrt(Matrix m)
+        public static Matrix ElementSquareRoot(Matrix matrix)
         {
-            return ElementOperation(m, (x) => Math.Sqrt(x));
+            return ElementOperation(matrix, (x) => Math.Sqrt(x));
         }
 
         /// <summary>
         /// Get the absolute value of all Matrix elements.
         /// </summary>
-        /// <param name="m">The Matrix to process.</param>
+        /// <param name="matrix">The Matrix to process.</param>
         /// <returns>A new Matrix containing the absolute value of all elements.</returns>
-        public static Matrix ElementAbs(Matrix m)
+        public static Matrix ElementAbsolute(Matrix matrix)
         {
-            return ElementOperation(m, (x) => Math.Abs(x));
+            return ElementOperation(matrix, (x) => Math.Abs(x));
         }
 
         /// <summary>
-        /// Calculate e to the power of m for each element in m.
+        /// Calculate e to the power of m for each element in matrix.
         /// </summary>
-        /// <param name="m">The Matrix to process.</param>
+        /// <param name="matrix">The Matrix to process.</param>
         /// <returns>A Matrix containing elements that are e ^ m for all elements
         /// in the original Matrix m.</returns>
-        public static Matrix ElementExp(Matrix m)
+        public static Matrix ElementExponent(Matrix matrix)
         {
-            return ElementOperation(m, (x) => Math.Pow(Math.E, x));
+            return ElementOperation(matrix, (x) => Math.Pow(Math.E, x));
         }
 
         /// <summary>
-        /// Calculate the natural logarithm for each element in m.
+        /// Calculate the natural logarithm for each element in matrix.
         /// </summary>
-        /// <param name="m">The Matrix to process.</param>
+        /// <param name="matrix">The Matrix to process.</param>
         /// <returns>A Matrix containing elements a that are e ^ a = m for all elements
         /// in the original Matrix m.</returns>
-        public static Matrix ElementLog(Matrix m)
+        public static Matrix ElementLog(Matrix matrix)
         {
-            return ElementOperation(m, (x) => Math.Log(x));
+            return ElementOperation(matrix, (x) => Math.Log(x));
         }
 
         #endregion
@@ -2012,6 +2098,11 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// dimension exists, then columns are used as the default.</remarks>
         protected static Matrix ReduceDimension(Matrix matrix, MatrixDimension dimension, ProcessNumbers operation)
         {
+            if (matrix == null)
+                throw new ArgumentNullException("matrix", "Cannot perform operation if Matrix is null");
+            if (operation == null)
+                throw new ArgumentNullException("operation", "An operation method based on the ProcessNumbers delegate must be defined");
+
             Matrix result = null;
 
             // Process calculations
@@ -2089,6 +2180,11 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// dimension exists, then columns are used as the default.</remarks>
         protected static Matrix StatisticalReduce(Matrix matrix, MatrixDimension dimension, ProcessMatrix operation)
         {
+            if (matrix == null)
+                throw new ArgumentNullException("matrix", "Cannot perform operation if Matrix is null");
+            if (operation == null)
+                throw new ArgumentNullException("operation", "An operation method based on the ProcessNumbers delegate must be defined");
+
             Matrix result = null;
 
             switch (dimension)
@@ -2341,7 +2437,7 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <param name="dimension">The dimension (row or column) to process.</param>
         /// <returns>A 1*n or n*1 Matrix containing the interquartile range of each element along the
         /// processed dimension.</returns>
-        public static Matrix IQR(Matrix matrix, MatrixDimension dimension)
+        public static Matrix InterquartileRange(Matrix matrix, MatrixDimension dimension)
         {
             return StatisticalReduce(matrix, dimension, (x) => GetQuartile3(x) - GetQuartile1(x) );
         }
@@ -2353,9 +2449,9 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <param name="matrix">The Matrix to find the interquartile range of.</param>
         /// <returns>A 1*n or n*1 Matrix containing the interquartile range of each element along the
         /// processed dimension.</returns>
-        public static Matrix IQR(Matrix matrix)
+        public static Matrix InterquartileRange(Matrix matrix)
         {
-            return IQR(matrix, MatrixDimension.Auto);
+            return InterquartileRange(matrix, MatrixDimension.Auto);
         }
 
         /// <summary>
@@ -2630,6 +2726,9 @@ namespace McNerd.MachineLearning.LinearAlgebra
         /// <returns>A new Matrix based on the given dimensions.</returns>
         public static Matrix Reshape(Matrix matrix, int startingIndex, int rows, int columns)
         {
+            if (matrix == null)
+                throw new ArgumentNullException("matrix", "Cannot reshape if Matrix is null");
+
             if (matrix.data.Length < (startingIndex + (rows * columns)))
                 throw new InvalidMatrixDimensionsException("There are not enough elements to reshape the Matrix.");
 
@@ -2683,20 +2782,46 @@ namespace McNerd.MachineLearning.LinearAlgebra
     /// <summary>
     /// Custom excepction for Matrix operations that require invertible matrices. 
     /// </summary>
-    public class NonInvertibleMatrixException : InvalidOperationException
+    public class NoninvertibleMatrixException : InvalidOperationException
     {
-        public NonInvertibleMatrixException()
+        public NoninvertibleMatrixException()
         {
         }
 
-        public NonInvertibleMatrixException(string message)
+        public NoninvertibleMatrixException(string message)
             : base(message)
         {
         }
 
-        public NonInvertibleMatrixException(string message, Exception inner)
+        public NoninvertibleMatrixException(string message, Exception inner)
             : base(message, inner)
         {
         }
     }
+
+    /// <summary>
+    /// Custom exception for Matrix operations using indices out of range.
+    /// </summary>
+    public class MatrixIndexException : ArgumentOutOfRangeException
+    {
+        public MatrixIndexException()
+        {
+        }
+
+        public MatrixIndexException(string message)
+            : base(message)
+        {
+        }
+
+        public MatrixIndexException(string parameter, string message)
+            : base(parameter, message)
+        {
+        }
+
+        public MatrixIndexException(string message, Exception inner)
+            : base(message, inner)
+        {
+        }
+    }
+
 }

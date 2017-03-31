@@ -17,7 +17,7 @@ namespace ConsoleTester
         /// between 0 and 1.</returns>
         public static Matrix Sigmoid(Matrix z)
         {
-            return 1 / (1 + Matrix.ElementExp(-z));
+            return 1 / (1 + Matrix.ElementExponent(-z));
         }
 
         /// <summary>

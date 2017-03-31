@@ -156,7 +156,7 @@ namespace MLTests.LinearAlgebra
         }
 
         [TestMethod]
-        [ExpectedException(typeof(NonInvertibleMatrixException), "Matrix is not invertible.")]
+        [ExpectedException(typeof(NoninvertibleMatrixException), "Matrix is not invertible.")]
         public void NonInvertibleMatrix()
         {
             Matrix m1 = new Matrix(new double[,]
@@ -1290,7 +1290,7 @@ namespace MLTests.LinearAlgebra
                 { 5.0, 6.0, 7.0 }
             });
 
-            Matrix m2 = Matrix.ElementSqrt(m1);
+            Matrix m2 = Matrix.ElementSquareRoot(m1);
             Assert.AreEqual(expectedResult, m2);
         }
 
@@ -1309,7 +1309,7 @@ namespace MLTests.LinearAlgebra
                 { 4.0, 5.0, 6.0 }
             });
 
-            Matrix m2 = Matrix.ElementAbs(m1);
+            Matrix m2 = Matrix.ElementAbsolute(m1);
             Assert.AreEqual(expectedResult, m2);
         }
 
@@ -1326,7 +1326,7 @@ namespace MLTests.LinearAlgebra
                 { 1.0, Math.E }
             });
 
-            Matrix m2 = Matrix.ElementExp(m1);
+            Matrix m2 = Matrix.ElementExponent(m1);
             Assert.AreEqual(expectedResult, m2);
         }
 
@@ -2339,7 +2339,7 @@ namespace MLTests.LinearAlgebra
                 { 7.0, 8.0, 9.0 },
                 { 10.0, 11.0, 12.0 }
             });
-            Matrix m2 = Matrix.IQR(m1, MatrixDimension.Columns);
+            Matrix m2 = Matrix.InterquartileRange(m1, MatrixDimension.Columns);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 6.0, 6.0, 6.0 }
             });
@@ -2357,7 +2357,7 @@ namespace MLTests.LinearAlgebra
                 { 13.0, 14.0, 15.0 },
                 { 16.0, 17.0, 18.0 }
             });
-            Matrix m2 = Matrix.IQR(m1, MatrixDimension.Columns);
+            Matrix m2 = Matrix.InterquartileRange(m1, MatrixDimension.Columns);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 9.0, 9.0, 9.0 }
             });
@@ -2374,7 +2374,7 @@ namespace MLTests.LinearAlgebra
                 { 10.0, 11.0, 12.0 },
                 { 14.0, 15.0, 16.0 }
             });
-            Matrix m2 = Matrix.IQR(m1, MatrixDimension.Columns);
+            Matrix m2 = Matrix.InterquartileRange(m1, MatrixDimension.Columns);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 6.0, 6.0, 6.0 }
             });
@@ -2387,7 +2387,7 @@ namespace MLTests.LinearAlgebra
             Matrix m1 = new Matrix(new double[,] {
                 { 1.0, 5.0, 3.0 }
             });
-            Matrix m2 = Matrix.IQR(m1, MatrixDimension.Auto);
+            Matrix m2 = Matrix.InterquartileRange(m1, MatrixDimension.Auto);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 4.0 }
             });
@@ -2401,7 +2401,7 @@ namespace MLTests.LinearAlgebra
                 { 1.0, 5.0, 3.0 },
                 { 4.0, 2.0, 6.0 }
             });
-            Matrix m2 = Matrix.IQR(m1, MatrixDimension.Columns);
+            Matrix m2 = Matrix.InterquartileRange(m1, MatrixDimension.Columns);
             Matrix expectedResult = new Matrix(new double[,] {
                 { 3.0, 3.0, 3.0 }
             });
