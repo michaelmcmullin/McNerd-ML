@@ -38,5 +38,5 @@ Note that some performance boosts include parallel processing, so your specific 
 
 ## Contact Me
 
-I can be contacted through [my webpage](http://mrmcnerd.com/contact/), [Twitter](https://twitter.com/nerdbehaviour),
+I can be contacted through [my webpage](http://mrmcmullin.com/contact/), [Twitter](https://twitter.com/mr_mcmullin),
 and [StackOverflow](http://stackoverflow.com/users/5233918/michael-mcmullin).
